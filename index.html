@@ -85,6 +85,73 @@
     text-align: center;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
+
+  /* 地点天气信息样式 */
+  .location-weather {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: 'Titillium Web', Verdana, Helvetica, sans-serif;
+    font-size: 14px;
+    z-index: 1000;
+    min-width: 180px;
+  }
+
+  .location-weather .date {
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .location-weather .location {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .location-weather .location::before {
+    content: "📍";
+    margin-right: 5px;
+  }
+
+  .location-weather .weather {
+    color: #666;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+  }
+
+  .location-weather .weather::before {
+    content: "🌤️";
+    margin-right: 5px;
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .location-weather {
+      top: 10px;
+      right: 10px;
+      padding: 10px 15px;
+      font-size: 12px;
+      min-width: 150px;
+    }
+
+    .location-weather .date {
+      font-size: 11px;
+    }
+
+    .location-weather .weather {
+      font-size: 11px;
+    }
+  }
   </style>
   <link rel="shortcut icon" href="images/apple-touch-ri-logo-white-120x120.png">
   <script type="text/javascript" src="js/hidebib.js"></script>
@@ -104,8 +171,15 @@
   <!-- Scramble Script by Jeff Donahue -->
   <script src="js/scramble.js"></script>
 </head>
- 
+
 <body>
+<!-- 地点天气信息组件 -->
+<div class="location-weather">
+  <div class="date" id="current-date">Sunday, September 7, 2025</div>
+  <div class="location" id="current-location">@Hangzhou, 34°C</div>
+  <div class="weather" id="current-weather">Partly Cloudy</div>
+</div>
+
 <table width="900" border="0" align="center" border="0" cellspacing="0" cellpadding="20">
   <tr><td>
 
@@ -121,7 +195,7 @@
     | <a href="mailto:duzy@zju.edu.cn">Email</a> |
     <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a> |
     <br/>
-    | <a href="https://github.com/XiaoDu-flying">GitHub</a> | 
+    | <a href="https://github.com/XiaoDu-flying">GitHub</a> |
     <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> |
       <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3Bjn1Pz0sxRRiGuVWzPtaEXA%3D%3D">Linkedin</a> |
     </p>
@@ -171,19 +245,19 @@
   <tr><td>
     <ul>
       <li><strong>[2025.1.22]</strong> Our work on pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step is available at <a href="https://arxiv.org/abs/2508.12604">SSPO</a>.</li>
-      
+
       <li><strong>[2025.5.16]</strong> Two papers accepted at ACL 2025 - exploring cross-team collaboration and medical education applications!</li>
-      
+
       <li><strong>[2024.12.16]</strong> <a href="https://arxiv.org/abs/2406.07155">Scaling Large-Language-Model-based Multi-Agent Collaboration</a> accepted at <strong>ICLR 2025</strong>!</li>
-      
+
       <li><strong>[2024.12.16]</strong> Introducing <strong>EvoPatient</strong>: Transforming LLMs into Standardized Patients for medical education. <a href="https://arxiv.org/abs/2412.11716">arXiv:2412.11716</a></li>
-      
+
       <li><strong>[2024.9.26]</strong> Paper on collaborative agents under information asymmetry accepted at <strong>NeurIPS 2024</strong>!</li>
-      
+
       <li><strong>[2024.6.25]</strong> Launch of our <a href="https://thinkwee.top/multiagent_ebook">Interactive E-book</a> on Multi-Agent Collaboration</li>
-      
+
       <li><strong>[2024.5.16]</strong> Two papers accepted at <strong>ACL 2024</strong> main conference</li>
-      
+
       <li><strong>[2023.8.29]</strong> ChatDev open-sourced! Now with <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> stars!</li>
     </ul>
   </td></tr>
@@ -357,9 +431,9 @@
     <em>Algorithm Engineer Intern | Jan 2025 – Present</em><br>
     Focusing on research on new paradigm in multi-agent latent space reasoning enhancement and supervised fine-tuning (SFT) methodologies for large language models. Meanwhile working on advanced AI applications in e-commerce.
     </p>
-    
+
     <p><strong><a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a> @ Tsinghua University</strong><br>
-    <em>Research Intern | Nov 2023 – Aug 2024</em><br>
+    <em>Research Assistant | Nov 2023 – Aug 2024</em><br>
     Deeply involved in the development of the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and its related projects, focusing on multi-agent cross-team collaboration capabilities.
     </p>
   </td></tr>
@@ -499,6 +573,44 @@
   </td></tr>
 </table>
 
+<script>
+// 自动更新时间和位置信息的JavaScript
+function updateLocationWeather() {
+  const now = new Date();
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+
+  // 更新日期
+  document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+
+  // 你可以根据需要修改地点和天气信息
+  // 这里可以接入天气API来获取实时数据
+  const locations = [
+    { city: '@Hangzhou', temp: '34°C', weather: 'Partly Cloudy' },
+    { city: '@Shanghai', temp: '32°C', weather: 'Sunny' },
+    { city: '@Beijing', temp: '28°C', weather: 'Overcast' }
+  ];
+
+  // 随机选择一个位置（你可以根据实际需求修改）
+  const currentLocation = locations[0]; // 或者使用 locations[Math.floor(Math.random() * locations.length)]
+
+  document.getElementById('current-location').innerHTML =
+    `📍${currentLocation.city}, ${currentLocation.temp}`;
+  document.getElementById('current-weather').innerHTML =
+    `🌤️${currentLocation.weather}`;
+}
+
+// 页面加载时更新信息
+window.onload = function() {
+  updateLocationWeather();
+  // 每分钟更新一次（可选）
+  setInterval(updateLocationWeather, 60000);
+};
+</script>
 
 <script xml:space="preserve" language="JavaScript">
   hideblock('salon_abs');
