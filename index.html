@@ -599,9 +599,9 @@ function updateLocationWeather() {
   const currentLocation = locations[0]; // 或者使用 locations[Math.floor(Math.random() * locations.length)]
 
   document.getElementById('current-location').innerHTML =
-    `📍${currentLocation.city}, ${currentLocation.temp}`;
+    `${currentLocation.city}, ${currentLocation.temp}`;
   document.getElementById('current-weather').innerHTML =
-    `🌤️${currentLocation.weather}`;
+    `${currentLocation.weather}`;
 }
 
 // 页面加载时更新信息
