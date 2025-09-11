@@ -574,43 +574,110 @@
 </table>
 
 <script>
-// 自动更新时间和位置信息的JavaScript
-function updateLocationWeather() {
-  const now = new Date();
-  const options = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+/** 将天气代码映射为文字描述 */
+function codeToDesc(code) {
+  const map = {
+    0: 'Clear',
+    1: 'Mainly clear',
+    2: 'Partly cloudy',
+    3: 'Overcast',
+    45: 'Fog', 48: 'Depositing rime fog',
+    51: 'Light drizzle', 53: 'Moderate drizzle', 55: 'Dense drizzle',
+    61: 'Light rain', 63: 'Moderate rain', 65: 'Heavy rain',
+    71: 'Light snow', 73: 'Moderate snow', 75: 'Heavy snow',
+    80: 'Rain showers', 81: 'Rain showers', 82: 'Violent rain showers',
+    95: 'Thunderstorm', 96: 'Thunderstorm w/ hail', 99: 'Thunderstorm w/ heavy hail'
   };
-
-  // 更新日期
-  document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
-
-  // 你可以根据需要修改地点和天气信息
-  // 这里可以接入天气API来获取实时数据
-  const locations = [
-    { city: '@Hangzhou', temp: '34°C', weather: 'Partly Cloudy' },
-    { city: '@Shanghai', temp: '32°C', weather: 'Sunny' },
-    { city: '@Beijing', temp: '28°C', weather: 'Overcast' }
-  ];
-
-  // 随机选择一个位置（你可以根据实际需求修改）
-  const currentLocation = locations[0]; // 或者使用 locations[Math.floor(Math.random() * locations.length)]
-
-  document.getElementById('current-location').innerHTML =
-    `${currentLocation.city}, ${currentLocation.temp}`;
-  document.getElementById('current-weather').innerHTML =
-    `${currentLocation.weather}`;
+  return map[code] || 'Unknown';
 }
 
-// 页面加载时更新信息
-window.onload = function() {
+/** 用于格式化日期（和你原来一致） */
+function updateDate() {
+  const now = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+}
+
+/** 从 Open-Meteo 获取实时天气 */
+async function fetchWeather(lat, lon) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Weather API error');
+  const data = await res.json();
+  const cw = data.current_weather;
+  if (!cw) throw new Error('No current_weather in response');
+  return {
+    temp: Math.round(cw.temperature) + '°C',
+    desc: codeToDesc(cw.weathercode)
+  };
+}
+
+/** 反向地理编码（可选）：把经纬度转城市名；失败则返回占位 */
+async function reverseGeocode(lat, lon) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+    const res = await fetch(url, {
+      headers: { 'Accept': 'application/json' },
+      // 注意：Nominatim有频控，避免高频调用
+    });
+    if (!res.ok) throw new Error('Geocode error');
+    const data = await res.json();
+    const city = data.address?.city || data.address?.town || data.address?.county || data.address?.state;
+    return city ? `@${city}` : '@Your Location';
+  } catch {
+    return '@Your Location';
+  }
+}
+
+/** 主更新函数：定位 -> 天气 -> DOM */
+async function updateLocationWeather() {
+  updateDate();
+
+  // 默认经纬度（杭州），定位失败时兜底
+  const FALLBACK = { lat: 30.2741, lon: 120.1551, label: '@Hangzhou' };
+
+  function setDOM({ label, temp, desc }) {
+    document.getElementById('current-location').textContent = `${label}, ${temp}`;
+    document.getElementById('current-weather').textContent = desc;
+  }
+
+  try {
+    // 仅在 https 或 localhost 下可用
+    const pos = await new Promise((resolve, reject) => {
+      if (!navigator.geolocation) return reject(new Error('No geolocation'));
+      navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 8000 });
+    });
+
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    // 并发请求：天气 + 反向地理
+    const [weather, label] = await Promise.all([
+      fetchWeather(lat, lon),
+      reverseGeocode(lat, lon)
+    ]);
+
+    setDOM({ label, temp: weather.temp, desc: weather.desc });
+  } catch (e) {
+    // 失败则使用兜底城市
+    try {
+      const weather = await fetchWeather(FALLBACK.lat, FALLBACK.lon);
+      setDOM({ label: FALLBACK.label, temp: weather.temp, desc: weather.desc });
+    } catch {
+      // 连兜底都失败则显示占位
+      setDOM({ label: FALLBACK.label, temp: '--', desc: 'Unavailable' });
+    }
+  }
+}
+
+/** 页面加载时与定时刷新 */
+window.onload = function () {
   updateLocationWeather();
-  // 每分钟更新一次（可选）
-  setInterval(updateLocationWeather, 60000);
+  // 天气没必要每分钟刷；10~15 分钟更合理，避免被限流
+  setInterval(updateLocationWeather, 15 * 60 * 1000);
 };
 </script>
+
 
 <script xml:space="preserve" language="JavaScript">
   hideblock('salon_abs');
