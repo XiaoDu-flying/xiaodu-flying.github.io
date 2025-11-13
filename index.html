@@ -244,6 +244,8 @@
 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="15">
   <tr><td>
     <ul>
+      <li><strong>[2025.11.12]</strong> Our work on Interlat enables direct and efficient inter-agent communication entirely in latent space, achieving higher task success with up to effective compression is available at <a href="https://arxiv.org/abs/2511.09149">Interlat</a>.
+
       <li><strong>[2025.10.24]</strong> EvoPatient <a href="https://github.com/ZJUMAI/EvoPatient">open-sourced!</a>.</li>
 
       <li><strong>[2025.8.22]</strong> Our work on pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step is available at <a href="https://arxiv.org/abs/2508.12604">SSPO</a>.</li>
@@ -272,6 +274,35 @@
 </table>
 
 <table width="100%" align="center" border="0" cellspacing="0" cellpadding="15">
+
+  <tr>
+    <td width="40%" valign="top" align="center">
+      <img src="images/paper/interlat.png" alt="SSPO" width="90%" style="border-radius:15px;">
+    </td>
+    <td width="60%" valign="top">
+      <p><a href="https://arxiv.org/abs/2511.09149" id="Interlat">
+      <heading>Enabling Agents to Communicate Entirely in Latent Space</heading></a><br>
+      <strong>Zhuoyun Du</strong><sup>†</sup>, Runze Wang<sup>†</sup>, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying<br>
+      arxiv<br>
+      </p>
+      <div class="paper" id="interlat">
+      <a href="https://arxiv.org/abs/2508.12604">paper</a> |
+      <a href="javascript:toggleblock('interlat_abs')">abstract</a> |
+      <a shape="rect" href="javascript:togglebib('interlat')" class="togglebib">bibtex</a>
+
+      <p align="justify"> <i id="interlat_abs">While natural language is the de facto communication medium for LLM-based agents, it presents a fundamental constraint. The process of downsampling rich, internal latent states into discrete tokens inherently limits the depth and nuance of information that can be transmitted, thereby hindering collaborative problem-solving. Inspired by human mind-reading, we propose Interlat (Inter-agent Latent Space Communication), a paradigm that leverages the last hidden states of an LLM as a representation of its mind for direct transmission (termed latent communication). An additional compression process further compresses latent communication via entirely latent space reasoning. Experiments demonstrate that Interlat outperforms both fine-tuned chain-of-thought (CoT) prompting and single-agent baselines, promoting more exploratory behavior and enabling genuine utilization of latent information. Further compression not only substantially accelerates inference but also maintains competitive performance through an efficient information-preserving mechanism. We position this work as a feasibility study of entirely latent space inter-agent communication, and our results highlight its potential, offering valuable insights for future research.</i></p>
+
+<pre xml:space="preserve">
+@article{du2025interlat,
+  title={Enabling Agents to Communicate Entirely in Latent Space},
+  author={Du, Zhuoyun and Wang, Runze and Bai, Huiyu and Cao, Zouying and Zhu, Xiaoyong and Zheng, Bo and Chen, Wei and Ying, Haochao},
+  journal={arXiv preprint arXiv:2511.09149},
+  year={2025}
+
+  </pre>
+      </div>
+    </td>
+  </tr>
 
   <tr>
     <td width="40%" valign="top" align="center">
@@ -668,6 +699,9 @@ window.onload = function () {
 </script>
 <script xml:space="preserve" language="JavaScript">
 hideallbibs();
+</script>
+<script xml:space="preserve" language="JavaScript">
+  hideblock('interlat_abs');
 </script>
 <script xml:space="preserve" language="JavaScript">
   hideblock('sspo_abs');
