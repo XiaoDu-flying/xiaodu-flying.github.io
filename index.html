@@ -121,14 +121,49 @@
       font-size: 15px;
     }
 
-    .phd-seeking {
-      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-      color: white;
+    /* --- 机会宣告区域 (New) --- */
+    .opportunities-wrapper {
+      display: flex;
+      gap: 15px; /* 两个框之间的间距 */
+      margin: 25px 0;
+    }
+
+    .anno-box {
+      flex: 1; /* 等宽分布 */
       padding: 20px;
       border-radius: 12px;
-      margin: 25px 0;
+      color: white;
       text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .anno-box strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* PhD 申请：暖色渐变 (保留原有风格) */
+    .phd-seeking {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
       box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+    }
+
+    /* 实习招聘：冷色渐变 (新风格) */
+    .intern-seeking {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+    }
+
+    /* 响应式适配：手机端自动变为上下排列 */
+    @media (max-width: 768px) {
+      .opportunities-wrapper {
+        flex-direction: column;
+      }
     }
 
     .phd-seeking strong { color: #fff; }
@@ -343,18 +378,35 @@
 
         <p>
           Previously, I received my Bachelor's degree in computer science at <a href="https://english.jnu.edu.cn/">Jinan University</a>, Guangzhou. I also serve as a research assistant on the
-          <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project in the
+          <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> in the
           <a href="https://www.tsinghua.edu.cn">Dept. of CS&T, Tsinghua University</a>,
           advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
           <a href="https://qianc62.github.io/">Prof. Chen Qian</a> at
           <a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a>.
         </p>
 
-        <div class="phd-seeking">
-          I am actively seeking <strong>Ph.D. positions starting in Fall 2027</strong> in
-          <strong>Large Language Models</strong>, <strong>Multi-Agent Systems</strong>, and <strong>Reasoning</strong>.<br>
-          Open to collaborations! Feel free to reach out.
+        <div class="opportunities-wrapper">
+
+        <div class="anno-box phd-seeking">
+          <div>
+            I am actively seeking <strong>Ph.D. positions (Fall 2027)</strong>. I welcome opportunities, collaborations, and recommendations!
+            <br>
+            <span style="opacity: 0.9; font-size: 13px; display:block; margin-top:5px;">Open to collaborations!</span>
+          </div>
         </div>
+
+        <div class="anno-box intern-seeking">
+          <div>
+            I am also <strong>recruiting Research Interns</strong> to work on
+            <strong>broad topics</strong> around <strong>LLMs</strong> and <strong>Autonomous Agents</strong>.
+            <br>
+            <span style="opacity: 0.9; font-size: 13px; display:block; margin-top:5px;">
+              <a href="mailto:duzy@zju.edu.cn" style="color:white; text-decoration:underline;">Drop me an email</a>!
+            </span>
+          </div>
+        </div>
+
+</div>
 
         <p class="highlight-box">
           <strong>Research Focus:</strong> Designing LLM-based autonomous agents that
@@ -410,7 +462,7 @@
           <a href="javascript:toggleBib('opvlm')">[BibTeX]</a>
         </div>
         <div id="opvlm_abs" class="abstract-text">
-          Personalized vision-language models (VLMs) often struggle to adapt to new user-defined concepts in real time. We propose Online-PVLM, a training-free framework for online concept learning in latent space using hyperbolic representations.
+          Personalized vision-language models (VLMs) often struggle to adapt to new user-defined concepts in real time, requiring per-concept training that is neither scalable nor efficient. To address this, we propose Online-PVLM, a training-free framework for online concept learning in latent space. Our method leverages hyperbolic representations to generate compact, discriminative concept embeddings on the fly from a few reference images—without any test-time training. Furthermore, we introduce OP-Eval, a large-scale benchmark with 1,292 concepts and over 30K high-quality instances to rigorously evaluate online personalization. Experiments show that Online-PVLM achieves state-of-the-art performance across diverse tasks while enabling efficient caching and retrieval, paving the way for real-world personalized multimodal AI.
         </div>
         <pre>
 @article{bai2025onlinepvlm,
@@ -418,8 +470,7 @@
   author={Bai, Huiyu and Wang, Runze and Du, Zhuoyun and Zhao, Yiyang and Zhang, Fengji and Chen, Haoyu and Zhu, Xiaoyong and Zheng, Bo and Zhao, Xuejiao},
   journal={arXiv preprint arXiv:2511.20056},
   year={2025}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -439,7 +490,7 @@
           <a href="javascript:toggleBib('interlat')">[BibTeX]</a>
         </div>
         <div id="interlat_abs" class="abstract-text">
-          Inspired by human mind-reading, we propose Interlat, a paradigm that leverages the last hidden states of an LLM for direct transmission, outperforming fine-tuned CoT prompting.
+          While natural language is the de facto communication medium for LLM-based agents, it presents a fundamental constraint. The process of downsampling rich, internal latent states into discrete tokens inherently limits the depth and nuance of information that can be transmitted, thereby hindering collaborative problem-solving. Inspired by human mind-reading, we propose Interlat (Inter-agent Latent Space Communication), a paradigm that leverages the last hidden states of an LLM as a representation of its mind for direct transmission (termed latent communication). An additional compression process further compresses latent communication via entirely latent space reasoning. Experiments demonstrate that Interlat outperforms both fine-tuned chain-of-thought (CoT) prompting and single-agent baselines, promoting more exploratory behavior and enabling genuine utilization of latent information. Further compression not only substantially accelerates inference but also maintains competitive performance through an efficient information-preserving mechanism. We position this work as a feasibility study of entirely latent space inter-agent communication, and our results highlight its potential, offering valuable insights for future research.
         </div>
         <pre>
 @article{du2025interlat,
@@ -447,8 +498,7 @@
   author={Du, Zhuoyun and Wang, Runze and Bai, Huiyu and Cao, Zouying and Zhu, Xiaoyong and Zheng, Bo and Chen, Wei and Ying, Haochao},
   journal={arXiv preprint arXiv:2511.09149},
   year={2025}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -468,7 +518,7 @@
           <a href="javascript:toggleBib('sspo')">[BibTeX]</a>
         </div>
         <div id="sspo_abs" class="abstract-text">
-          We propose SSPO, a pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step without auxiliary models or manual annotations.
+          Test-time scaling has proven effective in further enhancing the performance of pretrained Large Language Models (LLMs). However, mainstream post-training methods (i.e., reinforcement learning (RL) with chain-of-thought (CoT) reasoning) often incur substantial computational overhead due to auxiliary models and overthinking. In this paper, we empirically reveal that the incorrect answers partially stem from verbose reasoning processes lacking correct self-fix, where errors accumulate across multiple reasoning steps. To this end, we propose Self-traced Step-wise Preference Optimization (SSPO), a pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step. Specifically, SSPO requires neither auxiliary models nor stepwise manual annotations. Instead, it leverages step-wise preference signals generated by the model itself to guide the optimization process for reasoning compression. Experiments demonstrate that the generated reasoning sequences from SSPO are both accurate and succinct, effectively mitigating overthinking behaviors without compromising model performance across diverse domains and languages.
         </div>
         <pre>
 @article{xu2025sspo,
@@ -476,8 +526,7 @@
   author={Xu, Yuyang and Cheng, Yi and Ying, Haochao and Du, Zhuoyun, et al.},
   journal={arXiv preprint arXiv:2508.12604},
   year={2025}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -498,7 +547,7 @@
           <a href="javascript:toggleBib('evopatient')">[BibTeX]</a>
         </div>
         <div id="evopatient_abs" class="abstract-text">
-          We propose EvoPatient, a novel simulated patient framework where patient and doctor agents simulate diagnostic processes to improve questioning and answering quality.
+          Training medical personnel using standardized patients (SPs) remains a complex challenge, requiring extensive domain expertise and role-specific practice. Previous research on Large Language Model (LLM)-based SPs mostly focuses on improving data retrieval accuracy or adjusting prompts through human feedback. However, this focus has overlooked the critical need for patient agents to learn a standardized presentation pattern that transforms data into human-like patient responses through unsupervised simulations. To address this gap, we propose EvoPatient, a novel simulated patient framework in which a patient agent and doctor agents simulate the diagnostic process through multi-turn dialogues, simultaneously gathering experience to improve the quality of both questions and answers, ultimately enabling human doctor training. Extensive experiments on various cases demonstrate that, by providing only overall SP requirements, our framework improves over existing reasoning methods by more than 10\% in requirement alignment and better human preference, while achieving an optimal balance of resource consumption after evolving over 200 cases for 10 hours, with excellent generalizability.
         </div>
         <pre>
 @article{du2024evopatient,
@@ -506,8 +555,7 @@
   author={Du, Zhuoyun and Zheng, Lujie and Hu, Renjun, et al.},
   journal={arXiv preprint arXiv:2412.11716},
   year={2024}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -528,7 +576,7 @@
           <a href="javascript:toggleBib('crossteam')">[BibTeX]</a>
         </div>
         <div id="crossteam_abs" class="abstract-text">
-          We introduce Cross-Team Orchestration (Croto), a scalable multi-team framework that enables orchestrated teams to jointly propose various task-oriented solutions.
+          Large Language Models (LLMs) have significantly impacted various domains, especially through organized LLM-driven autonomous agents. A representative scenario is in software development, where agents can collaborate in a team like humans, following predefined phases to complete sub-tasks sequentially. However, for an agent team, each phase yields only one possible outcome. This results in the completion of only one development chain, thereby losing the opportunity to explore multiple potential decision paths within the solution space. Consequently leading to suboptimal results or extensive trial and error. To address this, we introduce Cross-Team Orchestration (Croto), a scalable multi-team framework that enables orchestrated teams to jointly propose various task-oriented solutions and interact with their insights in a self-independence while cross-team collaboration environment for superior solutions generation. Experiments reveal a notable increase in software quality compared to state-of-the-art baselines. We further tested our framework on story generation tasks, which demonstrated a promising generalization ability of our framework in other domains.
         </div>
         <pre>
 @article{du2024crossteam,
@@ -536,8 +584,7 @@
   author={Du, Zhuoyun and Qian, Chen and Liu, Wei, et al.},
   journal={arXiv preprint arXiv:2406.08979},
   year={2024}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -558,7 +605,7 @@
           <a href="javascript:toggleBib('scalingmas')">[BibTeX]</a>
         </div>
         <div id="scalingmas_abs" class="abstract-text">
-          We explore collaborative scaling laws and introduce MacNet, organized as a DAG, showing that collaboration improves performance in a logistic growth pattern.
+          Recent breakthroughs in large language model-driven autonomous agents have revealed that multi-agent collaboration often surpasses each individual through collective reasoning. Inspired by the neural scaling law--increasing neurons enhances performance, this study explores whether the continuous addition of collaborative agents can yield similar benefits. Technically, we utilize directed acyclic graphs to organize agents into a multi-agent collaboration network (MacNet), upon which their interactive reasoning is topologically orchestrated for autonomous task solving. Extensive evaluations reveal that it effectively supports collaboration among over a thousand agents, with irregular topologies outperforming regular ones. We also identify a collaborative scaling law--the overall performance follows a logistic growth pattern as agents scale, with collaborative emergence occurring earlier than traditional neural emergence. We speculate this may be because scaling agents catalyzes their multidimensional considerations during interactive reflection and refinement, thereby producing more comprehensive artifacts.
         </div>
         <pre>
 @article{qian2024scaling,
@@ -566,8 +613,7 @@
   author={Qian, Chen and Xie, Zihao and Wang, Yifei, et al.},
   journal={arXiv preprint arXiv:2406.07155},
   year={2024}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -588,7 +634,7 @@
           <a href="javascript:toggleBib('asymmetry')">[BibTeX]</a>
         </div>
         <div id="asymmetry_abs" class="abstract-text">
-          We propose iAgents to overcome information asymmetry in multi-agent systems, employing InfoNav for effective information exchange within a social network mirrored environment.
+          Large Language Model Multi-Agent Systems (LLM-MAS) have achieved great progress in solving complex tasks. It performs communication among agents within the system to collaboratively solve tasks, under the premise of shared information. However, when agents' collaborations are leveraged to perform multi-person tasks, a new challenge arises due to information asymmetry, since each agent can only access the information of its human user. Previous MAS struggle to complete tasks under this condition. To address this, we propose a new MAS paradigm termed iAgents, which denotes Informative Multi-Agent Systems. In iAgents, the human social network is mirrored in the agent network, where agents proactively exchange human information necessary for task resolution, thereby overcoming information asymmetry. iAgents employs a novel agent reasoning mechanism, InfoNav, to navigate agents' communication toward effective information exchange. Together with InfoNav, iAgents organizes human information in a mixed memory to provide agents with accurate and comprehensive information for exchange. Additionally, we introduce InformativeBench, the first benchmark tailored for evaluating LLM agents' task-solving ability under information asymmetry. Experimental results show that iAgents can collaborate within a social network of 140 individuals and 588 relationships, autonomously communicate over 30 turns, and retrieve information from nearly 70,000 messages to complete tasks within 3 minutes.
         </div>
         <pre>
 @article{liu2024autonomous,
@@ -596,8 +642,7 @@
   author={Liu, Wei and Wang, Chenxi and Wang, Yifei, et al.},
   journal={arXiv preprint arXiv:2406.14928},
   year={2024}
-}
-        </pre>
+}</pre>
       </div>
     </div>
 
@@ -606,7 +651,7 @@
       <div class="experience-text">
         <h3><a href="https://www.alibaba.com/">Taowise @ Taotian (Alibaba Group)</a></h3>
         <div><em>Algorithm Engineer Intern | Jan 2025 – Present</em></div>
-        <p>Focusing on research on new paradigm in multi-agent latent space reasoning enhancement and supervised fine-tuning (SFT) methodologies for LLMs. Working on advanced AI applications in e-commerce.</p>
+        <p>Focusing on research on new paradigm in multi-agent latent space reasoning/communication enhancement and supervised fine-tuning (SFT) methodologies for LLMs. Working on advanced AI applications in e-commerce.</p>
       </div>
       <img src="images/alibaba_logo.png" alt="Alibaba" class="experience-logo">
     </div>
@@ -615,7 +660,7 @@
       <div class="experience-text">
         <h3><a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP @ Tsinghua University</a></h3>
         <div><em>Research Assistant | Nov 2023 – Aug 2024</em></div>
-        <p>Deeply involved in the development of the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and related works, focusing on multi-agent cross-team collaboration.</p>
+        <p>Deeply involved in the development of the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> and related works, focusing on multi-agent cross-team collaboration.</p>
       </div>
       <img src="images/thunlp_logo.png" alt="THU" class="experience-logo">
     </div>
@@ -646,7 +691,7 @@
       </div>
       <div class="paper-content">
         <a href="https://github.com/OpenBMB/ChatDev"><h3>ChatDev & Croto & MACNET</h3></a>
-        <p>Actively contributed to ChatDev (stars > 20k) and led key branches focusing on collaboration network topology.</p>
+        <p>Actively contributed to ChatDev <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> and led key branches (Croto) focusing on collaboration network topology.</p>
         <div class="paper-links">
           <a href="https://github.com/OpenBMB/ChatDev">[Code]</a>
           <a href="https://arxiv.org/abs/2307.07924">[Paper]</a>
