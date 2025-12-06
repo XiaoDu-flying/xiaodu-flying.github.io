@@ -9,17 +9,27 @@
   <title>Zhuoyun Du | 杜卓耘</title>
 
   <link rel="shortcut icon" href="images/apple-touch-ri-logo-white-120x120.png">
-  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700' rel='stylesheet' type='text/css'>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      --primary-color: #1772d0;
-      --accent-color: #f09228;
-      --text-color: #2c3e50;
-      --text-light: #7f8c8d;
+      /* 更加现代、低饱和度的学术蓝配色 */
+      --primary-color: #2563eb;       /* 亮蓝 */
+      --primary-dark: #1e40af;        /* 深蓝 */
+      --accent-color: #f59e0b;        /* 强调色 */
+      --text-main: #1f2937;           /* 主要文字接近纯黑 */
+      --text-secondary: #4b5563;      /* 次要文字灰色 */
       --bg-color: #ffffff;
-      --bg-secondary: #f8f9fa;
-      --border-color: #eaeaea;
+      --bg-secondary: #f3f4f6;        /* 浅灰背景 */
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
     /* 全局平滑滚动 */
@@ -28,11 +38,11 @@
     }
 
     body {
-      font-family: 'Titillium Web', 'Microsoft YaHei', sans-serif;
+      font-family: 'Inter', sans-serif; /* 改用 Inter */
       font-size: 16px;
-      line-height: 1.65;
-      color: var(--text-color);
-      background-color: var(--bg-color);
+      line-height: 1.75;
+      color: var(--text-main);
+      background-color: #fafafa; /* 极淡的灰色背景，减少刺眼感 */
       margin: 0;
       padding: 0;
     }
@@ -40,32 +50,34 @@
     a {
       color: var(--primary-color);
       text-decoration: none;
-      transition: color 0.2s ease;
+      transition: all 0.2s ease;
+      font-weight: 500;
     }
 
     a:hover {
-      color: var(--accent-color);
+      color: var(--primary-dark);
+      text-decoration: underline;
     }
 
-    /* --- 顶部导航栏 --- */
+    /* --- 导航栏优化：毛玻璃悬浮条 --- */
     .navbar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-color);
-      padding: 15px 0;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      padding: 18px 0;
     }
 
     .nav-container {
       max-width: 960px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 24px;
       display: flex;
       justify-content: flex-end;
-      gap: 25px;
+      gap: 30px;
       font-size: 14px;
       font-weight: 600;
       text-transform: uppercase;
@@ -73,251 +85,386 @@
     }
 
     .nav-container a {
-      color: var(--text-color);
+      color: var(--text-secondary);
+      text-decoration: none;
+      position: relative;
     }
 
     .nav-container a:hover {
       color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    /* 导航栏下划线动画 */
+    .nav-container a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: var(--primary-color);
+      transition: width 0.3s;
+    }
+
+    .nav-container a:hover::after {
+      width: 100%;
     }
 
     /* 容器布局 */
     .container {
-      max-width: 960px;
+      max-width: 900px; /* 稍微收窄一点，阅读体验更好 */
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 60px 24px 100px;
+      background-color: #fff;
+      box-shadow: 0 0 40px rgba(0,0,0,0.02); /* 加上极其微弱的阴影让内容区突显 */
+      min-height: 100vh;
     }
 
-    /* 标题样式 */
+    /* 标题样式升级 */
     h1 {
-      font-size: 42px;
-      font-weight: 600;
-      margin-bottom: 40px;
+      font-family: 'Playfair Display', serif; /* 衬线体标题 */
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 50px;
       text-align: center;
-      letter-spacing: -0.5px;
+      color: #111;
+      letter-spacing: -1px;
     }
 
     h2 {
-      font-size: 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 26px;
       font-weight: 700;
-      margin-top: 60px;
-      margin-bottom: 25px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-color);
-      color: #000;
+      margin-top: 70px;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--bg-secondary);
+      color: #111;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     h3 {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 600;
-      margin: 0 0 8px 0;
+      margin: 0 0 10px 0;
       line-height: 1.4;
-      color: #000;
+      color: #111;
     }
 
-    /* 个人简介区域 */
+    /* --- 个人简介区域 (Hero) --- */
     .profile-section {
       display: flex;
-      gap: 50px;
+      gap: 60px;
       align-items: flex-start;
-      margin-bottom: 50px;
+      margin-bottom: 60px;
     }
 
     .profile-img-container {
-      flex: 0 0 28%;
+      flex: 0 0 30%;
       text-align: center;
     }
 
     .profile-img {
       width: 100%;
-      max-width: 240px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      max-width: 260px;
+      border-radius: 12px;
+      /* 双层阴影增加立体感 */
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(0,0,0,0.03);
+      margin-bottom: 25px;
       transition: transform 0.3s ease;
+      object-fit: cover;
     }
 
     .profile-img:hover {
-      transform: scale(1.03);
+      transform: translateY(-5px);
     }
 
+    /* 社交链接按钮化 */
     .profile-links {
-      font-size: 15px;
-      line-height: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      font-size: 14px;
     }
 
-    .profile-links a {
-      font-weight: 600;
-      margin: 0 4px;
+    .icon-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background-color: var(--bg-secondary);
+      color: var(--text-secondary);
+      border-radius: 20px;
+      transition: all 0.2s;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .icon-link:hover {
+      background-color: var(--text-main);
+      color: #fff;
+      text-decoration: none;
+      transform: translateY(-2px);
     }
 
     .profile-bio {
       flex: 1;
+      font-size: 16px;
+      color: var(--text-main);
       text-align: justify;
     }
 
     .profile-bio p {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
 
-    /* --- 机会宣告区域 --- */
+    /* --- 机会宣告区域优化 --- */
     .opportunities-wrapper {
       display: flex;
       gap: 20px;
-      margin: 30px 0;
+      margin: 35px 0;
     }
 
     .anno-box {
       flex: 1;
-      padding: 20px;
+      padding: 20px 24px;
       border-radius: 12px;
-      color: white;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       font-size: 15px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
       transition: transform 0.2s;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .anno-box:hover {
-      transform: translateY(-2px);
+    .anno-box div {
+      position: relative;
+      z-index: 2;
     }
 
+    /* 更加柔和的色彩，不那么刺眼 */
     .phd-seeking {
-      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25);
+      background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+      color: #9f1239;
+      border-left: 5px solid #fb7185;
     }
 
     .intern-seeking {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 8px 20px rgba(118, 75, 162, 0.25);
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      color: #1e40af;
+      border-left: 5px solid #60a5fa;
+    }
+
+    .anno-box:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
     }
 
     .highlight-box {
-      background-color: var(--bg-secondary);
-      border-left: 4px solid var(--accent-color);
-      padding: 15px 20px;
-      border-radius: 6px;
+      background-color: #fffbeb; /* 浅黄色背景 */
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      padding: 16px 20px;
+      border-radius: 8px;
       margin: 25px 0;
       font-size: 15px;
+      line-height: 1.6;
     }
 
-    /* --- News 区域 (Scrollable) --- */
+    /* --- News 区域 (时间轴样式) --- */
     .news-container {
-      max-height: 250px;
+      max-height: 300px;
       overflow-y: auto;
-      border: 1px solid var(--border-color);
-      padding: 15px 20px;
-      border-radius: 8px;
-      background: #fff;
+      padding: 10px 5px;
+      /* 隐藏滚动条但在滚动时显示 */
+      scrollbar-width: thin;
     }
-
-    /* 自定义滚动条 */
-    .news-container::-webkit-scrollbar { width: 6px; }
-    .news-container::-webkit-scrollbar-thumb { background-color: #ddd; border-radius: 3px; }
 
     .news-list {
-      padding-left: 20px;
+      list-style: none;
+      padding: 0;
       margin: 0;
+      border-left: 2px solid var(--border-color);
+      margin-left: 10px;
     }
 
     .news-list li {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-left: 25px;
       font-size: 15px;
     }
 
-    /* --- 论文列表 (Cards) --- */
+    /* 时间轴的小圆点 */
+    .news-list li::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      background-color: var(--bg-color);
+      border: 2px solid var(--primary-color);
+      border-radius: 50%;
+    }
+
+    .news-date {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-right: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* --- 论文列表 (卡片化) --- */
     .paper-item {
       display: flex;
       gap: 30px;
-      margin-bottom: 40px;
-      align-items: flex-start;
-      padding-bottom: 20px;
+      margin-bottom: 30px;
+      padding: 25px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* 悬停效果：卡片上浮 + 阴影 */
+    .paper-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
     }
 
     .paper-img-container {
-      flex: 0 0 220px;
+      flex: 0 0 200px;
       padding-top: 5px;
     }
 
     .paper-img {
       width: 100%;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
-    }
-
-    .paper-img:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      border-radius: 6px;
+      border: 1px solid #eee;
+      box-shadow: var(--shadow-sm);
     }
 
     .paper-content {
       flex: 1;
     }
 
-    .paper-meta {
-      font-size: 15px;
-      color: var(--text-light);
-      margin-bottom: 12px;
-      line-height: 1.5;
+    .paper-content h3 {
+        color: var(--primary-dark);
     }
 
-    /* --- 胶囊按钮样式 --- */
+    .paper-item:hover h3 {
+        text-decoration: underline;
+    }
+
+    .paper-meta {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .paper-meta strong {
+        color: var(--text-main);
+        font-weight: 600;
+        border-bottom: 1px solid #ccc; /* 给自己的名字加下划线突出 */
+    }
+
+    /* 按钮组优化 */
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
     .tag-btn {
-      display: inline-block;
-      padding: 3px 10px;
-      margin-right: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
       font-size: 12px;
       font-weight: 600;
-      color: #555;
-      background-color: #f0f2f5;
-      border: 1px solid #dcdcdc;
-      border-radius: 4px;
+      color: var(--text-secondary);
+      background-color: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 999px; /* 胶囊形状 */
       text-transform: uppercase;
       transition: all 0.2s;
     }
 
+    .tag-btn i {
+        font-size: 11px;
+    }
+
     .tag-btn:hover {
-      background-color: var(--text-color);
+      background-color: var(--text-main);
       color: #fff;
-      border-color: var(--text-color);
+      border-color: var(--text-main);
       text-decoration: none;
+      transform: scale(1.05);
+    }
+
+    .tag-btn-code:hover {
+        background-color: #333;
+        border-color: #333;
+    }
+
+    .tag-btn-pdf:hover {
+        background-color: #dc2626; /* PDF 红色 */
+        border-color: #dc2626;
     }
 
     .abstract-text {
       font-size: 14px;
       background-color: var(--bg-secondary);
-      padding: 15px;
+      padding: 15px 20px;
       border-radius: 8px;
       margin-top: 15px;
       display: none;
       text-align: justify;
-      color: #444;
-      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-left: 3px solid var(--primary-color);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     pre {
-      background-color: #2d3436;
-      color: #dfe6e9;
-      padding: 15px;
+      background-color: #1e293b;
+      color: #e2e8f0;
+      padding: 20px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       overflow-x: auto;
       display: none;
-      margin-top: 10px;
+      margin-top: 15px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      border: 1px solid #334155;
     }
 
     /* Experience & Projects */
     .experience-item {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 35px;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
       gap: 20px;
-      align-items: flex-start;
+      align-items: center;
     }
 
     .experience-text h3 {
@@ -325,69 +472,94 @@
       margin-bottom: 5px;
     }
 
-    .experience-text div {
-      color: var(--text-light);
+    .experience-text h3 a {
+        color: var(--text-main);
+    }
+
+    .experience-text .role-time {
+      color: var(--text-secondary);
       font-size: 14px;
       margin-bottom: 10px;
       font-weight: 500;
-    }
-
-    .experience-logo {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      background: #fff;
-      padding: 5px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-    }
-
-    /* 天气组件 */
-    .location-weather {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(5px);
-      border-radius: 8px;
-      padding: 10px 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(0,0,0,0.05);
-      font-size: 12px;
-      z-index: 1000;
       display: flex;
       gap: 10px;
       align-items: center;
     }
 
+    .experience-text .role-time i {
+        font-size: 10px;
+        opacity: 0.6;
+    }
+
+    .experience-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background: #fff;
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Talk Section */
+    .talk-item {
+        margin-bottom: 30px;
+        padding-left: 15px;
+        border-left: 3px solid var(--accent-color);
+    }
+
+    /* 天气组件 - 稍微缩小并圆角化 */
+    .location-weather {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 30px; /* 全圆角 */
+      padding: 8px 16px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(0,0,0,0.05);
+      font-size: 13px;
+      z-index: 1000;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+
+    .location-weather:hover {
+        transform: scale(1.05);
+        color: var(--primary-color);
+    }
+
     .footer {
       text-align: center;
       font-size: 13px;
-      color: var(--text-light);
-      margin-top: 80px;
-      padding-top: 30px;
+      color: var(--text-secondary);
+      margin-top: 100px;
+      padding-top: 40px;
       border-top: 1px solid var(--border-color);
+      opacity: 0.8;
     }
 
     /* 响应式设计 */
     @media (max-width: 768px) {
       .navbar { display: none; }
-      .container { padding: 20px; }
-      .profile-section { flex-direction: column; align-items: center; gap: 20px; }
-      .profile-img-container { margin-bottom: 10px; }
+      .container { padding: 30px 20px; }
+      .profile-section { flex-direction: column; align-items: center; gap: 30px; text-align: center; }
+      .profile-bio { text-align: left; }
+      .profile-img-container { width: 100%; }
       .opportunities-wrapper { flex-direction: column; }
-      .paper-item { flex-direction: column; }
+      .paper-item { flex-direction: column; padding: 20px; }
       .paper-img-container { width: 100%; max-width: 100%; margin-bottom: 15px; }
-      .experience-item { flex-direction: column-reverse; }
-      .experience-logo { width: 80px; height: 80px; margin-bottom: 10px; }
+      .experience-item { flex-direction: column-reverse; align-items: flex-start; }
       .location-weather { display: none; }
     }
 
     /* =========================================
-       NEW: 入场动画样式 (Entrance Animation)
+       Entrance Animation (Optimized)
        ========================================= */
-
-    /* 1. 幕布层 */
     #intro-curtain {
       position: fixed;
       top: 0;
@@ -399,97 +571,60 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      /* 动画：幕布向上滑动消失 */
       animation: curtainSlideUp 0.8s cubic-bezier(0.77, 0, 0.175, 1) 1.2s forwards;
     }
 
-    /* 幕布内的内容 */
-    .intro-content {
-      text-align: center;
-      overflow: hidden;
-    }
-
-    /* 加载线动画 */
+    .intro-content { text-align: center; }
     .intro-line {
-      width: 0;
-      height: 2px;
+      width: 0; height: 3px;
       background-color: var(--primary-color);
-      margin: 0 auto 10px auto;
+      margin: 0 auto 15px auto;
       animation: expandLine 0.8s ease-out forwards;
+      border-radius: 2px;
     }
-
-    /* 文字动画 */
     .intro-text {
-      font-size: 14px;
-      color: var(--text-light);
-      font-weight: 600;
-      letter-spacing: 2px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 4px;
       text-transform: uppercase;
       opacity: 0;
       transform: translateY(10px);
       animation: textFadeUp 0.6s ease-out 0.3s forwards;
     }
 
-    /* 2. 页面元素入场动画类 */
-    /* 初始状态：透明且稍微向下偏移 */
-    .hero-animate {
-      opacity: 0;
-      transform: translateY(30px);
-      /* 保持结束状态 */
-      animation-fill-mode: forwards;
-    }
+    .hero-animate { opacity: 0; transform: translateY(20px); animation-fill-mode: forwards; }
+    .slide-up-active { animation: contentSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    .delay-1 { animation-delay: 1.3s; }
+    .delay-2 { animation-delay: 1.4s; }
+    .delay-3 { animation-delay: 1.5s; }
+    .delay-4 { animation-delay: 1.6s; }
 
-    /* 触发动画：向上浮动并变清晰 */
-    .slide-up-active {
-      animation: contentSlideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    /* 不同的延迟时间，创造阶梯感 */
-    .delay-1 { animation-delay: 1.3s; } /* 名字 */
-    .delay-2 { animation-delay: 1.4s; } /* 简介 */
-    .delay-3 { animation-delay: 1.5s; } /* News */
-    .delay-4 { animation-delay: 1.6s; } /* Paper列表标题 */
-
-    /* Keyframes 定义 */
-    @keyframes curtainSlideUp {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-    }
-
-    @keyframes expandLine {
-      0% { width: 0; }
-      100% { width: 60px; }
-    }
-
-    @keyframes textFadeUp {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes contentSlideUp {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes curtainSlideUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100%); opacity: 0; pointer-events: none; } }
+    @keyframes expandLine { 0% { width: 0; } 100% { width: 50px; } }
+    @keyframes textFadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes contentSlideUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
   </style>
 
   <script>
-    // Google Analytics Placeholders
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-XXXXX-Y', 'auto');
-    ga('send', 'pageview');
-
     function toggleBlock(id) {
       var block = document.getElementById(id);
-      block.style.display = (block.style.display === 'block') ? 'none' : 'block';
+      if (block.style.display === 'block') {
+          block.style.display = 'none';
+      } else {
+          block.style.display = 'block';
+      }
     }
 
     function toggleBib(id) {
       var parent = document.getElementById(id);
       var pre = parent.getElementsByTagName('pre')[0];
-      pre.style.display = (pre.style.display === 'block') ? 'none' : 'block';
+      if (pre.style.display === 'block') {
+          pre.style.display = 'none';
+      } else {
+          pre.style.display = 'block';
+      }
     }
   </script>
 </head>
@@ -499,7 +634,7 @@
   <div id="intro-curtain">
     <div class="intro-content">
       <div class="intro-line"></div>
-      <div class="intro-text">Welcome</div>
+      <div class="intro-text">Hello</div>
     </div>
   </div>
 
@@ -516,7 +651,7 @@
 
   <div class="container" id="about">
 
-    <h1 class="hero-animate delay-1">Zhuoyun Du 「杜卓耘」</h1>
+    <h1 class="hero-animate delay-1">Zhuoyun Du <span style="font-weight: 300; font-size: 0.8em; color: #888;">| 杜卓耘</span></h1>
 
     <div class="profile-section hero-animate delay-2">
       <div class="profile-img-container">
@@ -524,12 +659,12 @@
           <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du" class="profile-img">
         </a>
         <div class="profile-links">
-          <a href="assets/cv_dzy.pdf">CV</a> /
-          <a href="mailto:duzy@zju.edu.cn">Email</a> /
-          <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a><br>
-          <a href="https://github.com/XiaoDu-flying">GitHub</a> /
-          <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> /
-          <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">Linkedin</a>
+          <a href="assets/cv_dzy.pdf" class="icon-link"><i class="fas fa-file-alt"></i> CV</a>
+          <a href="mailto:duzy@zju.edu.cn" class="icon-link"><i class="fas fa-envelope"></i> Email</a>
+          <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN" class="icon-link"><i class="fas fa-graduation-cap"></i> Scholar</a>
+          <a href="https://github.com/XiaoDu-flying" class="icon-link"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43" class="icon-link"><i class="fas fa-blog"></i> Blog</a>
+          <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" class="icon-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
         </div>
       </div>
 
@@ -542,62 +677,55 @@
         </p>
 
         <p>
-          Previously, I received my Bachelor's degree in computer science at <a href="https://english.jnu.edu.cn/">Jinan University</a>, Guangzhou. I also serve as a research assistant on the
-          <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> in the
-          <a href="https://www.tsinghua.edu.cn">Dept. of CS&T, Tsinghua University</a>,
+          Previously, I received my Bachelor's degree from <a href="https://english.jnu.edu.cn/">Jinan University</a>. I also served as a research assistant on the
+          <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg?style=social&label=Stars" alt="stars" style="height:16px; vertical-align: middle;"> at
+          <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>,
           advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
-          <a href="https://qianc62.github.io/">Prof. Chen Qian</a> at
-          <a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a>.
+          <a href="https://qianc62.github.io/">Prof. Chen Qian</a>.
         </p>
 
         <div class="opportunities-wrapper">
           <div class="anno-box phd-seeking">
             <div>
-              I am actively seeking <strong>Ph.D. positions (Fall 2027)</strong>. I welcome opportunities, collaborations, and recommendations!
-              <br>
-              <span style="opacity: 0.9; font-size: 13px; display:block; margin-top:5px;">Open to collaborations!</span>
+              <i class="fas fa-user-graduate" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+              Seeking <strong>Ph.D. positions (Fall 2027)</strong>.<br>
+              <span style="font-size: 13px; opacity: 0.8">Open to collaborations & recommendations!</span>
             </div>
           </div>
 
           <div class="anno-box intern-seeking">
             <div>
-              I am also <strong>seeking Research Interns</strong> to work on
-              <strong>broad topics</strong> around <strong>LLMs</strong> and <strong>Autonomous Agents</strong>.
-              <br>
-              <span style="opacity: 0.9; font-size: 13px; display:block; margin-top:5px;">
-                <a href="mailto:duzy@zju.edu.cn" style="color:white; text-decoration:underline;">Drop me an email</a>!
-              </span>
+              <i class="fas fa-users" style="font-size: 24px; margin-bottom: 10px;"></i><br>
+              Seeking <strong>Research Interns</strong>.<br>
+              <span style="font-size: 13px; opacity: 0.8">LLMs & Autonomous Agents. <a href="mailto:duzy@zju.edu.cn" style="text-decoration: underline;">Email me!</a></span>
             </div>
           </div>
         </div>
 
         <p class="highlight-box">
+          <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>
           <strong>Research Focus:</strong> Designing LLM-based autonomous agents that
-          <strong>collaborate effectively</strong> to tackle complex tasks.
-          My recent work spans software-development agents, self-evolution, and latent-space reasoning/communication.
+          <strong>collaborate effectively</strong> to tackle complex tasks (software development, self-evolution, and latent-space reasoning).
         </p>
       </div>
     </div>
 
-    <h2 id="news" class="hero-animate delay-3">News & Timeline</h2>
+    <h2 id="news" class="hero-animate delay-3"><i class="far fa-newspaper"></i> News & Timeline</h2>
     <div class="news-container hero-animate delay-3">
       <ul class="news-list">
-        <li><strong>[2025.11.25]</strong> Introducing a training-free framework for scalable personalized vision-language models via online concept learning in hyperbolic space, available at <a href="https://arxiv.org/abs/2511.20056">Online-PVLM</a>.</li>
-        <li><strong>[2025.11.12]</strong> Our work that enables direct and efficient inter-agent communication entirely in latent space, achieving higher task success with up to effective compression is available at <a href="https://arxiv.org/abs/2511.09149">Interlat</a>.</li>
-        <li><strong>[2025.10.24]</strong> EvoPatient <a href="https://github.com/ZJUMAI/EvoPatient">open-sourced</a>!</li>
-        <li><strong>[2025.8.22]</strong> Our work on pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step is available at <a href="https://arxiv.org/abs/2508.12604">SSPO</a>.</li>
-        <li><strong>[2025.5.16]</strong> Two papers accepted at ACL 2025 - exploring cross-team collaboration and medical education applications!</li>
-        <li><strong>[2024.12.16]</strong> <a href="https://arxiv.org/abs/2406.07155">Scaling Large-Language-Model-based Multi-Agent Collaboration</a> accepted at <strong>ICLR 2025</strong>!</li>
-        <li><strong>[2024.12.16]</strong> Introducing <strong>EvoPatient</strong>: Transforming LLMs into Standardized Patients for medical education. <a href="https://arxiv.org/abs/2412.11716">arXiv:2412.11716</a></li>
-        <li><strong>[2024.9.26]</strong> Paper on collaborative agents under information asymmetry accepted at <strong>NeurIPS 2024</strong>!</li>
-        <li><strong>[2024.6.25]</strong> Launch of our <a href="https://thinkwee.top/multiagent_ebook">Interactive E-book</a> on Multi-Agent Collaboration</li>
-        <li><strong>[2024.5.16]</strong> Two papers accepted at <strong>ACL 2024</strong> main conference.</li>
-        <li><strong>[2023.8.29]</strong> ChatDev open-sourced! Now with <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> stars!</li>
+        <li><span class="news-date">2025.11</span> Released <a href="https://arxiv.org/abs/2511.20056">Online-PVLM</a>: Training-free framework for scalable personalized VLMs.</li>
+        <li><span class="news-date">2025.11</span> Released <a href="https://arxiv.org/abs/2511.09149">Interlat</a>: Direct inter-agent communication in latent space.</li>
+        <li><span class="news-date">2025.10</span> EvoPatient <a href="https://github.com/ZJUMAI/EvoPatient">open-sourced</a>!</li>
+        <li><span class="news-date">2025.08</span> Released <a href="https://arxiv.org/abs/2508.12604">SSPO</a>: Pluggable RL process supervision framework.</li>
+        <li><span class="news-date">2025.05</span> Two papers accepted at <strong>ACL 2025</strong>!</li>
+        <li><span class="news-date">2024.12</span> <a href="https://arxiv.org/abs/2406.07155">Scaling MAS</a> accepted at <strong>ICLR 2025</strong>!</li>
+        <li><span class="news-date">2024.12</span> Introduced <strong>EvoPatient</strong>. <a href="https://arxiv.org/abs/2412.11716">arXiv</a></li>
+        <li><span class="news-date">2024.09</span> Paper on information asymmetry accepted at <strong>NeurIPS 2024</strong>.</li>
       </ul>
     </div>
 
-    <h2 id="publications" class="hero-animate delay-4">Selected Publications</h2>
-    <p style="font-size: 14px; color: var(--text-light); margin-bottom: 30px;">
+    <h2 id="publications" class="hero-animate delay-4"><i class="fas fa-book"></i> Selected Publications</h2>
+    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 30px; text-align: right;">
       (* denotes equal contribution)
     </p>
 
@@ -608,21 +736,21 @@
       <div class="paper-content">
         <a href="https://arxiv.org/abs/2511.20056"><h3>Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</h3></a>
         <div class="paper-meta">
-          Huiyu Bai*, Runze Wang*, <strong>Zhuoyun Du</strong>*, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao<br>
-          <em>arXiv Preprint, 2025</em>
+          Huiyu Bai<sup>†</sup>, Runze Wang<sup>†</sup>, <strong>Zhuoyun Du</strong><sup>†</sup>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao<sup>*</sup><br>
+          <span style="color: #ea580c; font-weight: 500;">arXiv Preprint, 2025</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2511.20056" class="tag-btn">Paper</a>
-          <a href="javascript:toggleBlock('opvlm_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('opvlm')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2511.20056" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="javascript:toggleBlock('opvlm_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('opvlm')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="opvlm_abs" class="abstract-text">
-          Personalized vision-language models (VLMs) often struggle to adapt to new user-defined concepts in real time. We propose Online-PVLM, a training-free framework for online concept learning in latent space using hyperbolic representations.
+          Personalized vision-language models (VLMs) often struggle to adapt to new user-defined concepts in real time, requiring per-concept training that is neither scalable nor efficient. To address this, we propose Online-PVLM, a training-free framework for online concept learning in latent space. Our method leverages hyperbolic representations to generate compact, discriminative concept embeddings on the fly from a few reference images—without any test-time training. Furthermore, we introduce OP-Eval, a large-scale benchmark with 1,292 concepts and over 30K high-quality instances to rigorously evaluate online personalization. Experiments show that Online-PVLM achieves state-of-the-art performance across diverse tasks while enabling efficient caching and retrieval, paving the way for real-world personalized multimodal AI.
         </div>
         <pre>
 @article{bai2025onlinepvlm,
   title={Online-PVLM: Advancing Personalized VLMs with Online Concept Learning},
-  author={Bai, Huiyu and Wang, Runze and Du, Zhuoyun, et al.},
+  author={Bai, Huiyu and Wang, Runze and Du, Zhuoyun and Zhao, Yiyang and Zhang, Fengji and Chen, Haoyu and Zhu, Xiaoyong and Zheng, Bo and Zhao, Xuejiao},
   journal={arXiv preprint arXiv:2511.20056},
   year={2025}
 }</pre>
@@ -636,21 +764,21 @@
       <div class="paper-content">
         <a href="https://arxiv.org/abs/2511.09149"><h3>Enabling Agents to Communicate Entirely in Latent Space</h3></a>
         <div class="paper-meta">
-          <strong>Zhuoyun Du</strong>*, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying<br>
-          <em>arXiv Preprint, 2025</em>
+          <strong>Zhuoyun Du</strong><sup>†</sup>, Runze Wang<sup>†</sup>, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying<br>
+          <span style="color: #ea580c; font-weight: 500;">arXiv Preprint, 2025</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2511.09149" class="tag-btn">Paper</a>
-          <a href="javascript:toggleBlock('interlat_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('interlat')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2511.09149" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="javascript:toggleBlock('interlat_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('interlat')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="interlat_abs" class="abstract-text">
-          Inspired by human mind-reading, we propose Interlat, a paradigm that leverages the last hidden states of an LLM for direct transmission, outperforming fine-tuned CoT prompting.
+          While natural language is the de facto communication medium for LLM-based agents, it presents a fundamental constraint. The process of downsampling rich, internal latent states into discrete tokens inherently limits the depth and nuance of information that can be transmitted, thereby hindering collaborative problem-solving. Inspired by human mind-reading, we propose Interlat (Inter-agent Latent Space Communication), a paradigm that leverages the last hidden states of an LLM as a representation of its mind for direct transmission (termed latent communication). An additional compression process further compresses latent communication via entirely latent space reasoning. Experiments demonstrate that Interlat outperforms both fine-tuned chain-of-thought (CoT) prompting and single-agent baselines, promoting more exploratory behavior and enabling genuine utilization of latent information. Further compression not only substantially accelerates inference but also maintains competitive performance through an efficient information-preserving mechanism. We position this work as a feasibility study of entirely latent space inter-agent communication, and our results highlight its potential, offering valuable insights for future research.
         </div>
         <pre>
 @article{du2025interlat,
   title={Enabling Agents to Communicate Entirely in Latent Space},
-  author={Du, Zhuoyun and Wang, Runze and Bai, Huiyu, et al.},
+  author={Du, Zhuoyun and Wang, Runze and Bai, Huiyu and Cao, Zouying and Zhu, Xiaoyong and Zheng, Bo and Chen, Wei and Ying, Haochao},
   journal={arXiv preprint arXiv:2511.09149},
   year={2025}
 }</pre>
@@ -662,23 +790,23 @@
         <img src="images/paper/sspo.png" alt="SSPO" class="paper-img">
       </div>
       <div class="paper-content">
-        <a href="https://arxiv.org/abs/2508.12604"><h3>SSPO: Self-traced Step-wise Preference Optimization</h3></a>
+        <a href="https://arxiv.org/abs/2508.12604"><h3>SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</h3></a>
         <div class="paper-meta">
           Yuyang Xu, Yi Cheng, Haochao Ying, <strong>Zhuoyun Du</strong>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu<br>
-          <em>arXiv Preprint, 2025</em>
+          <span style="color: #ea580c; font-weight: 500;">arXiv Preprint, 2025</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2508.12604" class="tag-btn">Paper</a>
-          <a href="javascript:toggleBlock('sspo_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('sspo')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2508.12604" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="javascript:toggleBlock('sspo_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('sspo')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="sspo_abs" class="abstract-text">
-          We propose SSPO, a pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step without auxiliary models.
+          Test-time scaling has proven effective in further enhancing the performance of pretrained Large Language Models (LLMs). However, mainstream post-training methods (i.e., reinforcement learning (RL) with chain-of-thought (CoT) reasoning) often incur substantial computational overhead due to auxiliary models and overthinking. In this paper, we empirically reveal that the incorrect answers partially stem from verbose reasoning processes lacking correct self-fix, where errors accumulate across multiple reasoning steps. To this end, we propose Self-traced Step-wise Preference Optimization (SSPO), a pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step. Specifically, SSPO requires neither auxiliary models nor stepwise manual annotations. Instead, it leverages step-wise preference signals generated by the model itself to guide the optimization process for reasoning compression. Experiments demonstrate that the generated reasoning sequences from SSPO are both accurate and succinct, effectively mitigating overthinking behaviors without compromising model performance across diverse domains and languages.
         </div>
         <pre>
 @article{xu2025sspo,
-  title={SSPO: Self-traced Step-wise Preference Optimization},
-  author={Xu, Yuyang and Cheng, Yi and Ying, Haochao and Du, Zhuoyun, et al.},
+  title={SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression},
+  author={Xu, Yuyang and Cheng, Yi and Ying, Haochao and Du, Zhuoyun and Hu, Renjun and Shi, Xing and Lin, Wei and Wu, Jian},
   journal={arXiv preprint arXiv:2508.12604},
   year={2025}
 }</pre>
@@ -692,17 +820,17 @@
       <div class="paper-content">
         <a href="https://arxiv.org/abs/2412.11716"><h3>LLMs Can Simulate Standardized Patients via Agent Coevolution</h3></a>
         <div class="paper-meta">
-          <strong>Zhuoyun Du</strong>*, Lujie Zheng*, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying<br>
-          <em>ACL 2025</em>
+          <strong>Zhuoyun Du</strong><sup>†</sup>, Lujie Zheng<sup>†</sup>, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying<br>
+          <span style="color: #2563eb; font-weight: 600;">ACL 2025</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2412.11716" class="tag-btn">Paper</a>
-          <a href="https://github.com/ZJUMAI/EvoPatient" class="tag-btn">Code</a>
-          <a href="javascript:toggleBlock('evopatient_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('evopatient')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2412.11716" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="https://github.com/ZJUMAI/EvoPatient" class="tag-btn tag-btn-code"><i class="fab fa-github"></i> Code</a>
+          <a href="javascript:toggleBlock('evopatient_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('evopatient')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="evopatient_abs" class="abstract-text">
-          We propose EvoPatient, a novel simulated patient framework where patient and doctor agents simulate diagnostic processes to improve questioning and answering quality.
+          Training medical personnel using standardized patients (SPs) remains a complex challenge, requiring extensive domain expertise and role-specific practice. Previous research on Large Language Model (LLM)-based SPs mostly focuses on improving data retrieval accuracy or adjusting prompts through human feedback. However, this focus has overlooked the critical need for patient agents to learn a standardized presentation pattern that transforms data into human-like patient responses through unsupervised simulations. To address this gap, we propose EvoPatient, a novel simulated patient framework in which a patient agent and doctor agents simulate the diagnostic process through multi-turn dialogues, simultaneously gathering experience to improve the quality of both questions and answers, ultimately enabling human doctor training. Extensive experiments on various cases demonstrate that, by providing only overall SP requirements, our framework improves over existing reasoning methods by more than 10% in requirement alignment and better human preference, while achieving an optimal balance of resource consumption after evolving over 200 cases for 10 hours, with excellent generalizability.
         </div>
         <pre>
 @article{du2024evopatient,
@@ -721,17 +849,17 @@
       <div class="paper-content">
         <a href="https://arxiv.org/abs/2406.08979"><h3>Multi-Agent Collaboration via Cross-Team Orchestration</h3></a>
         <div class="paper-meta">
-          <strong>Zhuoyun Du</strong>*, Chen Qian*, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang<br>
-          <em>ACL 2025 Findings</em>
+          <strong>Zhuoyun Du</strong><sup>†</sup>, Chen Qian<sup>†</sup>, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang<br>
+          <span style="color: #2563eb; font-weight: 600;">ACL 2025 Findings</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2406.08979" class="tag-btn">Paper</a>
-          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="tag-btn">Code</a>
-          <a href="javascript:toggleBlock('crossteam_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('crossteam')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2406.08979" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="tag-btn tag-btn-code"><i class="fab fa-github"></i> Code</a>
+          <a href="javascript:toggleBlock('crossteam_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('crossteam')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="crossteam_abs" class="abstract-text">
-          We introduce Cross-Team Orchestration (Croto), a scalable multi-team framework that enables orchestrated teams to jointly propose various task-oriented solutions.
+          Large Language Models (LLMs) have significantly impacted various domains, especially through organized LLM-driven autonomous agents. A representative scenario is in software development, where agents can collaborate in a team like humans, following predefined phases to complete sub-tasks sequentially. However, for an agent team, each phase yields only one possible outcome. This results in the completion of only one development chain, thereby losing the opportunity to explore multiple potential decision paths within the solution space. Consequently leading to suboptimal results or extensive trial and error. To address this, we introduce Cross-Team Orchestration (Croto), a scalable multi-team framework that enables orchestrated teams to jointly propose various task-oriented solutions and interact with their insights in a self-independence while cross-team collaboration environment for superior solutions generation. Experiments reveal a notable increase in software quality compared to state-of-the-art baselines. We further tested our framework on story generation tasks, which demonstrated a promising generalization ability of our framework in other domains.
         </div>
         <pre>
 @article{du2024crossteam,
@@ -750,17 +878,17 @@
       <div class="paper-content">
         <a href="https://arxiv.org/abs/2406.07155"><h3>Scaling Large-Language-Model-based Multi-Agent Collaboration</h3></a>
         <div class="paper-meta">
-          Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <strong>Zhuoyun Du</strong>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun<br>
-          <em>ICLR 2025</em>
+          Chen Qian<sup>†</sup>, Zihao Xie<sup>†</sup>, Yifei Wang<sup>†</sup>, Wei Liu, Yufan Dang, <strong>Zhuoyun Du</strong>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun<br>
+          <span style="color: #2563eb; font-weight: 600;">ICLR 2025</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2406.07155" class="tag-btn">Paper</a>
-          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="tag-btn">Code</a>
-          <a href="javascript:toggleBlock('scalingmas_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('scalingmas')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2406.07155" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="tag-btn tag-btn-code"><i class="fab fa-github"></i> Code</a>
+          <a href="javascript:toggleBlock('scalingmas_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('scalingmas')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="scalingmas_abs" class="abstract-text">
-          We explore collaborative scaling laws and introduce MacNet, organized as a DAG, showing that collaboration improves performance in a logistic growth pattern.
+          Recent breakthroughs in large language model-driven autonomous agents have revealed that multi-agent collaboration often surpasses each individual through collective reasoning. Inspired by the neural scaling law--increasing neurons enhances performance, this study explores whether the continuous addition of collaborative agents can yield similar benefits. Technically, we utilize directed acyclic graphs to organize agents into a multi-agent collaboration network (MacNet), upon which their interactive reasoning is topologically orchestrated for autonomous task solving. Extensive evaluations reveal that it effectively supports collaboration among over a thousand agents, with irregular topologies outperforming regular ones. We also identify a collaborative scaling law--the overall performance follows a logistic growth pattern as agents scale, with collaborative emergence occurring earlier than traditional neural emergence. We speculate this may be because scaling agents catalyzes their multidimensional considerations during interactive reflection and refinement, thereby producing more comprehensive artifacts.
         </div>
         <pre>
 @article{qian2024scaling,
@@ -774,22 +902,22 @@
 
     <div class="paper-item" id="asymmetry">
       <div class="paper-img-container">
-        <img src="images/paper/asymmetry.svg" alt="Asymmetry" class="paper-img">
+        <img src="images/paper/asymmetry.svg" alt="Information Asymmetry" class="paper-img">
       </div>
       <div class="paper-content">
         <a href="https://arxiv.org/abs/2406.14928"><h3>Autonomous Agents for Collaborative Task under Information Asymmetry</h3></a>
         <div class="paper-meta">
-          Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <strong>Zhuoyun Du</strong>, Weize Chen, Cheng Yang, Chen Qian<br>
-          <em>NeurIPS 2024</em>
+          Wei Liu<sup>†</sup>, Chenxi Wang<sup>†</sup>, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <strong>Zhuoyun Du</strong>, Weize Chen, Cheng Yang, Chen Qian<br>
+          <span style="color: #2563eb; font-weight: 600;">NeurIPS 2024</span>
         </div>
-        <div>
-          <a href="https://arxiv.org/abs/2406.14928" class="tag-btn">Paper</a>
-          <a href="https://github.com/thinkwee/iAgents" class="tag-btn">Code</a>
-          <a href="javascript:toggleBlock('asymmetry_abs')" class="tag-btn">Abstract</a>
-          <a href="javascript:toggleBib('asymmetry')" class="tag-btn">BibTeX</a>
+        <div class="btn-group">
+          <a href="https://arxiv.org/abs/2406.14928" class="tag-btn tag-btn-pdf"><i class="far fa-file-pdf"></i> Paper</a>
+          <a href="https://github.com/thinkwee/iAgents" class="tag-btn tag-btn-code"><i class="fab fa-github"></i> Code</a>
+          <a href="javascript:toggleBlock('asymmetry_abs')" class="tag-btn"><i class="fas fa-align-left"></i> Abstract</a>
+          <a href="javascript:toggleBib('asymmetry')" class="tag-btn tag-btn-code"><i class="fas fa-quote-right"></i> BibTeX</a>
         </div>
         <div id="asymmetry_abs" class="abstract-text">
-          We propose iAgents to overcome information asymmetry in multi-agent systems, employing InfoNav for effective information exchange within a social network mirrored environment.
+          Large Language Model Multi-Agent Systems (LLM-MAS) have achieved great progress in solving complex tasks. It performs communication among agents within the system to collaboratively solve tasks, under the premise of shared information. However, when agents' collaborations are leveraged to perform multi-person tasks, a new challenge arises due to information asymmetry, since each agent can only access the information of its human user. Previous MAS struggle to complete tasks under this condition. To address this, we propose a new MAS paradigm termed iAgents, which denotes Informative Multi-Agent Systems. In iAgents, the human social network is mirrored in the agent network, where agents proactively exchange human information necessary for task resolution, thereby overcoming information asymmetry. iAgents employs a novel agent reasoning mechanism, InfoNav, to navigate agents' communication toward effective information exchange. Together with InfoNav, iAgents organizes human information in a mixed memory to provide agents with accurate and comprehensive information for exchange. Additionally, we introduce InformativeBench, the first benchmark tailored for evaluating LLM agents' task-solving ability under information asymmetry. Experimental results show that iAgents can collaborate within a social network of 140 individuals and 588 relationships, autonomously communicate over 30 turns, and retrieve information from nearly 70,000 messages to complete tasks within 3 minutes.
         </div>
         <pre>
 @article{liu2024autonomous,
@@ -801,115 +929,179 @@
       </div>
     </div>
 
-    <h2 id="experience">Experience</h2>
+    <h2 id="experience"><i class="fas fa-briefcase"></i> Experience</h2>
+
     <div class="experience-item">
       <div class="experience-text">
         <h3><a href="https://www.alibaba.com/">Taowise @ Taotian (Alibaba Group)</a></h3>
-        <div>Algorithm Engineer Intern | Jan 2025 – Present</div>
-        <p>Focusing on research on new paradigm in multi-agent latent space reasoning/communication enhancement and supervised fine-tuning (SFT) methodologies for LLMs. Working on advanced AI applications in e-commerce.</p>
+        <div class="role-time">
+            <span>Algorithm Engineer Intern</span>
+            <span><i class="fas fa-calendar-alt"></i> Jan 2025 – Present</span>
+        </div>
+        <p>Focusing on research on new paradigm in multi-agent latent space reasoning/communication enhancement and supervised fine-tuning (SFT) methodologies for LLMs.</p>
       </div>
-      <img src="images/alibaba_logo.png" alt="Alibaba" class="experience-logo">
+      <img src="images/alibaba_logo.png" alt="Alibaba" class="experience-logo" onerror="this.src='https://placehold.co/100x100?text=Alibaba'">
     </div>
 
     <div class="experience-item">
       <div class="experience-text">
         <h3><a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP @ Tsinghua University</a></h3>
-        <div>Research Assistant | Nov 2023 – Aug 2024</div>
-        <p>Deeply involved in the development of the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> and related works, focusing on multi-agent cross-team collaboration.</p>
+        <div class="role-time">
+            <span>Research Assistant</span>
+            <span><i class="fas fa-calendar-alt"></i> Nov 2023 – Aug 2024</span>
+        </div>
+        <p>Deeply involved in the development of the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and related works, focusing on multi-agent cross-team collaboration.</p>
       </div>
-      <img src="images/thunlp_logo.png" alt="THU" class="experience-logo">
+      <img src="images/thunlp_logo.png" alt="THU" class="experience-logo" onerror="this.src='https://placehold.co/100x100?text=THU'">
     </div>
 
-    <h2 id="projects">Projects</h2>
+    <h2 id="projects"><i class="fas fa-code-branch"></i> Projects</h2>
+
     <div class="paper-item">
       <div class="paper-img-container">
         <a href="https://thinkwee.top/multiagent_ebook">
-          <img src="images/web_thunlp.jpg" alt="E-book" class="paper-img">
+          <img src="images/web_thunlp.jpg" alt="Multi-Agent eBook" class="paper-img" onerror="this.src='https://placehold.co/400x250?text=Project+Image'">
         </a>
       </div>
       <div class="paper-content">
-        <a href="https://thinkwee.top/multiagent_ebook"><h3>Multi-Agent Research Interactive E-book</h3></a>
-        <p>A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format.</p>
-        <a href="https://thinkwee.top/multiagent_ebook" class="tag-btn">Website</a>
-        <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv" class="tag-btn">Dataset</a>
+        <a href="https://thinkwee.top/multiagent_ebook" id="MULTIAGENT_EBOOK">
+          <h3>Multi-Agent Research Interactive E-book</h3>
+        </a>
+        <p style="margin-bottom: 15px;">
+          A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems, covering agent communication, organizational structures, and co-evolution mechanisms.
+        </p>
+        <div class="btn-group">
+          <a href="https://thinkwee.top/multiagent_ebook" class="tag-btn">
+            <i class="fas fa-globe"></i> Website
+          </a>
+          <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv" class="tag-btn">
+            <i class="fas fa-download"></i> Download Dataset
+          </a>
+        </div>
       </div>
     </div>
 
     <div class="paper-item">
       <div class="paper-img-container">
         <a href="https://github.com/OpenBMB/ChatDev">
-          <img src="images/paper/logo.png" alt="ChatDev" class="paper-img">
+          <img src="images/paper/logo.png" alt="ChatDev" class="paper-img" onerror="this.src='https://placehold.co/400x250?text=ChatDev+Logo'">
         </a>
       </div>
       <div class="paper-content">
-        <a href="https://github.com/OpenBMB/ChatDev"><h3>ChatDev & Croto & MACNET</h3></a>
-        <p>Actively contributed to ChatDev <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> and led key branches (Croto) focusing on collaboration network topology.</p>
-        <a href="https://github.com/OpenBMB/ChatDev" class="tag-btn">Code</a>
-        <a href="https://arxiv.org/abs/2307.07924" class="tag-btn">Paper</a>
+        <a href="https://github.com/OpenBMB/ChatDev" id="CHATDEV">
+          <h3>ChatDev & Croto & MACNET</h3>
+        </a>
+        <p style="margin-bottom: 15px;">
+          Actively contributed to the development of <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a>
+          <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg?style=social" alt="stars" style="height:16px; vertical-align: middle;">
+          and its extended branches, serving as the leader for one key branch.
+        </p>
+        <div class="btn-group">
+          <a href="https://github.com/OpenBMB/ChatDev" class="tag-btn tag-btn-code">
+            <i class="fab fa-github"></i> Code
+          </a>
+          <a href="https://arxiv.org/abs/2307.07924" class="tag-btn tag-btn-pdf">
+            <i class="far fa-file-pdf"></i> Paper
+          </a>
+          <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai" class="tag-btn">
+            <i class="fas fa-external-link-alt"></i> Andrew Ng
+          </a>
+          <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7" class="tag-btn">
+            <i class="fab fa-google"></i> DeepMind
+          </a>
+          <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7" class="tag-btn">
+            <i class="fas fa-newspaper"></i> ModelBest
+          </a>
+        </div>
       </div>
     </div>
 
-    <h2 id="awards">Awards & Honors</h2>
-    <ul>
-      <li><strong>National Scholarship</strong>, 2025 (Top 0.2%)</li>
-      <li><strong>Outstanding Student Scholarship</strong>, 2025</li>
-      <li><strong>First-Class Scholarship</strong>, 2024 (Outstanding Graduate Student)</li>
-      <li><strong>Second-Class Scholarship</strong>, 2023 & 2022</li>
+    <h2 id="awards"><i class="fas fa-trophy"></i> Awards & Honors</h2>
+    <ul class="news-list" style="margin-top: 20px;">
+      <li>
+        <span class="news-date" style="color: #ea580c;">2025</span>
+        <strong>National Scholarship</strong>
+        <span style="background: #fff7ed; color: #c2410c; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px; border: 1px solid #ffedd5;">Top 0.2%</span>
+      </li>
+      <li>
+        <span class="news-date">2025</span>
+        <strong>Outstanding Student Scholarship</strong>
+      </li>
+      <li>
+        <span class="news-date">2024</span>
+        <strong>First-Class Scholarship</strong> (Outstanding Graduate Student Award)
+      </li>
+      <li>
+        <span class="news-date">2023</span>
+        <strong>Second-Class Scholarship</strong>
+      </li>
+      <li>
+        <span class="news-date">2022</span>
+        <strong>Second-Class Scholarship</strong>
+      </li>
     </ul>
 
-    <h2>Service</h2>
-    <p><strong>Program Committee / Reviewer:</strong> NeurIPS 2025, ICLR 2026</p>
-
-    <h2 id="talks">Talks & Presentations</h2>
-
-    <div style="margin-bottom: 35px;">
-      <h3>Exchange-of-Thought: Enhancing Large Language Model Capabilities through Cross-Model Communication</h3>
-
-      <div class="paper-meta">
-        Academic Salon at <a href="https://modelbest.cn/">ModelBest</a> | January 5, 2024
-      </div>
-
-      <div>
-        <a href="assets/salon_eot.pdf" class="tag-btn">Slides</a>
-        <a href="javascript:toggleBlock('salon_abs')" class="tag-btn">Abstract</a>
-      </div>
-
-      <div id="salon_abs" class="abstract-text">
-        Recently, Large Language Models (LLMs) have made significant progress in complex reasoning tasks through "Chain of Thought" technology. However, the models' reasoning is often limited by their own understanding and lack of external perspectives. To address this issue, the salon introduced the "Exchange of Thoughts" (EoT) framework, a new framework that enables cross-model communication during problem-solving. Drawing inspiration from network topology, EoT integrates four unique communication paradigms. The research delves into the communication dynamics and quantities associated with each paradigm. To mitigate the risk of erroneous reasoning chains, a confidence assessment mechanism is added to the communication. Experiments on various complex reasoning tasks have proven that EoT significantly surpasses established baselines, highlighting the value of external perspectives in enhancing the performance of LLMs.
-      </div>
+    <h2 id="service"><i class="fas fa-concierge-bell"></i> Academic Service</h2>
+    <div style="padding: 15px 20px; background: var(--bg-secondary); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+      <p style="margin: 0;">
+        <strong>Program Committee / Reviewer:</strong><br>
+        <a href="https://neurips.cc/Conferences/2025" style="margin-right: 10px;">NeurIPS 2025</a>
+        <a href="https://iclr.cc/Conferences/2026">ICLR 2026</a>
+      </p>
     </div>
 
-    <h2>Misc</h2>
-    <p>
-      <strong>Sports:</strong> Soccer, Fencing, Snowboarding, Billiards, Badminton<br>
-      <strong>Music & Hobbies:</strong> Piano, Guitar (Beginner), Photography, Reading, Physics<br>
-      Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a> for more.
-    </p>
+    <h2 id="misc"><i class="fas fa-mug-hot"></i> Beyond Research</h2>
 
-    <div style="text-align: center; margin-top: 40px;">
+    <div style="margin-bottom: 25px;">
+      <div style="margin-bottom: 12px;">
+        <span style="font-weight: 600; min-width: 80px; display: inline-block;"><i class="fas fa-running" style="width: 20px;"></i> Sports:</span>
+        <span class="tag-btn">Soccer</span>
+        <span class="tag-btn">Fencing</span>
+        <span class="tag-btn">Snowboarding</span>
+        <span class="tag-btn">Billiards</span>
+        <span class="tag-btn">Badminton</span>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <span style="font-weight: 600; min-width: 80px; display: inline-block;"><i class="fas fa-music" style="width: 20px;"></i> Music:</span>
+        <span class="tag-btn">Piano</span>
+        <span class="tag-btn">Guitar (Beginner)</span>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <span style="font-weight: 600; min-width: 80px; display: inline-block;"><i class="fas fa-camera" style="width: 20px;"></i> Hobbies:</span>
+        <span class="tag-btn">Photography</span>
+        <span class="tag-btn">Reading</span>
+        <span class="tag-btn">Physics</span>
+      </div>
+
+      <p style="font-size: 15px; color: var(--text-secondary); background: #fff; border: 1px dashed #ccc; padding: 15px; border-radius: 8px;">
+        Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43"><strong>Personal Blog</strong></a> for research insights, photography, and life experiences.
+        <br><span style="font-size: 13px; color: #888;">(I will try to update more frequently :D)</span>
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 60px; margin-bottom: 20px;">
       <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
     </div>
 
     <div class="footer">
-      Design inspired by <a href="http://www.cs.berkeley.edu/~barron/">Jon Barron</a>.
+      <p>
+        &copy; 2025 Zhuoyun Du. <br>
+        Designed with <i class="fas fa-heart" style="color: #e11d48; font-size: 10px;"></i> based on <a href="http://www.cs.berkeley.edu/~barron/">Jon Barron</a>'s theme.
+      </p>
     </div>
 
-  </div>
-
-  <div class="location-weather">
-    <div class="date" id="current-date">...</div>
+  </div> <div class="location-weather">
+    <i class="fas fa-map-marker-alt" style="color: #e11d48;"></i>
+    <div class="location" id="current-location">Loading...</div>
     <div style="width:1px; height:12px; background:#ddd; margin:0 5px;"></div>
-    <div class="location" id="current-location">...</div>
     <div class="weather" id="current-weather">...</div>
   </div>
 
   <script>
-    const AUTHOR = {
-      label: 'Hangzhou',
-      lat: 30.2741,
-      lon: 120.1551,
-      timeZone: 'Asia/Shanghai'
-    };
+    /* 天气脚本逻辑 */
+    const AUTHOR = { label: 'Hangzhou', lat: 30.2741, lon: 120.1551 };
 
     function codeToDesc(code) {
       const map = {
@@ -922,15 +1114,6 @@
         95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'
       };
       return map[code] || '';
-    }
-
-    function updateDate() {
-      const now = new Date();
-      const fmt = new Intl.DateTimeFormat('en-US', {
-        weekday: 'short', month: 'short', day: 'numeric',
-        timeZone: AUTHOR.timeZone
-      });
-      document.getElementById('current-date').textContent = fmt.format(now);
     }
 
     async function fetchWeatherForAuthor() {
@@ -949,18 +1132,16 @@
     }
 
     async function updateLocationWeather() {
-      updateDate();
-      const w = await fetchWeatherForAuthor();
-      if(w.temp) {
-        document.getElementById('current-location').textContent = `${AUTHOR.label}, ${w.temp}`;
-        document.getElementById('current-weather').textContent = w.desc;
-      }
+        const w = await fetchWeatherForAuthor();
+        if(w.temp) {
+            document.getElementById('current-location').textContent = `${AUTHOR.label}, ${w.temp}`;
+            document.getElementById('current-weather').textContent = w.desc;
+        }
     }
 
     window.onload = function () {
       updateLocationWeather();
-
-      // NEW: 激活入场动画
+      // 激活入场动画
       setTimeout(function() {
           var elements = document.querySelectorAll('.hero-animate');
           elements.forEach(function(el) {
