@@ -8,317 +8,338 @@
   <meta name="author" content="Zhuoyun Du">
   <title>Zhuoyun Du | 杜卓耘</title>
 
-  <!-- 引入精细的 Web 字体：Inter (无衬线) 和 Source Serif 4 (高级衬线体) -->
+  <!-- 引入字体：Inter (无衬线) 和 Source Serif 4 (衬线体) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
 
   <style>
-    /* Claude-inspired Warm Minimalist Theme */
+    /*
+      Anthropic Exact Replica Theme
+    */
     :root {
-      --bg-primary: #fcfaf6;
-      --bg-secondary: #f4f1eb;
-      --text-primary: #2d2d2a; 
-      --text-body: #4a4a46; 
-      --text-secondary: #6b6b66;
-      --accent-color: #cb654b; /* Claude's signature rust/terracotta */
-      --accent-hover: #a8513b;
-      --border-color: #e6e2d8;
-      /* 定义专门的选中背景色（带有透明度的橘色） */
-      --selection-bg: rgba(203, 101, 75, 0.22); 
-      
-      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      /* 完美复刻 Claude 博客的高级衬线字体栈 */
-      --font-serif: "Charter", "Bitstream Charter", "Source Serif 4", "Sitka Text", Cambria, serif;
-      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      --bg-page: #F4F0EB;     /* Anthropic 标志性的奶油纸张底色 */
+      --bg-card: #E7E2D8;     /* 卡片使用的稍深一点的米色 */
+      --text-main: #191817;   /* 极深的炭黑色 */
+      --text-muted: #5C5B59;  /* 次级灰黑色 */
+      --border-line: rgba(0, 0, 0, 0.15);  /* 分割线颜色 */
+      --selection-bg: rgba(217, 119, 87, 0.25); /* 橘色选中背景 */
+
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-serif: "Source Serif 4", "Charter", "Bitstream Charter", serif;
+      --font-mono: "SFMono-Regular", Consolas, Menlo, monospace;
     }
 
-    /* =========================================
-       Global Text Selection (Claude 风格橘色选中)
-       ========================================= */
     ::selection {
       background: var(--selection-bg);
-      color: var(--text-primary); 
+      color: var(--text-main);
     }
-    
-    ::-moz-selection { /* 兼容 Firefox */
+    ::-moz-selection {
       background: var(--selection-bg);
-      color: var(--text-primary);
+      color: var(--text-main);
     }
 
     body {
       font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--text-body);
-      max-width: 820px;
+      color: var(--text-main);
+      background-color: var(--bg-page);
       margin: 0 auto;
-      padding: 70px 24px;
-      background-color: var(--bg-primary);
+      max-width: 960px; /* 稍微加宽以容纳卡片式布局 */
+      padding: 60px 24px 100px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Links */
     a {
-      color: var(--text-primary);
+      color: inherit;
       text-decoration: none;
-      border-bottom: 1px solid #d4cfc5;
-      transition: all 0.2s ease;
+      transition: opacity 0.2s, color 0.2s;
     }
 
-    a:hover {
-      color: var(--accent-color);
-      border-bottom-color: var(--accent-color);
+    /* 正文链接带有细下划线 */
+    .inline-link {
+      border-bottom: 1px solid var(--border-line);
+      transition: border-color 0.2s;
+    }
+    .inline-link:hover {
+      border-color: var(--text-main);
     }
 
-    /* Header Layout */
-    .header {
-      display: flex;
-      gap: 45px;
-      margin-bottom: 50px;
-      align-items: flex-start;
+    /* =========================================
+       Hero Section
+       ========================================= */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      margin-top: 40px;
+      margin-bottom: 80px;
+      align-items: start;
+    }
+
+    .hero-title {
+      font-family: var(--font-sans);
+      font-size: 56px;
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin: 0 0 20px 0;
+    }
+
+    .hero-title .underline {
+      text-decoration: underline;
+      text-decoration-thickness: 4px;
+      text-underline-offset: 6px;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+    }
+
+    .hero-intro {
+      font-family: var(--font-serif);
+      font-size: 17.5px;
+      line-height: 1.6;
+      color: var(--text-main);
+      margin-bottom: 20px;
     }
 
     .profile-pic {
-      width: 190px;
-      flex-shrink: 0;
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 24px;
+      filter: grayscale(15%);
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .profile-pic img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-      border: 1px solid var(--border-color);
-    }
-
-    .info {
-      padding-top: 5px;
-    }
-
-    h1 {
-      font-family: var(--font-serif);
-      font-size: 32px;
-      font-weight: 500;
-      margin: 0 0 12px 0;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    /* Claude 风格的衬线斜体副标题 */
-    .title-line {
-      font-family: var(--font-serif);
-      font-style: italic; 
-      font-size: 16.5px; 
-      color: var(--text-secondary);
-      margin: 0 0 6px 0;
-      letter-spacing: 0.01em;
-    }
-
-    .links {
-      margin-top: 20px;
-      font-size: 14.5px;
+    .nav-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      color: var(--border-color); 
-    }
-    
-    .links a {
-      color: var(--accent-color);
-      border-bottom: none;
+      gap: 16px;
+      font-size: 14px;
       font-weight: 500;
+      color: var(--text-main);
     }
-    
-    .links a:hover {
-      color: var(--accent-hover);
-      text-decoration: underline;
+    .nav-links a {
+      border-bottom: 1px solid var(--text-main);
+      padding-bottom: 2px;
     }
-
-    /* Content Paragraphs */
-    p {
-      margin-top: 0;
-      margin-bottom: 24px;
-      color: var(--text-body);
+    .nav-links a:hover {
+      opacity: 0.6;
     }
 
-    strong, b {
-      font-weight: 600; 
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
+    /* =========================================
+       Section Titles
+       ========================================= */
+    .section-header {
+      font-family: var(--font-sans);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-top: 80px;
+      margin-bottom: 30px;
     }
 
-    .section-title {
-      font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 500;
-      margin-top: 56px;
-      margin-bottom: 20px;
-      color: var(--text-primary);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 8px;
-    }
-
-    /* Lists */
-    ul {
-      padding-left: 24px;
+    /* =========================================
+       Card Grid
+       ========================================= */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
       margin-bottom: 40px;
     }
 
-    li {
-      margin-bottom: 16px;
-      color: var(--text-body);
-    }
-
-    .paper-title {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .venue {
-      font-style: italic;
-      color: var(--text-secondary);
-    }
-
-    .me {
-      font-weight: 600;
-      color: var(--accent-color); 
-    }
-
-    /* Action Links */
-    .action-links {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      margin-top: 6px;
+    .card {
+      background-color: var(--bg-card);
+      border-radius: 16px;
+      padding: 32px 28px;
       display: flex;
+      flex-direction: column;
+    }
+
+    .card h3 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+    }
+
+    .card p {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-main);
+      margin: 0 0 24px 0;
+      flex-grow: 1;
+    }
+
+    .card-meta {
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding-top: 16px;
+      margin-top: auto;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-main);
+    }
+
+    .card-meta span {
+      display: flex;
+      flex-direction: column;
       gap: 8px;
     }
 
-    .action-links a {
-      background-color: var(--bg-secondary);
-      color: var(--text-secondary);
-      padding: 3px 8px;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      border-bottom: none;
-      transition: all 0.2s;
+    .card-meta span.value {
+      text-align: right;
     }
 
-    .action-links a:hover {
-      background-color: white;
-      border-color: var(--border-color);
-      color: var(--accent-color);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-
-    /* Footer */
-    .footer {
-      margin-top: 80px;
-      padding-top: 30px;
-      border-top: 1px solid var(--border-color);
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .weather-info {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      color: #888884;
-      background: var(--bg-secondary);
-      padding: 4px 12px;
-      border-radius: 12px;
-    }
-
-    /* =========================================
-       Floating Sticky Name (右上角悬浮名字)
-       ========================================= */
-    .floating-name {
-      position: fixed;
-      top: 24px;
-      right: 32px;
-      font-family: var(--font-serif);
-      font-size: 17px;
+    /* 黑色实心按钮 */
+    .btn-solid {
+      align-self: flex-start;
+      background-color: var(--text-main);
+      color: var(--bg-page);
+      font-size: 14px;
       font-weight: 500;
-      color: var(--text-primary);
-      background-color: rgba(252, 250, 246, 0.85); 
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 6px 16px;
-      border-radius: 20px;
-      border: 1px solid rgba(230, 226, 216, 0.8);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      z-index: 1000;
-      
-      opacity: 0;
-      transform: translateY(-15px) scale(0.95);
-      pointer-events: none;
-      transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-                  transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      padding: 10px 18px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, background-color 0.2s;
     }
-
-    .floating-name.visible {
+    .btn-solid:hover {
       opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-
-    .floating-name:hover {
-      cursor: pointer;
-      color: var(--accent-color);
-      border-color: var(--accent-color);
+      background-color: #333;
+      transform: translateY(-1px);
     }
 
     /* =========================================
-       Elegant Serif Italic (正文内如果需要斜体，可以用这个类)
+       List Layout
        ========================================= */
-    .elegant-italic {
-      font-family: var(--font-serif); 
-      font-style: italic; 
-      color: var(--text-primary); 
-      font-size: 1.05em; 
-      letter-spacing: 0.01em; 
+    .list-section {
+      border-top: 1px solid var(--border-line);
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-line);
+    }
+
+    .list-item-title {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 600;
+      width: 30%;
+      flex-shrink: 0;
+    }
+
+    .list-item-content {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      line-height: 1.6;
+      width: 65%;
+      color: var(--text-muted);
+    }
+
+    .list-item-content strong,
+    .list-item-content .me {
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-weight: 600;
+    }
+
+    .list-action-links {
+      margin-top: 8px;
+      display: flex;
+      gap: 12px;
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+    }
+
+    .list-action-links a {
+      color: var(--text-main);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(0,0,0,0.3);
+    }
+    .list-action-links a:hover {
+      text-decoration-color: var(--text-main);
+      opacity: 1;
     }
 
     /* =========================================
-       Scroll Animation Styles (页面上浮淡入)
+       General Utilities
        ========================================= */
     .fade-up {
       opacity: 0;
       transform: translateY(16px);
-      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                  transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-      will-change: opacity, transform;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .fade-up.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Responsive */
-    @media (max-width: 650px) {
-      .header {
+    .personal-note {
+      margin-top: 80px;
+      text-align: center;
+      font-size: 14.5px;
+      color: var(--text-muted);
+      font-family: var(--font-serif);
+    }
+
+    .footer {
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-line);
+      padding-top: 24px;
+    }
+
+    .clustrmaps-container {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      filter: grayscale(100%) opacity(0.5);
+      transition: all 0.3s;
+    }
+    .clustrmaps-container:hover {
+      filter: grayscale(0%) opacity(1);
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .hero-title {
+        font-size: 42px;
+      }
+      .list-item {
         flex-direction: column;
-        gap: 25px;
+        gap: 12px;
       }
-      .profile-pic {
-        width: 140px;
-      }
-      h1 {
-        font-size: 28px;
-      }
-      .floating-name {
-        top: 16px;
-        right: 16px;
-        font-size: 15px;
-        padding: 5px 12px;
+      .list-item-title, .list-item-content {
+        width: 100%;
       }
     }
   </style>
@@ -326,245 +347,266 @@
 
 <body>
 
-  <div class="floating-name" id="floatingName" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-    Zhuoyun Du 杜卓耘
-  </div>
+  <!-- Hero Section -->
+  <div class="hero fade-up">
+    <div>
+      <h1 class="hero-title">
+        <span class="underline">Zhuoyun Du</span> is building <br> autonomous agents.
+      </h1>
+      <p class="hero-subtitle">
+        Master's Student, Computer Science @ Zhejiang University <br>
+        LLM Algorithm Intern @ ByteDance
+      </p>
 
-  <div class="header fade-up">
-    <div class="profile-pic">
-      <a href="images/zhuoyun_du.jpg">
-        <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du">
-      </a>
-    </div>
-    <div class="info">
-      <h1 id="main-name">Zhuoyun Du 杜卓耘</h1>
-      <p class="title-line">Master's Student, Computer Science, Zhejiang University</p>
-      <p class="title-line">LLM Algorithm Intern, ByteDance</p>
-      <div class="links">
-        <a href="mailto:duzy@zju.edu.cn">Email</a> <span style="color:var(--border-color)">|</span>
-        <a href="assets/cv_dzy.pdf">CV</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://github.com/XiaoDu-flying">GitHub</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> <span style="color:var(--border-color)">|</span>
+      <div class="nav-links">
+        <a href="mailto:duzy@zju.edu.cn">Email</a>
+        <a href="assets/cv_dzy.pdf">CV</a>
+        <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a>
+        <a href="https://github.com/XiaoDu-flying">GitHub</a>
+        <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a>
         <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
       </div>
     </div>
-  </div>
-
-  <p class="fade-up">
-    I am a second-year master's student in <strong>Computer Science</strong> at
-    <a href="https://www.zju.edu.cn/">Zhejiang University</a>. I currently work with <a href="https://zjuvag.org/authors/weichen/">Prof. Wei Chen</a> at
-    <a href="https://zjuvai.cn/">ZJUVAI</a> within the <a href="http://www.en.cs.zju.edu.cn/">State Key Laboratory of CAD&CG</a>.
-    I am also an LLM Algorithm Intern at <a href="https://www.bytedance.com/"><strong>ByteDance</strong></a> (Jindouyun Talent Program),
-    following a fulfilling internship with the Taowise team at <a href="https://www.alibaba.com/"><strong>Alibaba</strong></a>.
-  </p>
-
-  <p class="fade-up">
-    Previously, I received my Bachelor's degree from <a href="https://english.jnu.edu.cn/">Jinan University</a>. I also served as a research assistant on the
-    <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project at
-    <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>,
-    advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
-    <a href="https://qianc62.github.io/">Prof. Chen Qian</a>.
-  </p>
-
-  <p class="fade-up">
-    <strong>Prospective PhD programs:</strong> Seeking Ph.D. positions for Fall 2027. Open to collaborations & recommendations.<br>
-    <strong>Prospective interns:</strong> Seeking Research Interns for LLMs & Autonomous Agents. <a href="mailto:duzy@zju.edu.cn">Email me</a>.
-  </p>
-
-  <p class="fade-up">
-    <strong>Research Focus:</strong> Designing LLM-based autonomous agents that <strong>collaborate effectively</strong> to tackle complex tasks (software development, self-evolution, and latent-space reasoning/communication).
-  </p>
-
-  <div class="section-title fade-up">News</div>
-  <ul class="fade-up">
-    <li>
-      <strong>[Apr 2026]</strong> Three papers have been accepted to ACL 2026! Looking forward to attending the conference in San Diego this July.
-    </li>
-  </ul>
-
-  <div class="section-title fade-up">Selected Publications</div>
-  <p class="fade-up" style="color: var(--text-secondary); font-size: 14px;">(* denotes equal contribution)</p>
-  <ul class="fade-up">
-    <li>
-      <span class="paper-title">Enabling Agents to Communicate Entirely in Latent Space</span>. <br>
-      <span class="me">Zhuoyun Du*</span>, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying. <br>
-      <span class="venue">ACL</span>, 2026. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2511.09149">paper</a>
-        <a href="https://github.com/XiaoDu-flying/Interlat">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">LLMs Can Simulate Standardized Patients via Agent Coevolution</span>. <br>
-      <span class="me">Zhuoyun Du*</span>, Lujie Zheng*, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying. <br>
-      <span class="venue">ACL</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2412.11716">paper</a>
-        <a href="https://github.com/ZJUMAI/EvoPatient">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Multi-Agent Collaboration via Cross-Team Orchestration</span>. <br>
-      <span class="me">Zhuoyun Du*</span>, Chen Qian*, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang. <br>
-      <span class="venue">ACL</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2406.08979">paper</a>
-        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Learning to Evolve: A Self-Improving Framework for Multi-Agent Systems via Textual Parameter Graph Optimization</span>. <br>
-      Shan He, Runze Wang, <span class="me">Zhuoyun Du</span>, Huiyu BAI, zouying cao, YuCheng, Bo Zheng. <br>
-      <span class="venue">ACL</span>, 2026. 
-    </li>
-    <li>
-      <span class="paper-title">Scaling Large-Language-Model-based Multi-Agent Collaboration</span>. <br>
-      Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun. <br>
-      <span class="venue">ICLR</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2406.07155">paper</a>
-        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Autonomous Agents for Collaborative Task under Information Asymmetry</span>. <br>
-      Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Chen Qian. <br>
-      <span class="venue">NeurIPS</span>, 2024. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2406.14928">paper</a>
-        <a href="https://github.com/thinkwee/iAgents">code</a>
-      </span>
-    </li>
-  </ul>
-
-  <div class="section-title fade-up">Experience</div>
-  <ul class="fade-up">
-    <li>
-      <strong>Data Department @ <a href="https://www.bytedance.com/">ByteDance</a></strong> | LLM Algorithm Intern (Jindouyun Talent Program)<br>
-      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Mar 2026 – Present</span><br>
-      Focusing on LLM post-training (CT, SFT, RLHF/DPO) and constrained reinforcement learning in complex interactive environments. Researching preference alignment and multi-agent frameworks to tackle hallucination control, reward hacking, and policy compliance in high-stakes game-theoretic scenarios.
-    </li>
-    <li>
-      <strong>Future Living Lab of Alibaba @ Taotian, <a href="https://www.alibaba.com/">Alibaba Group</a></strong> | Research Intern<br>
-      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Jan 2025 – Mar 2026</span><br>
-      Spearheaded research on novel multi-agent collaborative paradigms, emphasizing latent space reasoning and communication efficiency. Designed and optimized Supervised Fine-Tuning (SFT) pipelines to substantially enhance LLM reasoning capabilities and task-solving performance in complex scenarios.
-    </li>
-    <li>
-      <strong>THUNLP @ <a href="https://nlp.csai.tsinghua.edu.cn/">Tsinghua University</a></strong> | Research Assistant<br>
-      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Nov 2023 – Aug 2024</span><br>
-      Contributed to the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and related studies with 32k stars on LLM-based multi-agent systems (especially Croto & MacNet), focusing on cross-agent and cross-team collaboration.
-    </li>
-  </ul>
-
-  <div class="section-title fade-up">Projects</div>
-  <ul class="fade-up">
-    <li>
-      <strong>Multi-Agent Research Interactive E-book:</strong> A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems, covering agent communication, organizational structures, and co-evolution mechanisms.
-      <div class="action-links">
-        <a href="https://thinkwee.top/multiagent_ebook">Website</a>
-        <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">Dataset</a>
-      </div>
-    </li>
-    <li>
-      <strong>ChatDev & Croto & MACNET:</strong> Actively contributed to the development of <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> and its extended branches with 32k stars, serving as the leader for one key branch (Croto).
-      <div class="action-links">
-        <a href="https://github.com/OpenBMB/ChatDev">Code</a>
-        <a href="https://arxiv.org/abs/2307.07924">Paper</a>
-        <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai">Andrew Ng</a>
-        <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7">DeepMind</a>
-      </div>
-    </li>
-  </ul>
-
-  <div class="section-title fade-up">Awards & Honors</div>
-  <ul class="fade-up">
-    <li><strong>[2025]</strong> National Scholarship (TOP 0.2%)</li>
-    <li><strong>[2025]</strong> Outstanding Student Scholarship</li>
-    <li><strong>[2024]</strong> First-Class Scholarship (Outstanding Graduate Student Award)</li>
-    <li><strong>[2023]</strong> Second-Class Scholarship</li>
-    <li><strong>[2022]</strong> Second-Class Scholarship</li>
-  </ul>
-
-  <div class="section-title fade-up">Academic Service</div>
-  <ul class="fade-up">
-    <li><strong>Reviewer / Program Committee:</strong> <a href="https://neurips.cc/Conferences/2025">NeurIPS 2025</a>, <a href="https://iclr.cc/Conferences/2026">ICLR 2026</a></li>
-  </ul>
-
-  <p class="fade-up" style="margin-top: 60px; font-size: 14px; color: var(--text-secondary); text-align: center;">
-    Beyond research, I enjoy soccer, fencing, snowboarding, billiards, playing the piano, photography, and physics. Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a>. Last updated: March 2026.
-  </p>
-
-  <div class="footer fade-up">
-    <div style="filter: grayscale(100%) opacity(0.5); transition: opacity 0.3s;" onmouseover="this.style.filter='grayscale(0%) opacity(1)'" onmouseout="this.style.filter='grayscale(100%) opacity(0.5)'">
-      <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
-    </div>
 
     <div>
-      &copy; 2026 Zhuoyun Du. <br>
+      <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du" class="profile-pic">
+      <div class="hero-intro">
+        I am a second-year master's student in <strong>Computer Science</strong> at <a href="https://www.zju.edu.cn/" class="inline-link">Zhejiang University</a>, working with <a href="https://zjuvag.org/authors/weichen/" class="inline-link">Prof. Wei Chen</a> at ZJUVAI. I am also an LLM Algorithm Intern at <strong>ByteDance</strong>, following an internship at <strong>Alibaba</strong>.
+      </div>
+      <div class="hero-intro">
+        Previously, I received my Bachelor's from <a href="https://english.jnu.edu.cn/" class="inline-link">Jinan University</a> and served as a research assistant on <a href="https://github.com/OpenBMB/ChatDev" class="inline-link">ChatDev</a> at <strong>Tsinghua University</strong>.
+      </div>
+      <div class="hero-intro">
+        <strong>Research Focus:</strong> Designing LLM-based autonomous agents that collaborate effectively to tackle complex tasks (software development, self-evolution, and latent-space reasoning).
+      </div>
+      <div class="hero-intro" style="margin-top: 16px; font-size: 15px; color: var(--text-muted);">
+        <strong>Prospective PhD programs:</strong> Seeking Ph.D. positions for Fall 2027. Open to collaborations.<br>
+        <strong>Prospective interns:</strong> Seeking Research Interns for LLMs & Agents. <a href="mailto:duzy@zju.edu.cn" class="inline-link">Email me</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- News Section -->
+  <div class="section-header fade-up">News</div>
+  <div class="list-section fade-up">
+    <div class="list-item">
+      <div class="list-item-title">Apr 2026</div>
+      <div class="list-item-content">
+        Three papers have been accepted to <strong>ACL 2026</strong>! Looking forward to attending the conference in San Diego this July.
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected Publications as Anthropic Cards -->
+  <div class="section-header fade-up">Selected Publications</div>
+  <p class="fade-up" style="color: var(--text-muted); font-size: 14px; margin-top: -16px; margin-bottom: 24px;">(* denotes equal contribution)</p>
+
+  <div class="card-grid fade-up">
+    <!-- Card 1 -->
+    <div class="card">
+      <h3>Communication in Latent Space</h3>
+      <p>Enabling Agents to Communicate Entirely in Latent Space.</p>
+      <div class="card-meta">
+        <span>
+          <div>DATE</div>
+          <div>VENUE</div>
+        </span>
+        <span class="value">
+          <div>2026</div>
+          <div>ACL</div>
+        </span>
+      </div>
+      <a href="https://arxiv.org/abs/2511.09149" class="btn-solid">Read paper &rarr;</a>
     </div>
 
-    <div class="weather-info" id="weather-line">Location: Hangzhou | Weather: Loading...</div>
+    <!-- Card 2 -->
+    <div class="card">
+      <h3>Agent Coevolution</h3>
+      <p>LLMs Can Simulate Standardized Patients via Agent Coevolution.</p>
+      <div class="card-meta">
+        <span>
+          <div>DATE</div>
+          <div>VENUE</div>
+        </span>
+        <span class="value">
+          <div>2025</div>
+          <div>ACL</div>
+        </span>
+      </div>
+      <a href="https://arxiv.org/abs/2412.11716" class="btn-solid">Read paper &rarr;</a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <h3>Cross-Team Orchestration</h3>
+      <p>Multi-Agent Collaboration via Cross-Team Orchestration.</p>
+      <div class="card-meta">
+        <span>
+          <div>DATE</div>
+          <div>VENUE</div>
+        </span>
+        <span class="value">
+          <div>2025</div>
+          <div>ACL</div>
+        </span>
+      </div>
+      <a href="https://arxiv.org/abs/2406.08979" class="btn-solid">Read paper &rarr;</a>
+    </div>
+  </div>
+
+  <!-- More Publications (List Layout) -->
+  <div class="list-section fade-up">
+    <div class="list-item">
+      <div class="list-item-title">Learning to Evolve</div>
+      <div class="list-item-content">
+        A Self-Improving Framework for Multi-Agent Systems via Textual Parameter Graph Optimization.<br>
+        Shan He, Runze Wang, <span class="me">Zhuoyun Du</span>, Huiyu Bai, Zouying Cao, Yu Cheng, Bo Zheng. <br>
+        <strong>ACL 2026</strong>.
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">Scaling Collaboration</div>
+      <div class="list-item-content">
+        Scaling Large-Language-Model-based Multi-Agent Collaboration.<br>
+        Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun. <br>
+        <strong>ICLR 2025</strong>.
+        <div class="list-action-links">
+          <a href="https://arxiv.org/abs/2406.07155">Paper</a>
+          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">Code</a>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">Information Asymmetry</div>
+      <div class="list-item-content">
+        Autonomous Agents for Collaborative Task under Information Asymmetry.<br>
+        Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Chen Qian. <br>
+        <strong>NeurIPS 2024</strong>.
+        <div class="list-action-links">
+          <a href="https://arxiv.org/abs/2406.14928">Paper</a>
+          <a href="https://github.com/thinkwee/iAgents">Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div class="section-header fade-up">Experience</div>
+  <div class="list-section fade-up">
+    <div class="list-item">
+      <div class="list-item-title">ByteDance</div>
+      <div class="list-item-content">
+        <strong>LLM Algorithm Intern (Jindouyun Talent Program)</strong> · <span style="font-style: italic;">Mar 2026 – Present</span><br>
+        Focusing on LLM post-training (CT, SFT, RLHF/DPO) and constrained reinforcement learning in complex interactive environments. Researching preference alignment and multi-agent frameworks to tackle hallucination control, reward hacking, and policy compliance in high-stakes game-theoretic scenarios.
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">Alibaba Group</div>
+      <div class="list-item-content">
+        <strong>Research Intern @ Taotian Future Living Lab</strong> · <span style="font-style: italic;">Jan 2025 – Mar 2026</span><br>
+        Spearheaded research on novel multi-agent collaborative paradigms, emphasizing latent space reasoning and communication efficiency. Designed and optimized Supervised Fine-Tuning (SFT) pipelines to substantially enhance LLM reasoning capabilities and task-solving performance in complex scenarios.
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">Tsinghua University</div>
+      <div class="list-item-content">
+        <strong>Research Assistant @ THUNLP</strong> · <span style="font-style: italic;">Nov 2023 – Aug 2024</span><br>
+        Contributed to the ChatDev project and related studies with 32k stars on LLM-based multi-agent systems (especially Croto & MacNet), focusing on cross-agent and cross-team collaboration.
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <div class="section-header fade-up">Projects</div>
+  <div class="list-section fade-up">
+    <div class="list-item">
+      <div class="list-item-title">Multi-Agent E-book</div>
+      <div class="list-item-content">
+        A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems, covering agent communication, organizational structures, and co-evolution mechanisms.
+        <div class="list-action-links">
+          <a href="https://thinkwee.top/multiagent_ebook">Website</a>
+          <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">Dataset</a>
+        </div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">ChatDev & Croto & MACNET</div>
+      <div class="list-item-content">
+        Actively contributed to the development of ChatDev and its extended branches with 32k stars, serving as the leader for one key branch (Croto).
+        <div class="list-action-links">
+          <a href="https://github.com/OpenBMB/ChatDev">Code</a>
+          <a href="https://arxiv.org/abs/2307.07924">Paper</a>
+          <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai">Andrew Ng</a>
+          <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7">DeepMind</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Awards & Honors -->
+  <div class="section-header fade-up">Awards & Honors</div>
+  <div class="list-section fade-up">
+    <div class="list-item">
+      <div class="list-item-title">2025</div>
+      <div class="list-item-content">
+        <strong>National Scholarship</strong> (TOP 0.2%) <br>
+        Outstanding Student Scholarship
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">2024</div>
+      <div class="list-item-content">
+        First-Class Scholarship (Outstanding Graduate Student Award)
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-title">2022 – 2023</div>
+      <div class="list-item-content">
+        Second-Class Scholarship
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Service -->
+  <div class="section-header fade-up">Academic Service</div>
+  <div class="list-section fade-up">
+    <div class="list-item">
+      <div class="list-item-title">Reviewer / PC</div>
+      <div class="list-item-content">
+        <a href="https://neurips.cc/Conferences/2025" class="inline-link">NeurIPS 2025</a>, <a href="https://iclr.cc/Conferences/2026" class="inline-link">ICLR 2026</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Note & Map -->
+  <div class="personal-note fade-up">
+    Beyond research, I enjoy soccer, fencing, snowboarding, billiards, playing the piano, photography, and physics.<br>
+    Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43" class="inline-link">personal blog</a>. Last updated: March 2026.
+  </div>
+
+  <div class="clustrmaps-container fade-up">
+    <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
+  </div>
+
+  <div class="footer fade-up">
+    <div>&copy; 2026 Zhuoyun Du. Hangzhou, China.</div>
+    <div id="weather-line">Weather: Loading...</div>
   </div>
 
   <script>
-    /* =========================================
-       1. Sticky Name Animation Logic 
-       ========================================= */
     document.addEventListener("DOMContentLoaded", function() {
-      const mainName = document.getElementById('main-name');
-      const floatingName = document.getElementById('floatingName');
-
-      // 监听主标题是否滚出屏幕
-      const nameObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-            floatingName.classList.add('visible');
-          } else {
-            floatingName.classList.remove('visible');
-          }
-        });
-      }, {
-        threshold: 0,
-        rootMargin: "-20px 0px 0px 0px"
-      });
-
-      if (mainName) {
-        nameObserver.observe(mainName);
-      }
-
-      /* =========================================
-         2. Scroll Fade-up Animation Logic 
-         ========================================= */
-      const fadeObserverOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15 
-      };
-
-      const fadeObserver = new IntersectionObserver((entries, observer) => {
+      const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target); 
+            observer.unobserve(entry.target);
           }
         });
-      }, fadeObserverOptions);
+      }, { threshold: 0.1 });
 
-      const fadeElements = document.querySelectorAll('.fade-up');
-      fadeElements.forEach(el => fadeObserver.observe(el));
-      
-      const header = document.querySelector('.header');
-      if(header) {
-        setTimeout(() => {
-          header.classList.add('is-visible');
-        }, 100);
-      }
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     });
 
-    /* =========================================
-       3. Minimalist Weather Fetcher 
-       ========================================= */
     const AUTHOR = { label: 'Hangzhou', lat: 30.2741, lon: 120.1551 };
 
     function codeToDesc(code) {
@@ -595,5 +637,4 @@
   </script>
 
 </body>
-
 </html>
