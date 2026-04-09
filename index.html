@@ -9,175 +9,237 @@
   <title>Zhuoyun Du | 杜卓耘</title>
 
   <style>
-    /* Kaiming He / MIT Minimalist Academic Theme */
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 14.5px;
-      line-height: 1.6;
-      color: #333;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 60px 20px;
-      background-color: #fff;
-      -webkit-font-smoothing: antialiased;
+    /* Claude-inspired Warm Minimalist Theme */
+    :root {
+      --bg-primary: #fcfaf6;
+      --bg-secondary: #f4f1eb;
+      --text-primary: #1e1e1e;
+      --text-secondary: #63635e;
+      --accent-color: #cb654b; /* Claude's signature rust/terracotta */
+      --accent-hover: #a8513b;
+      --border-color: #e6e2d8;
+      
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: "Georgia", "Times New Roman", ui-serif, serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     }
 
+    body {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-primary);
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 70px 24px;
+      background-color: var(--bg-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Links with elegant underline and color transitions */
     a {
-      color: #333;
-      text-decoration: underline;
-      text-decoration-color: #999;
-      text-underline-offset: 2px;
+      color: var(--text-primary);
+      text-decoration: none;
+      border-bottom: 1px solid #d4cfc5;
+      transition: all 0.2s ease;
     }
 
     a:hover {
-      color: #000;
-      text-decoration-color: #000;
+      color: var(--accent-color);
+      border-bottom-color: var(--accent-color);
     }
 
     /* Header Layout */
     .header {
       display: flex;
-      gap: 35px;
-      margin-bottom: 40px;
+      gap: 45px;
+      margin-bottom: 50px;
       align-items: flex-start;
     }
 
     .profile-pic {
-      width: 210px;
+      width: 190px;
       flex-shrink: 0;
     }
 
+    /* Softer, rounded image like Claude's UI elements */
     .profile-pic img {
       width: 100%;
       height: auto;
       display: block;
-      border: 1px solid #ddd;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border-color);
     }
 
     .info {
-      padding-top: 10px;
+      padding-top: 5px;
     }
 
+    /* Serif headers for that elegant, "bookish" Claude feel */
     h1 {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 0 0 20px 0;
-      color: #222;
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 500;
+      margin: 0 0 12px 0;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
     }
 
     .title-line {
-      margin: 0 0 15px 0;
-      color: #444;
+      margin: 0 0 8px 0;
+      color: var(--text-secondary);
+      font-size: 15.5px;
     }
 
     .links {
-      margin-top: 15px;
-      font-size: 14px;
+      margin-top: 20px;
+      font-size: 14.5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--border-color); /* Acts as separator color */
+    }
+    
+    .links a {
+      color: var(--accent-color);
+      border-bottom: none;
+      font-weight: 500;
+    }
+    
+    .links a:hover {
+      color: var(--accent-hover);
+      text-decoration: underline;
     }
 
     /* Content Paragraphs */
     p {
       margin-top: 0;
-      margin-bottom: 20px;
-      text-align: justify;
+      margin-bottom: 24px;
+      color: #333331;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--text-primary);
     }
 
     .section-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 40px;
-      margin-bottom: 15px;
-      color: #222;
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 500;
+      margin-top: 56px;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
     }
 
     /* Lists for Papers, News, Experience */
     ul {
-      padding-left: 20px;
-      margin-bottom: 30px;
+      padding-left: 24px;
+      margin-bottom: 40px;
     }
 
     li {
-      margin-bottom: 12px;
-      text-align: justify;
+      margin-bottom: 16px;
+      color: #333331;
     }
 
     .paper-title {
-      font-weight: bold;
-      color: #222;
+      font-weight: 600;
+      color: var(--text-primary);
     }
 
     .venue {
       font-style: italic;
+      color: var(--text-secondary);
     }
 
     .me {
-      font-weight: bold;
-      color: #000;
+      font-weight: 600;
+      color: var(--accent-color); /* Highlight your name subtlely */
     }
 
-    /* Action Links (PDF, Code, etc.) */
+    /* Action Links (PDF, Code, etc.) - Styled like soft badges */
     .action-links {
-      font-family: monospace;
-      font-size: 13.5px;
-      margin-top: 2px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
     }
 
     .action-links a {
-      margin-right: 6px;
-      text-decoration: none;
-      color: #0042cc;
+      background-color: var(--bg-secondary);
+      color: var(--text-secondary);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      border-bottom: none;
+      transition: all 0.2s;
     }
 
     .action-links a:hover {
-      text-decoration: underline;
+      background-color: white;
+      border-color: var(--border-color);
+      color: var(--accent-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     /* Hidden Blocks (Abstract, BibTeX) */
     .hidden-block {
       display: none;
-      background-color: #fcfcfc;
-      padding: 12px 15px;
-      font-size: 13.5px;
-      margin-top: 8px;
-      border: 1px solid #eee;
-      text-align: justify;
-      color: #444;
+      background-color: var(--bg-secondary);
+      padding: 16px 20px;
+      font-size: 14px;
+      margin-top: 10px;
+      border-radius: 8px;
+      color: var(--text-secondary);
     }
 
     pre {
-      font-family: monospace;
+      font-family: var(--font-mono);
       white-space: pre-wrap;
       margin: 0;
-      font-size: 12.5px;
+      font-size: 13px;
     }
 
     /* Footer */
     .footer {
-      margin-top: 60px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-      font-size: 13px;
-      color: #666;
+      margin-top: 80px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13.5px;
+      color: var(--text-secondary);
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
+      gap: 16px;
     }
 
     .weather-info {
-      font-family: monospace;
-      font-size: 12px;
-      color: #777;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: #888884;
+      background: var(--bg-secondary);
+      padding: 4px 12px;
+      border-radius: 12px;
     }
 
     /* Responsive */
-    @media (max-width: 600px) {
+    @media (max-width: 650px) {
       .header {
         flex-direction: column;
+        gap: 25px;
       }
       .profile-pic {
-        width: 180px;
+        width: 140px;
+      }
+      h1 {
+        font-size: 28px;
       }
     }
   </style>
@@ -203,11 +265,11 @@
       <p class="title-line">Master's Student, Computer Science, Zhejiang University</p>
       <p class="title-line">LLM Algorithm Intern, ByteDance</p>
       <div class="links">
-        <a href="mailto:duzy@zju.edu.cn">Email</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="assets/cv_dzy.pdf">CV</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="https://github.com/XiaoDu-flying">GitHub</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="mailto:duzy@zju.edu.cn">Email</a> <span style="color:var(--border-color)">|</span>
+        <a href="assets/cv_dzy.pdf">CV</a> <span style="color:var(--border-color)">|</span>
+        <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a> <span style="color:var(--border-color)">|</span>
+        <a href="https://github.com/XiaoDu-flying">GitHub</a> <span style="color:var(--border-color)">|</span>
+        <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> <span style="color:var(--border-color)">|</span>
         <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
       </div>
     </div>
@@ -215,25 +277,17 @@
 
   <p>
     I am a second-year master's student in <strong>Computer Science</strong> at
-
     <a href="https://www.zju.edu.cn/">Zhejiang University</a>. I currently work with <a href="https://zjuvag.org/authors/weichen/">Prof. Wei Chen</a> at
-
     <a href="https://zjuvai.cn/">ZJUVAI</a> within the <a href="http://www.en.cs.zju.edu.cn/">State Key Laboratory of CAD&CG</a>.
-
     I am also an LLM Algorithm Intern at <a href="https://www.bytedance.com/"><strong>ByteDance</strong></a> (Jindouyun Talent Program),
-
     following a fulfilling internship with the Taowise team at <a href="https://www.alibaba.com/"><strong>Alibaba</strong></a>.
   </p>
 
   <p>
     Previously, I received my Bachelor's degree from <a href="https://english.jnu.edu.cn/">Jinan University</a>. I also served as a research assistant on the
-
     <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project at
-
     <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>,
-
     advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
-
     <a href="https://qianc62.github.io/">Prof. Chen Qian</a>.
   </p>
 
@@ -247,42 +301,68 @@
   </p>
 
   <div class="section-title">Selected Publications</div>
-  <p>(* denotes equal contribution)</p>
+  <p style="color: var(--text-secondary); font-size: 14px;">(* denotes equal contribution)</p>
   <ul>
     <li>
       <span class="paper-title">Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</span>. <br>
       Huiyu Bai*, Runze Wang*, <span class="me">Zhuoyun Du*</span>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. [<a href="https://arxiv.org/abs/2511.20056">paper</a>]
+      <span class="venue">arXiv Preprint</span>, 2025. 
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2511.20056">paper</a>
+      </span>
     </li>
     <li>
       <span class="paper-title">Enabling Agents to Communicate Entirely in Latent Space</span>. <br>
       <span class="me">Zhuoyun Du*</span>, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. [<a href="https://arxiv.org/abs/2511.09149">paper</a>] [<a href="https://github.com/XiaoDu-flying/Interlat">code</a>]
+      <span class="venue">arXiv Preprint</span>, 2025. 
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2511.09149">paper</a>
+        <a href="https://github.com/XiaoDu-flying/Interlat">code</a>
+      </span>
     </li>
     <li>
       <span class="paper-title">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</span>. <br>
       Yuyang Xu, Yi Cheng, Haochao Ying, <span class="me">Zhuoyun Du</span>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. [<a href="https://arxiv.org/abs/2508.12604">paper</a>]
+      <span class="venue">arXiv Preprint</span>, 2025.
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2508.12604">paper</a>
+      </span>
     </li>
     <li>
       <span class="paper-title">LLMs Can Simulate Standardized Patients via Agent Coevolution</span>. <br>
       <span class="me">Zhuoyun Du*</span>, Lujie Zheng*, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying. <br>
-      <span class="venue">ACL</span>, 2025. [<a href="https://arxiv.org/abs/2412.11716">paper</a>] [<a href="https://github.com/ZJUMAI/EvoPatient">code</a>]
+      <span class="venue">ACL</span>, 2025. 
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2412.11716">paper</a>
+        <a href="https://github.com/ZJUMAI/EvoPatient">code</a>
+      </span>
     </li>
     <li>
       <span class="paper-title">Multi-Agent Collaboration via Cross-Team Orchestration</span>. <br>
       <span class="me">Zhuoyun Du*</span>, Chen Qian*, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang. <br>
-      <span class="venue">ACL</span>, 2025. [<a href="https://arxiv.org/abs/2406.08979">paper</a>] [<a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>]
+      <span class="venue">ACL</span>, 2025. 
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2406.08979">paper</a>
+        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
+      </span>
     </li>
     <li>
       <span class="paper-title">Scaling Large-Language-Model-based Multi-Agent Collaboration</span>. <br>
       Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun. <br>
-      <span class="venue">ICLR</span>, 2025. [<a href="https://arxiv.org/abs/2406.07155">paper</a>] [<a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>]
+      <span class="venue">ICLR</span>, 2025. 
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2406.07155">paper</a>
+        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
+      </span>
     </li>
     <li>
       <span class="paper-title">Autonomous Agents for Collaborative Task under Information Asymmetry</span>. <br>
       Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Chen Qian. <br>
-      <span class="venue">NeurIPS</span>, 2024. [<a href="https://arxiv.org/abs/2406.14928">paper</a>] [<a href="https://github.com/thinkwee/iAgents">code</a>]
+      <span class="venue">NeurIPS</span>, 2024. 
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2406.14928">paper</a>
+        <a href="https://github.com/thinkwee/iAgents">code</a>
+      </span>
     </li>
   </ul>
 
@@ -290,17 +370,17 @@
   <ul>
     <li>
       <strong>Data Department @ <a href="https://www.bytedance.com/">ByteDance</a></strong> | LLM Algorithm Intern (Jindouyun Talent Program)<br>
-      <span style="color: #666; font-size: 13.5px;">Mar 2026 – Present</span><br>
+      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Mar 2026 – Present</span><br>
       Focusing on LLM post-training (CT, SFT, RLHF/DPO) and constrained reinforcement learning in complex interactive environments. Researching preference alignment and multi-agent frameworks to tackle hallucination control, reward hacking, and policy compliance in high-stakes game-theoretic scenarios.
     </li>
     <li>
       <strong>Future Life Lab @ Taotian, <a href="https://www.alibaba.com/">Alibaba Group</a></strong> | Research Intern<br>
-      <span style="color: #666; font-size: 13.5px;">Jan 2025 – Mar 2026</span><br>
+      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Jan 2025 – Mar 2026</span><br>
       Spearheaded research on novel multi-agent collaborative paradigms, emphasizing latent space reasoning and communication efficiency. Designed and optimized Supervised Fine-Tuning (SFT) pipelines to substantially enhance LLM reasoning capabilities and task-solving performance in complex scenarios.
     </li>
     <li>
       <strong>THUNLP @ <a href="https://nlp.csai.tsinghua.edu.cn/">Tsinghua University</a></strong> | Research Assistant<br>
-      <span style="color: #666; font-size: 13.5px;">Nov 2023 – Aug 2024</span><br>
+      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Nov 2023 – Aug 2024</span><br>
       Contributed to the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and related studies with 32k stars on LLM-based multi-agent systems (especially Croto & MacNet), focusing on cross-agent and cross-team collaboration.
     </li>
   </ul>
@@ -310,17 +390,17 @@
     <li>
       <strong>Multi-Agent Research Interactive E-book:</strong> A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems, covering agent communication, organizational structures, and co-evolution mechanisms.
       <div class="action-links">
-        <a href="https://thinkwee.top/multiagent_ebook">[Website]</a>
-        <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">[Dataset]</a>
+        <a href="https://thinkwee.top/multiagent_ebook">Website</a>
+        <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">Dataset</a>
       </div>
     </li>
     <li>
       <strong>ChatDev & Croto & MACNET:</strong> Actively contributed to the development of <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> and its extended branches with 32k stars, serving as the leader for one key branch (Croto).
       <div class="action-links">
-        <a href="https://github.com/OpenBMB/ChatDev">[Code]</a>
-        <a href="https://arxiv.org/abs/2307.07924">[Paper]</a>
-        <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai">[Andrew Ng]</a>
-        <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7">[DeepMind]</a>
+        <a href="https://github.com/OpenBMB/ChatDev">Code</a>
+        <a href="https://arxiv.org/abs/2307.07924">Paper</a>
+        <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai">Andrew Ng</a>
+        <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7">DeepMind</a>
       </div>
     </li>
   </ul>
@@ -339,18 +419,17 @@
     <li><strong>Reviewer / Program Committee:</strong> <a href="https://neurips.cc/Conferences/2025">NeurIPS 2025</a>, <a href="https://iclr.cc/Conferences/2026">ICLR 2026</a></li>
   </ul>
 
-  <p style="margin-top: 50px; font-size: 13px; color: #777;">
+  <p style="margin-top: 60px; font-size: 14px; color: var(--text-secondary); text-align: center;">
     Beyond research, I enjoy soccer, fencing, snowboarding, billiards, playing the piano, photography, and physics. Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a>. Last updated: March 2026.
   </p>
 
   <div class="footer">
-    <div style="filter: grayscale(100%); opacity: 0.7;">
+    <div style="filter: grayscale(100%) opacity(0.5); transition: opacity 0.3s;" onmouseover="this.style.filter='grayscale(0%) opacity(1)'" onmouseout="this.style.filter='grayscale(100%) opacity(0.5)'">
       <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
     </div>
 
     <div>
       &copy; 2026 Zhuoyun Du. <br>
-      <span style="font-family: monospace; font-size: 0.9em; color: #999;">SYS.RENDER_COMPLETE</span>
     </div>
 
     <div class="weather-info" id="weather-line">Location: Hangzhou | Weather: Loading...</div>
@@ -379,7 +458,7 @@
         const res = await fetch(url);
         const data = await res.json();
         const cw = data.current_weather;
-        document.getElementById('weather-line').innerText = `Location: ${AUTHOR.label} | ${Math.round(cw.temperature)}°C, ${codeToDesc(cw.weathercode)}`;
+        document.getElementById('weather-line').innerText = `${AUTHOR.label} · ${Math.round(cw.temperature)}°C, ${codeToDesc(cw.weathercode)}`;
       } catch (e) {
         document.getElementById('weather-line').style.display = 'none';
       }
