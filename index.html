@@ -110,10 +110,13 @@
     }
 
     .profile-pic {
-      width: 140px;
-      height: 140px;
-      border-radius: 12px;
+      /* 优化点3：放大图片，压住右侧视重 */
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      aspect-ratio: 4/3;
       object-fit: cover;
+      border-radius: 12px;
       margin-bottom: 24px;
       filter: grayscale(15%);
       border: 1px solid rgba(0,0,0,0.05);
@@ -416,7 +419,7 @@
     <div class="list-item">
       <div class="list-item-title">Apr 2026</div>
       <div class="list-item-content">
-        Three papers have been accepted to <strong>ACL 2026</strong>! Looking forward to attending the conference in San Diego this July.
+        Three papers have been accepted to <strong>ACL 2026</strong>! Looking forward to see you in San Diego this July.
       </div>
     </div>
   </div>
