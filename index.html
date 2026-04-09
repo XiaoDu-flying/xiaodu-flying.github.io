@@ -102,6 +102,17 @@
       line-height: 1.5;
     }
 
+    .hero-focus {
+      border-top: 1px solid var(--border-line); /* 顶部极其克制的细线分割 */
+      padding-top: 16px;
+      margin-bottom: 30px;
+      font-family: var(--font-serif); /* 切换为衬线体，凸显学术深度 */
+      font-size: 16.5px;
+      line-height: 1.6;
+      color: var(--text-main);
+      max-width: 95%; /* 稍微收窄一点，让右侧留白更有呼吸感 */
+    }
+
     .hero-intro {
       font-family: var(--font-serif);
       font-size: 17.5px;
@@ -471,8 +482,13 @@
       </h1>
       <p class="hero-subtitle">
         Master's Student, Computer Science @ Zhejiang University <br>
-        LLM Algorithm Intern @ ByteDance
+        LLM Algorithm Intern @ ByteDance <br>
       </p>
+
+      <div class="hero-focus">
+        <span class="focus-label">Research Focus</span>
+        Designing LLM-based autonomous agents that collaborate effectively to tackle complex tasks (software development, self-evolution, and latent-space reasoning).
+      </div>
 
       <div class="nav-links">
         <a href="mailto:duzy@zju.edu.cn">Email</a>
@@ -487,14 +503,14 @@
     <div>
       <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du" class="profile-pic">
       <div class="hero-intro">
-        I am a second-year master's student in <strong>Computer Science</strong> at <a href="https://www.zju.edu.cn/" class="inline-link">Zhejiang University</a>, working with <a href="https://zjuvag.org/authors/weichen/" class="inline-link">Prof. Wei Chen</a> at ZJUVAI. I am also an LLM Algorithm Intern at <strong>ByteDance</strong>, following an internship at <strong>Alibaba</strong>.
+        I am a second-year master's student in <strong>Computer Science</strong> at <a href="https://www.zju.edu.cn/" class="inline-link">Zhejiang University</a>, working with <a href="https://zjuvag.org/authors/weichen/" class="inline-link">Prof. Wei Chen</a> at ZJUVAI. I am also an LLM Algorithm Intern at <strong>ByteDance</strong>, following internships at <strong>Alibaba</strong> and <strong>Tsinghua University</strong>.
       </div>
-      <div class="hero-intro">
-        Previously, I received my Bachelor's from <a href="https://english.jnu.edu.cn/" class="inline-link">Jinan University</a> and served as a research assistant on <a href="https://github.com/OpenBMB/ChatDev" class="inline-link">ChatDev</a> at <strong>Tsinghua University</strong>.
-      </div>
-      <div class="hero-intro">
-        <strong>Research Focus:</strong> Designing LLM-based autonomous agents that collaborate effectively to tackle complex tasks (software development, self-evolution, and latent-space reasoning).
-      </div>
+<!--      <div class="hero-intro">-->
+<!--        Previously, I received my Bachelor's from <a href="https://english.jnu.edu.cn/" class="inline-link">Jinan University</a> and served as a research assistant on <a href="https://github.com/OpenBMB/ChatDev" class="inline-link">ChatDev</a> at <strong>Tsinghua University</strong>.-->
+<!--      </div>-->
+<!--      <div class="hero-intro">-->
+<!--        <strong>Research Focus:</strong> Designing LLM-based autonomous agents that collaborate effectively to tackle complex tasks (software development, self-evolution, and latent-space reasoning).-->
+<!--      </div>-->
       <div class="hero-intro" style="margin-top: 16px; font-size: 15px; color: var(--text-muted);">
         <strong>Prospective PhD programs:</strong> Seeking Ph.D. positions for Fall 2027. Open to collaborations.<br>
         <strong>Prospective interns:</strong> Seeking Research Interns for LLMs & Agents. <a href="mailto:duzy@zju.edu.cn" class="inline-link">Email me</a>.
