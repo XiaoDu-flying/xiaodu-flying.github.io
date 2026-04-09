@@ -44,7 +44,7 @@
       color: var(--text-main);
       background-color: var(--bg-page);
       margin: 0 auto;
-      max-width: 960px; /* 稍微加宽以容纳卡片式布局 */
+      max-width: 960px;
       padding: 60px 24px 100px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -56,7 +56,6 @@
       transition: opacity 0.2s, color 0.2s;
     }
 
-    /* 正文链接带有细下划线 */
     .inline-link {
       border-bottom: 1px solid var(--border-line);
       transition: border-color 0.2s;
@@ -206,9 +205,14 @@
       text-align: right;
     }
 
-    /* 黑色实心按钮 */
+    /* 按钮容器与样式 */
+    .card-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
     .btn-solid {
-      align-self: flex-start;
       background-color: var(--text-main);
       color: var(--bg-page);
       font-size: 14px;
@@ -223,6 +227,26 @@
     .btn-solid:hover {
       opacity: 1;
       background-color: #333;
+      transform: translateY(-1px);
+    }
+
+    /* 新增的线框按钮，用于放置 Code 等次要操作 */
+    .btn-outline {
+      background-color: transparent;
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--text-main);
+      transition: transform 0.2s, background-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover {
+      background-color: var(--text-main);
+      color: var(--bg-page);
       transform: translateY(-1px);
     }
 
@@ -416,7 +440,10 @@
           <div>ACL</div>
         </span>
       </div>
-      <a href="https://arxiv.org/abs/2511.09149" class="btn-solid">Read paper &rarr;</a>
+      <div class="card-actions">
+        <a href="https://arxiv.org/abs/2511.09149" class="btn-solid">Read paper &rarr;</a>
+        <a href="https://github.com/XiaoDu-flying/Interlat" class="btn-outline">Code</a>
+      </div>
     </div>
 
     <!-- Card 2 -->
@@ -433,7 +460,10 @@
           <div>ACL</div>
         </span>
       </div>
-      <a href="https://arxiv.org/abs/2412.11716" class="btn-solid">Read paper &rarr;</a>
+      <div class="card-actions">
+        <a href="https://arxiv.org/abs/2412.11716" class="btn-solid">Read paper &rarr;</a>
+        <a href="https://github.com/ZJUMAI/EvoPatient" class="btn-outline">Code</a>
+      </div>
     </div>
 
     <!-- Card 3 -->
@@ -450,7 +480,10 @@
           <div>ACL</div>
         </span>
       </div>
-      <a href="https://arxiv.org/abs/2406.08979" class="btn-solid">Read paper &rarr;</a>
+      <div class="card-actions">
+        <a href="https://arxiv.org/abs/2406.08979" class="btn-solid">Read paper &rarr;</a>
+        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="btn-outline">Code</a>
+      </div>
     </div>
   </div>
 
