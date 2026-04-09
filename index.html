@@ -259,6 +259,17 @@
                   transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
+    /* =========================================
+       Elegant Serif Italic (优雅的衬线斜体)
+       ========================================= */
+    .elegant-italic {
+      font-family: var(--font-serif); /* 调用带有学术感的 Lora 字体 */
+      font-style: italic; /* 设置为斜体 */
+      color: var(--text-primary); /* 使用较深的颜色增加阅读清晰度 */
+      font-size: 1.05em; /* 稍微放大一点点，让它作为引言更醒目 */
+      letter-spacing: 0.01em; /* 略微拉开字距，增加呼吸感 */
+    }
+
     /* 激活状态 */
     .floating-name.visible {
       opacity: 1;
@@ -325,7 +336,7 @@
     </div>
     <div class="info">
       <h1 id="main-name">Zhuoyun Du 杜卓耘</h1>
-      <p class="title-line">Master's Student, Computer Science, Zhejiang University</p>
+      <p class="title-line"><p class="fade-up elegant-italic">Master's Student, Computer Science, Zhejiang University</p></p>
       <p class="title-line">LLM Algorithm Intern, ByteDance</p>
       <div class="links">
         <a href="mailto:duzy@zju.edu.cn">Email</a> <span style="color:var(--border-color)">|</span>
