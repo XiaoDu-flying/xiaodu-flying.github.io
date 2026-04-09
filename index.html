@@ -8,448 +8,1175 @@
   <meta name="author" content="Zhuoyun Du">
   <title>Zhuoyun Du | 杜卓耘</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
   <style>
-    /* Claude-inspired Warm Minimalist Theme */
+    /* Claude.ai-inspired Design System */
     :root {
-      --bg-primary: #fcfaf6;
-      --bg-secondary: #f4f1eb;
-      --text-primary: #1e1e1e;
-      --text-secondary: #63635e;
-      --accent-color: #cb654b; /* Claude's signature rust/terracotta */
-      --accent-hover: #a8513b;
-      --border-color: #e6e2d8;
+      /* Warm, inviting color palette - Claude's signature */
+      --bg-cream: #faf9f7;
+      --bg-warm: #f5f3ef;
+      --bg-card: #ffffff;
+      --bg-hover: #f0ede8;
       
-      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-serif: "Georgia", "Times New Roman", ui-serif, serif;
-      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5c5c5c;
+      --text-muted: #8a8a8a;
+      
+      --accent-terracotta: #c45c3e;
+      --accent-terracotta-light: #d97b5f;
+      --accent-terracotta-dark: #a34a2f;
+      
+      --border-light: #e8e5df;
+      --border-medium: #d9d5cd;
+      
+      --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --font-mono: "SF Mono", Monaco, "Cascadia Code", monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
       font-family: var(--font-sans);
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1.7;
       color: var(--text-primary);
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 70px 24px;
-      background-color: var(--bg-primary);
+      background-color: var(--bg-cream);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Links with elegant underline and color transitions */
-    a {
+    /* Claude-style Layout with Sidebar */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar - Claude's signature left navigation */
+    .sidebar {
+      width: 280px;
+      background: var(--bg-warm);
+      border-right: 1px solid var(--border-light);
+      padding: 32px 24px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      margin-bottom: 40px;
+    }
+
+    .sidebar-logo {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 600;
       color: var(--text-primary);
       text-decoration: none;
-      border-bottom: 1px solid #d4cfc5;
-      transition: all 0.2s ease;
-    }
-
-    a:hover {
-      color: var(--accent-color);
-      border-bottom-color: var(--accent-color);
-    }
-
-    /* Header Layout */
-    .header {
       display: flex;
-      gap: 45px;
-      margin-bottom: 50px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-logo::before {
+      content: "";
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-terracotta) 0%, var(--accent-terracotta-light) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-section {
+      margin-bottom: 32px;
+    }
+
+    .nav-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      padding-left: 12px;
+    }
+
+    .nav-list {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-bottom: 4px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .nav-link:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .nav-link.active {
+      background: var(--bg-card);
+      color: var(--accent-terracotta);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.7;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .weather-widget {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .weather-icon {
+      font-size: 20px;
+    }
+
+    /* Main Content Area */
+    .main-content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 48px 64px;
+      max-width: 900px;
+    }
+
+    /* Hero Section - Claude's welcoming style */
+    .hero {
+      margin-bottom: 64px;
+    }
+
+    .hero-header {
+      display: flex;
+      gap: 40px;
       align-items: flex-start;
+      margin-bottom: 40px;
+    }
+
+    .profile-container {
+      position: relative;
     }
 
     .profile-pic {
-      width: 190px;
-      flex-shrink: 0;
+      width: 160px;
+      height: 160px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-medium);
+      border: 3px solid var(--bg-card);
     }
 
-    /* Softer, rounded image like Claude's UI elements */
     .profile-pic img {
       width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 16px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-      border: 1px solid var(--border-color);
+      height: 100%;
+      object-fit: cover;
     }
 
-    .info {
-      padding-top: 5px;
+    .status-badge {
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      width: 24px;
+      height: 24px;
+      background: #22c55e;
+      border: 3px solid var(--bg-card);
+      border-radius: 50%;
     }
 
-    /* Serif headers for that elegant, "bookish" Claude feel */
+    .hero-info {
+      flex: 1;
+      padding-top: 8px;
+    }
+
+    .hero-greeting {
+      font-size: 14px;
+      color: var(--accent-terracotta);
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
     h1 {
       font-family: var(--font-serif);
-      font-size: 32px;
-      font-weight: 500;
-      margin: 0 0 12px 0;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .title-line {
-      margin: 0 0 8px 0;
-      color: var(--text-secondary);
-      font-size: 15.5px;
-    }
-
-    .links {
-      margin-top: 20px;
-      font-size: 14.5px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      color: var(--border-color); /* Acts as separator color */
-    }
-    
-    .links a {
-      color: var(--accent-color);
-      border-bottom: none;
-      font-weight: 500;
-    }
-    
-    .links a:hover {
-      color: var(--accent-hover);
-      text-decoration: underline;
-    }
-
-    /* Content Paragraphs */
-    p {
-      margin-top: 0;
-      margin-bottom: 24px;
-      color: #333331;
-    }
-
-    strong {
+      font-size: 42px;
       font-weight: 600;
       color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg-warm);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .tag-highlight {
+      background: linear-gradient(135deg, rgba(196, 92, 62, 0.1) 0%, rgba(217, 123, 95, 0.1) 100%);
+      color: var(--accent-terracotta);
+    }
+
+    /* Action Buttons - Claude's pill-style buttons */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent-terracotta);
+      color: white;
+      box-shadow: 0 2px 8px rgba(196, 92, 62, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-terracotta-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(196, 92, 62, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-medium);
+    }
+
+    /* Bio Cards - Claude's card style */
+    .bio-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .bio-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-light);
+    }
+
+    .bio-card p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .bio-card p + p {
+      margin-top: 16px;
+    }
+
+    .bio-card strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .bio-card a {
+      color: var(--accent-terracotta);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .bio-card a:hover {
+      border-bottom-color: var(--accent-terracotta);
+    }
+
+    /* Section Styling */
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-terracotta) 0%, var(--accent-terracotta-light) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
     }
 
     .section-title {
       font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 500;
-      margin-top: 56px;
-      margin-bottom: 20px;
-      color: var(--text-primary);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 8px;
-    }
-
-    /* Lists for Papers, News, Experience */
-    ul {
-      padding-left: 24px;
-      margin-bottom: 40px;
-    }
-
-    li {
-      margin-bottom: 16px;
-      color: #333331;
-    }
-
-    .paper-title {
+      font-size: 26px;
       font-weight: 600;
       color: var(--text-primary);
     }
 
-    .venue {
+    .section-note {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
       font-style: italic;
+    }
+
+    /* Publication Cards - Claude's message-like cards */
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .pub-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+
+    .pub-card:hover {
+      box-shadow: var(--shadow-medium);
+      transform: translateY(-2px);
+    }
+
+    .pub-header {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .pub-badge {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: var(--bg-warm);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .pub-title-wrap {
+      flex: 1;
+    }
+
+    .pub-title {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .pub-authors {
+      font-size: 14px;
       color: var(--text-secondary);
+      margin-bottom: 4px;
     }
 
     .me {
+      color: var(--accent-terracotta);
       font-weight: 600;
-      color: var(--accent-color); /* Highlight your name subtlely */
     }
 
-    /* Action Links (PDF, Code, etc.) - Styled like soft badges */
-    .action-links {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      margin-top: 6px;
+    .pub-venue {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .pub-venue strong {
+      color: var(--accent-terracotta);
+      font-weight: 600;
+    }
+
+    .pub-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .pub-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--bg-warm);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .pub-link:hover {
+      background: var(--accent-terracotta);
+      color: white;
+    }
+
+    /* Experience Cards */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .exp-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      gap: 20px;
+    }
+
+    .exp-logo {
+      width: 48px;
+      height: 48px;
+      background: var(--bg-warm);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .exp-content {
+      flex: 1;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .exp-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .exp-title a {
+      color: var(--accent-terracotta);
+      text-decoration: none;
+    }
+
+    .exp-date {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      padding: 4px 10px;
+      background: var(--bg-warm);
+      border-radius: 12px;
+    }
+
+    .exp-role {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .exp-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Project Cards */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+
+    .project-card:hover {
+      box-shadow: var(--shadow-medium);
+    }
+
+    .project-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .project-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-terracotta) 0%, var(--accent-terracotta-light) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+    }
+
+    .project-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .project-links {
       display: flex;
       gap: 8px;
     }
 
-    .action-links a {
-      background-color: var(--bg-secondary);
-      color: var(--text-secondary);
-      padding: 3px 8px;
-      border-radius: 6px;
-      border: 1px solid transparent;
+    /* Awards & Service */
+    .simple-list {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 8px 0;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .simple-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .simple-item:last-child {
       border-bottom: none;
-      transition: all 0.2s;
     }
 
-    .action-links a:hover {
-      background-color: white;
-      border-color: var(--border-color);
-      color: var(--accent-color);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    .simple-icon {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-terracotta);
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
-    /* Hidden Blocks (Abstract, BibTeX) */
-    .hidden-block {
-      display: none;
-      background-color: var(--bg-secondary);
-      padding: 16px 20px;
-      font-size: 14px;
-      margin-top: 10px;
-      border-radius: 8px;
+    .simple-text {
+      font-size: 15px;
       color: var(--text-secondary);
     }
 
-    pre {
-      font-family: var(--font-mono);
-      white-space: pre-wrap;
-      margin: 0;
-      font-size: 13px;
+    .simple-text strong {
+      color: var(--text-primary);
+    }
+
+    .simple-text a {
+      color: var(--accent-terracotta);
+      text-decoration: none;
+      font-weight: 500;
     }
 
     /* Footer */
     .footer {
       margin-top: 80px;
-      padding-top: 30px;
-      border-top: 1px solid var(--border-color);
-      font-size: 13.5px;
-      color: var(--text-secondary);
+      padding-top: 40px;
+      border-top: 1px solid var(--border-light);
       text-align: center;
+    }
+
+    .footer-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .weather-info {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      color: #888884;
-      background: var(--bg-secondary);
-      padding: 4px 12px;
-      border-radius: 12px;
+    .footer-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    .footer-text a {
+      color: var(--accent-terracotta);
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
     /* Responsive */
-    @media (max-width: 650px) {
-      .header {
-        flex-direction: column;
-        gap: 25px;
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 240px;
       }
-      .profile-pic {
-        width: 140px;
+      .main-content {
+        margin-left: 240px;
+        padding: 32px 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 24px;
+      }
+      .hero-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
       h1 {
-        font-size: 28px;
+        font-size: 32px;
+      }
+      .project-grid {
+        grid-template-columns: 1fr;
       }
     }
-  </style>
 
-  <script>
-    function toggleBlock(id) {
-      var block = document.getElementById(id);
-      block.style.display = (block.style.display === 'block') ? 'none' : 'block';
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
     }
-  </script>
+
+    /* Selection color */
+    ::selection {
+      background: rgba(196, 92, 62, 0.2);
+      color: var(--text-primary);
+    }
+  </style>
 </head>
 
 <body>
-
-  <div class="header">
-    <div class="profile-pic">
-      <a href="images/zhuoyun_du.jpg">
-        <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du">
-      </a>
-    </div>
-    <div class="info">
-      <h1>Zhuoyun Du 杜卓耘</h1>
-      <p class="title-line">Master's Student, Computer Science, Zhejiang University</p>
-      <p class="title-line">LLM Algorithm Intern, ByteDance</p>
-      <div class="links">
-        <a href="mailto:duzy@zju.edu.cn">Email</a> <span style="color:var(--border-color)">|</span>
-        <a href="assets/cv_dzy.pdf">CV</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://github.com/XiaoDu-flying">GitHub</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> <span style="color:var(--border-color)">|</span>
-        <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="#" class="sidebar-logo">
+          <span>ZD</span>
+        </a>
       </div>
-    </div>
-  </div>
 
-  <p>
-    I am a second-year master's student in <strong>Computer Science</strong> at
-    <a href="https://www.zju.edu.cn/">Zhejiang University</a>. I currently work with <a href="https://zjuvag.org/authors/weichen/">Prof. Wei Chen</a> at
-    <a href="https://zjuvai.cn/">ZJUVAI</a> within the <a href="http://www.en.cs.zju.edu.cn/">State Key Laboratory of CAD&CG</a>.
-    I am also an LLM Algorithm Intern at <a href="https://www.bytedance.com/"><strong>ByteDance</strong></a> (Jindouyun Talent Program),
-    following a fulfilling internship with the Taowise team at <a href="https://www.alibaba.com/"><strong>Alibaba</strong></a>.
-  </p>
+      <nav class="nav-section">
+        <div class="nav-label">Navigation</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="#about" class="nav-link active">
+              <span class="nav-icon">👤</span>
+              About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#publications" class="nav-link">
+              <span class="nav-icon">📄</span>
+              Publications
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#experience" class="nav-link">
+              <span class="nav-icon">💼</span>
+              Experience
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#projects" class="nav-link">
+              <span class="nav-icon">🚀</span>
+              Projects
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#awards" class="nav-link">
+              <span class="nav-icon">🏆</span>
+              Awards
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-  <p>
-    Previously, I received my Bachelor's degree from <a href="https://english.jnu.edu.cn/">Jinan University</a>. I also served as a research assistant on the
-    <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project at
-    <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>,
-    advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
-    <a href="https://qianc62.github.io/">Prof. Chen Qian</a>.
-  </p>
+      <nav class="nav-section">
+        <div class="nav-label">Connect</div>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="mailto:duzy@zju.edu.cn" class="nav-link">
+              <span class="nav-icon">✉️</span>
+              Email
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ" class="nav-link">
+              <span class="nav-icon">🎓</span>
+              Scholar
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="https://github.com/XiaoDu-flying" class="nav-link">
+              <span class="nav-icon">💻</span>
+              GitHub
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43" class="nav-link">
+              <span class="nav-icon">📝</span>
+              Blog
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="assets/cv_dzy.pdf" class="nav-link">
+              <span class="nav-icon">📋</span>
+              CV
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-  <p>
-    <strong>Prospective PhD programs:</strong> Seeking Ph.D. positions for Fall 2027. Open to collaborations & recommendations.<br>
-    <strong>Prospective interns:</strong> Seeking Research Interns for LLMs & Autonomous Agents. <a href="mailto:duzy@zju.edu.cn">Email me</a>.
-  </p>
-
-  <p>
-    <strong>Research Focus:</strong> Designing LLM-based autonomous agents that <strong>collaborate effectively</strong> to tackle complex tasks (software development, self-evolution, and latent-space reasoning/communication).
-  </p>
-
-  <div class="section-title">Selected Publications</div>
-  <p style="color: var(--text-secondary); font-size: 14px;">(* denotes equal contribution)</p>
-  <ul>
-    <li>
-      <span class="paper-title">Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</span>. <br>
-      Huiyu Bai*, Runze Wang*, <span class="me">Zhuoyun Du*</span>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2511.20056">paper</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Enabling Agents to Communicate Entirely in Latent Space</span>. <br>
-      <span class="me">Zhuoyun Du*</span>, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2511.09149">paper</a>
-        <a href="https://github.com/XiaoDu-flying/Interlat">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</span>. <br>
-      Yuyang Xu, Yi Cheng, Haochao Ying, <span class="me">Zhuoyun Du</span>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu. <br>
-      <span class="venue">arXiv Preprint</span>, 2025.
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2508.12604">paper</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">LLMs Can Simulate Standardized Patients via Agent Coevolution</span>. <br>
-      <span class="me">Zhuoyun Du*</span>, Lujie Zheng*, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying. <br>
-      <span class="venue">ACL</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2412.11716">paper</a>
-        <a href="https://github.com/ZJUMAI/EvoPatient">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Multi-Agent Collaboration via Cross-Team Orchestration</span>. <br>
-      <span class="me">Zhuoyun Du*</span>, Chen Qian*, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang. <br>
-      <span class="venue">ACL</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2406.08979">paper</a>
-        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Scaling Large-Language-Model-based Multi-Agent Collaboration</span>. <br>
-      Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun. <br>
-      <span class="venue">ICLR</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2406.07155">paper</a>
-        <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">Autonomous Agents for Collaborative Task under Information Asymmetry</span>. <br>
-      Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Chen Qian. <br>
-      <span class="venue">NeurIPS</span>, 2024. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2406.14928">paper</a>
-        <a href="https://github.com/thinkwee/iAgents">code</a>
-      </span>
-    </li>
-  </ul>
-
-  <div class="section-title">Experience</div>
-  <ul>
-    <li>
-      <strong>Data Department @ <a href="https://www.bytedance.com/">ByteDance</a></strong> | LLM Algorithm Intern (Jindouyun Talent Program)<br>
-      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Mar 2026 – Present</span><br>
-      Focusing on LLM post-training (CT, SFT, RLHF/DPO) and constrained reinforcement learning in complex interactive environments. Researching preference alignment and multi-agent frameworks to tackle hallucination control, reward hacking, and policy compliance in high-stakes game-theoretic scenarios.
-    </li>
-    <li>
-      <strong>Future Life Lab @ Taotian, <a href="https://www.alibaba.com/">Alibaba Group</a></strong> | Research Intern<br>
-      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Jan 2025 – Mar 2026</span><br>
-      Spearheaded research on novel multi-agent collaborative paradigms, emphasizing latent space reasoning and communication efficiency. Designed and optimized Supervised Fine-Tuning (SFT) pipelines to substantially enhance LLM reasoning capabilities and task-solving performance in complex scenarios.
-    </li>
-    <li>
-      <strong>THUNLP @ <a href="https://nlp.csai.tsinghua.edu.cn/">Tsinghua University</a></strong> | Research Assistant<br>
-      <span style="color: var(--text-secondary); font-size: 14px; display: inline-block; margin-bottom: 4px;">Nov 2023 – Aug 2024</span><br>
-      Contributed to the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and related studies with 32k stars on LLM-based multi-agent systems (especially Croto & MacNet), focusing on cross-agent and cross-team collaboration.
-    </li>
-  </ul>
-
-  <div class="section-title">Projects</div>
-  <ul>
-    <li>
-      <strong>Multi-Agent Research Interactive E-book:</strong> A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems, covering agent communication, organizational structures, and co-evolution mechanisms.
-      <div class="action-links">
-        <a href="https://thinkwee.top/multiagent_ebook">Website</a>
-        <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">Dataset</a>
+      <div class="sidebar-footer">
+        <div class="weather-widget" id="weather-widget">
+          <span class="weather-icon">🌤️</span>
+          <span id="weather-text">Hangzhou · Loading...</span>
+        </div>
       </div>
-    </li>
-    <li>
-      <strong>ChatDev & Croto & MACNET:</strong> Actively contributed to the development of <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> and its extended branches with 32k stars, serving as the leader for one key branch (Croto).
-      <div class="action-links">
-        <a href="https://github.com/OpenBMB/ChatDev">Code</a>
-        <a href="https://arxiv.org/abs/2307.07924">Paper</a>
-        <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai">Andrew Ng</a>
-        <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7">DeepMind</a>
-      </div>
-    </li>
-  </ul>
+    </aside>
 
-  <div class="section-title">Awards & Honors</div>
-  <ul>
-    <li><strong>[2025]</strong> National Scholarship (TOP 0.2%)</li>
-    <li><strong>[2025]</strong> Outstanding Student Scholarship</li>
-    <li><strong>[2024]</strong> First-Class Scholarship (Outstanding Graduate Student Award)</li>
-    <li><strong>[2023]</strong> Second-Class Scholarship</li>
-    <li><strong>[2022]</strong> Second-Class Scholarship</li>
-  </ul>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Hero Section -->
+      <section class="hero" id="about">
+        <div class="hero-header">
+          <div class="profile-container">
+            <div class="profile-pic">
+              <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du">
+            </div>
+            <div class="status-badge"></div>
+          </div>
+          <div class="hero-info">
+            <div class="hero-greeting">Hello, I'm</div>
+            <h1>Zhuoyun Du <span style="font-weight: 400; color: var(--text-muted);">杜卓耘</span></h1>
+            <p class="hero-subtitle">Master's Student in Computer Science at Zhejiang University</p>
+            <div class="hero-tags">
+              <span class="tag tag-highlight">🤖 LLM Research</span>
+              <span class="tag">Multi-Agent Systems</span>
+              <span class="tag">ByteDance Intern</span>
+            </div>
+            <div class="action-bar">
+              <a href="mailto:duzy@zju.edu.cn" class="btn btn-primary">Get in Touch</a>
+              <a href="assets/cv_dzy.pdf" class="btn btn-secondary">Download CV</a>
+            </div>
+          </div>
+        </div>
 
-  <div class="section-title">Academic Service</div>
-  <ul>
-    <li><strong>Reviewer / Program Committee:</strong> <a href="https://neurips.cc/Conferences/2025">NeurIPS 2025</a>, <a href="https://iclr.cc/Conferences/2026">ICLR 2026</a></li>
-  </ul>
+        <div class="bio-grid">
+          <div class="bio-card">
+            <p>
+              I am a second-year master's student in <strong>Computer Science</strong> at
+              <a href="https://www.zju.edu.cn/">Zhejiang University</a>. I currently work with <a href="https://zjuvag.org/authors/weichen/">Prof. Wei Chen</a> at
+              <a href="https://zjuvai.cn/">ZJUVAI</a> within the <a href="http://www.en.cs.zju.edu.cn/">State Key Laboratory of CAD&CG</a>.
+              I am also an LLM Algorithm Intern at <a href="https://www.bytedance.com/"><strong>ByteDance</strong></a> (Jindouyun Talent Program),
+              following a fulfilling internship with the Taowise team at <a href="https://www.alibaba.com/"><strong>Alibaba</strong></a>.
+            </p>
+          </div>
+          <div class="bio-card">
+            <p>
+              Previously, I received my Bachelor's degree from <a href="https://english.jnu.edu.cn/">Jinan University</a>. I also served as a research assistant on the
+              <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project at
+              <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>,
+              advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
+              <a href="https://qianc62.github.io/">Prof. Chen Qian</a>.
+            </p>
+          </div>
+          <div class="bio-card">
+            <p>
+              <strong>Research Focus:</strong> Designing LLM-based autonomous agents that <strong>collaborate effectively</strong> to tackle complex tasks (software development, self-evolution, and latent-space reasoning/communication).
+            </p>
+            <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-light);">
+              <strong>Prospective PhD programs:</strong> Seeking Ph.D. positions for Fall 2027. Open to collaborations & recommendations.<br>
+              <strong>Prospective interns:</strong> Seeking Research Interns for LLMs & Autonomous Agents. <a href="mailto:duzy@zju.edu.cn">Email me</a>.
+            </p>
+          </div>
+        </div>
+      </section>
 
-  <p style="margin-top: 60px; font-size: 14px; color: var(--text-secondary); text-align: center;">
-    Beyond research, I enjoy soccer, fencing, snowboarding, billiards, playing the piano, photography, and physics. Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a>. Last updated: March 2026.
-  </p>
+      <!-- Publications Section -->
+      <section class="section" id="publications">
+        <div class="section-header">
+          <div class="section-icon">📄</div>
+          <h2 class="section-title">Selected Publications</h2>
+        </div>
+        <p class="section-note">* denotes equal contribution</p>
 
-  <div class="footer">
-    <div style="filter: grayscale(100%) opacity(0.5); transition: opacity 0.3s;" onmouseover="this.style.filter='grayscale(0%) opacity(1)'" onmouseout="this.style.filter='grayscale(100%) opacity(0.5)'">
-      <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
-    </div>
+        <div class="pub-list">
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">📊</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</h3>
+                <p class="pub-authors">Huiyu Bai*, Runze Wang*, <span class="me">Zhuoyun Du*</span>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao</p>
+                <p class="pub-venue"><strong>arXiv Preprint</strong>, 2025</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2511.20056" class="pub-link">📄 Paper</a>
+            </div>
+          </article>
 
-    <div>
-      &copy; 2026 Zhuoyun Du. <br>
-    </div>
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">🔄</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">Enabling Agents to Communicate Entirely in Latent Space</h3>
+                <p class="pub-authors"><span class="me">Zhuoyun Du*</span>, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying</p>
+                <p class="pub-venue"><strong>arXiv Preprint</strong>, 2025</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2511.09149" class="pub-link">📄 Paper</a>
+              <a href="https://github.com/XiaoDu-flying/Interlat" class="pub-link">💻 Code</a>
+            </div>
+          </article>
 
-    <div class="weather-info" id="weather-line">Location: Hangzhou | Weather: Loading...</div>
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">🎯</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</h3>
+                <p class="pub-authors">Yuyang Xu, Yi Cheng, Haochao Ying, <span class="me">Zhuoyun Du</span>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu</p>
+                <p class="pub-venue"><strong>arXiv Preprint</strong>, 2025</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2508.12604" class="pub-link">📄 Paper</a>
+            </div>
+          </article>
+
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">🏥</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">LLMs Can Simulate Standardized Patients via Agent Coevolution</h3>
+                <p class="pub-authors"><span class="me">Zhuoyun Du*</span>, Lujie Zheng*, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying</p>
+                <p class="pub-venue"><strong>ACL</strong>, 2025</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2412.11716" class="pub-link">📄 Paper</a>
+              <a href="https://github.com/ZJUMAI/EvoPatient" class="pub-link">💻 Code</a>
+            </div>
+          </article>
+
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">🤝</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">Multi-Agent Collaboration via Cross-Team Orchestration</h3>
+                <p class="pub-authors"><span class="me">Zhuoyun Du*</span>, Chen Qian*, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang</p>
+                <p class="pub-venue"><strong>ACL</strong>, 2025</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2406.08979" class="pub-link">📄 Paper</a>
+              <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="pub-link">💻 Code</a>
+            </div>
+          </article>
+
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">📈</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">Scaling Large-Language-Model-based Multi-Agent Collaboration</h3>
+                <p class="pub-authors">Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun</p>
+                <p class="pub-venue"><strong>ICLR</strong>, 2025</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2406.07155" class="pub-link">📄 Paper</a>
+              <a href="https://github.com/OpenBMB/ChatDev/tree/macnet" class="pub-link">💻 Code</a>
+            </div>
+          </article>
+
+          <article class="pub-card">
+            <div class="pub-header">
+              <div class="pub-badge">🧩</div>
+              <div class="pub-title-wrap">
+                <h3 class="pub-title">Autonomous Agents for Collaborative Task under Information Asymmetry</h3>
+                <p class="pub-authors">Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <span class="me">Zhuoyun Du</span>, Weize Chen, Cheng Yang, Chen Qian</p>
+                <p class="pub-venue"><strong>NeurIPS</strong>, 2024</p>
+              </div>
+            </div>
+            <div class="pub-actions">
+              <a href="https://arxiv.org/abs/2406.14928" class="pub-link">📄 Paper</a>
+              <a href="https://github.com/thinkwee/iAgents" class="pub-link">💻 Code</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section class="section" id="experience">
+        <div class="section-header">
+          <div class="section-icon">💼</div>
+          <h2 class="section-title">Experience</h2>
+        </div>
+
+        <div class="exp-list">
+          <article class="exp-card">
+            <div class="exp-logo">🎵</div>
+            <div class="exp-content">
+              <div class="exp-header">
+                <h3 class="exp-title">Data Department @ <a href="https://www.bytedance.com/">ByteDance</a></h3>
+                <span class="exp-date">Mar 2026 – Present</span>
+              </div>
+              <p class="exp-role">LLM Algorithm Intern (Jindouyun Talent Program)</p>
+              <p class="exp-desc">Focusing on LLM post-training (CT, SFT, RLHF/DPO) and constrained reinforcement learning in complex interactive environments. Researching preference alignment and multi-agent frameworks to tackle hallucination control, reward hacking, and policy compliance in high-stakes game-theoretic scenarios.</p>
+            </div>
+          </article>
+
+          <article class="exp-card">
+            <div class="exp-logo">🅰️</div>
+            <div class="exp-content">
+              <div class="exp-header">
+                <h3 class="exp-title">Future Life Lab @ Taotian, <a href="https://www.alibaba.com/">Alibaba Group</a></h3>
+                <span class="exp-date">Jan 2025 – Mar 2026</span>
+              </div>
+              <p class="exp-role">Research Intern</p>
+              <p class="exp-desc">Spearheaded research on novel multi-agent collaborative paradigms, emphasizing latent space reasoning and communication efficiency. Designed and optimized Supervised Fine-Tuning (SFT) pipelines to substantially enhance LLM reasoning capabilities and task-solving performance in complex scenarios.</p>
+            </div>
+          </article>
+
+          <article class="exp-card">
+            <div class="exp-logo">🎓</div>
+            <div class="exp-content">
+              <div class="exp-header">
+                <h3 class="exp-title">THUNLP @ <a href="https://nlp.csai.tsinghua.edu.cn/">Tsinghua University</a></h3>
+                <span class="exp-date">Nov 2023 – Aug 2024</span>
+              </div>
+              <p class="exp-role">Research Assistant</p>
+              <p class="exp-desc">Contributed to the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project and related studies with 32k stars on LLM-based multi-agent systems (especially Croto & MacNet), focusing on cross-agent and cross-team collaboration.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section class="section" id="projects">
+        <div class="section-header">
+          <div class="section-icon">🚀</div>
+          <h2 class="section-title">Projects</h2>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-header">
+              <div class="project-icon">📚</div>
+              <h3 class="project-title">Multi-Agent Research Interactive E-book</h3>
+            </div>
+            <p class="project-desc">A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems.</p>
+            <div class="project-links">
+              <a href="https://thinkwee.top/multiagent_ebook" class="pub-link">🌐 Website</a>
+              <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv" class="pub-link">📊 Dataset</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-header">
+              <div class="project-icon">💬</div>
+              <h3 class="project-title">ChatDev & Croto & MACNET</h3>
+            </div>
+            <p class="project-desc">Actively contributed to the development of ChatDev and its extended branches with 32k stars, serving as the leader for one key branch (Croto). Featured by Andrew Ng and DeepMind.</p>
+            <div class="project-links">
+              <a href="https://github.com/OpenBMB/ChatDev" class="pub-link">💻 Code</a>
+              <a href="https://arxiv.org/abs/2307.07924" class="pub-link">📄 Paper</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Awards Section -->
+      <section class="section" id="awards">
+        <div class="section-header">
+          <div class="section-icon">🏆</div>
+          <h2 class="section-title">Awards & Honors</h2>
+        </div>
+
+        <div class="simple-list">
+          <div class="simple-item">
+            <div class="simple-icon"></div>
+            <span class="simple-text"><strong>[2025]</strong> National Scholarship (TOP 0.2%)</span>
+          </div>
+          <div class="simple-item">
+            <div class="simple-icon"></div>
+            <span class="simple-text"><strong>[2025]</strong> Outstanding Student Scholarship</span>
+          </div>
+          <div class="simple-item">
+            <div class="simple-icon"></div>
+            <span class="simple-text"><strong>[2024]</strong> First-Class Scholarship (Outstanding Graduate Student Award)</span>
+          </div>
+          <div class="simple-item">
+            <div class="simple-icon"></div>
+            <span class="simple-text"><strong>[2023]</strong> Second-Class Scholarship</span>
+          </div>
+          <div class="simple-item">
+            <div class="simple-icon"></div>
+            <span class="simple-text"><strong>[2022]</strong> Second-Class Scholarship</span>
+          </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 40px;">
+          <div class="section-icon">📝</div>
+          <h2 class="section-title">Academic Service</h2>
+        </div>
+
+        <div class="simple-list">
+          <div class="simple-item">
+            <div class="simple-icon"></div>
+            <span class="simple-text"><strong>Reviewer / Program Committee:</strong> <a href="https://neurips.cc/Conferences/2025">NeurIPS 2025</a>, <a href="https://iclr.cc/Conferences/2026">ICLR 2026</a></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-text">
+            Beyond research, I enjoy soccer, fencing, snowboarding, billiards, playing the piano, photography, and physics. 
+            Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a>.
+          </p>
+          <p class="footer-copy">© 2026 Zhuoyun Du · Last updated: March 2026</p>
+        </div>
+      </footer>
+    </main>
   </div>
 
   <script>
-    /* Minimalist weather fetcher */
+    // Weather widget
     const AUTHOR = { label: 'Hangzhou', lat: 30.2741, lon: 120.1551 };
 
-    function codeToDesc(code) {
+    function codeToEmoji(code) {
       const map = {
-        0:'Clear', 1:'Mainly Clear', 2:'Partly Cloudy', 3:'Overcast',
-        45:'Fog', 48:'Rime Fog',
-        51:'Light Drizzle', 53:'Mod Drizzle', 55:'Dense Drizzle',
-        61:'Light Rain', 63:'Mod Rain', 65:'Heavy Rain',
-        71:'Light Snow', 73:'Mod Snow', 75:'Heavy Snow',
-        80:'Showers', 81:'Showers', 82:'Violent Showers',
-        95:'Thunderstorm', 96:'Thunderstorm', 99:'Thunderstorm'
+        0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+        45: '🌫️', 48: '🌫️',
+        51: '🌦️', 53: '🌧️', 55: '🌧️',
+        61: '🌧️', 63: '🌧️', 65: '🌧️',
+        71: '🌨️', 73: '🌨️', 75: '🌨️',
+        80: '🌦️', 81: '🌧️', 82: '⛈️',
+        95: '⛈️', 96: '⛈️', 99: '⛈️'
       };
-      return map[code] || 'Unknown';
+      return map[code] || '🌡️';
     }
 
     async function fetchWeather() {
@@ -458,14 +1185,37 @@
         const res = await fetch(url);
         const data = await res.json();
         const cw = data.current_weather;
-        document.getElementById('weather-line').innerText = `${AUTHOR.label} · ${Math.round(cw.temperature)}°C, ${codeToDesc(cw.weathercode)}`;
+        document.getElementById('weather-text').innerText = `${AUTHOR.label} · ${Math.round(cw.temperature)}°C`;
+        document.querySelector('.weather-icon').innerText = codeToEmoji(cw.weathercode);
       } catch (e) {
-        document.getElementById('weather-line').style.display = 'none';
+        document.getElementById('weather-widget').style.display = 'none';
       }
     }
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Initialize
     window.onload = fetchWeather;
   </script>
-
 </body>
 
 </html>
