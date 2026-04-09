@@ -8,22 +8,28 @@
   <meta name="author" content="Zhuoyun Du">
   <title>Zhuoyun Du | 杜卓耘</title>
 
+  <!-- 引入精细的 Web 字体 (Inter & Lora) 以确保跨设备的渲染一致性和优雅的字重 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+
   <style>
     /* Claude-inspired Warm Minimalist Theme */
     :root {
       --bg-primary: #fcfaf6;
       --bg-secondary: #f4f1eb;
-      /* 将最深的颜色留给标题和加粗文本 */
-      --text-primary: #1a1a18; 
+      /* 进一步调柔和最深的颜色，去掉“死黑”感，用于标题和加粗 */
+      --text-primary: #2d2d2a; 
       /* 正文使用稍浅一点的炭灰色，拉开对比 */
-      --text-body: #40403a; 
-      --text-secondary: #63635e;
+      --text-body: #4a4a46; 
+      --text-secondary: #6b6b66;
       --accent-color: #cb654b; /* Claude's signature rust/terracotta */
       --accent-hover: #a8513b;
       --border-color: #e6e2d8;
       
+      /* 强制使用引入的优雅字体 */
       --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-serif: "Georgia", "Times New Roman", ui-serif, serif;
+      --font-serif: "Lora", "Georgia", "Times New Roman", ui-serif, serif;
       --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     }
 
@@ -123,9 +129,9 @@
       color: var(--text-body);
     }
 
-    /* Claude's refined bold styling */
+    /* Claude's refined bold styling: 真正的核心，使用 600 字重配合 Inter 字体 */
     strong, b {
-      font-weight: 600;
+      font-weight: 600; 
       color: var(--text-primary);
       letter-spacing: -0.01em;
     }
@@ -164,7 +170,7 @@
 
     .me {
       font-weight: 600;
-      color: var(--accent-color); /* Highlight your name subtlely */
+      color: var(--accent-color); /* Highlight your name subtly */
     }
 
     /* Action Links (PDF, Code, etc.) - Styled like soft badges */
@@ -339,10 +345,6 @@
       <span class="paper-title">Learning to Evolve: A Self-Improving Framework for Multi-Agent Systems via Textual Parameter Graph Optimization</span>. <br>
       Shan He, Runze Wang, <span class="me">Zhuoyun Du</span>, Huiyu BAI, zouying cao, YuCheng, Bo Zheng. <br>
       <span class="venue">ACL</span>, 2026. 
-      <!-- <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2511.09149">paper</a>
-        <a href="https://github.com/XiaoDu-flying/Interlat">code</a>
-      </span> -->
     </li>
     <li>
       <span class="paper-title">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</span>. <br>
