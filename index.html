@@ -48,6 +48,7 @@
       padding: 60px 24px 100px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden; /* 防止全屏展开时产生横向滚动条 */
     }
 
     a {
@@ -208,7 +209,6 @@
       text-align: right;
     }
 
-    /* 按钮容器与样式 */
     .card-actions {
       display: flex;
       gap: 12px;
@@ -233,7 +233,6 @@
       transform: translateY(-1px);
     }
 
-    /* 新增的线框按钮，用于放置 Code 等次要操作 */
     .btn-outline {
       background-color: transparent;
       color: var(--text-main);
@@ -250,6 +249,93 @@
     .btn-outline:hover {
       background-color: var(--text-main);
       color: var(--bg-page);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================
+       Featured Project (Scroll Expansion)
+       ========================================= */
+    .full-bleed-wrapper {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      padding: 0 24px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      margin-bottom: 80px;
+    }
+
+    .expand-box {
+      background-color: var(--text-main);
+      color: var(--bg-page);
+      width: 100%;
+      max-width: 960px;
+      border-radius: 32px;
+      padding: 80px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      will-change: max-width, border-radius;
+    }
+
+    .expand-box h2 {
+      font-family: var(--font-serif);
+      font-size: 42px;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .expand-box p {
+      font-size: 16.5px;
+      font-family: var(--font-sans);
+      color: #A3A19E;
+      margin: 0 0 36px 0;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    .expand-box p strong {
+      color: var(--bg-page);
+    }
+
+    .expand-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .btn-light {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .btn-light:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-light {
+      background-color: transparent;
+      color: var(--bg-page);
+      border: 1px solid rgba(244, 240, 235, 0.3);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .btn-outline-light:hover {
+      border-color: var(--bg-page);
       transform: translateY(-1px);
     }
 
@@ -367,6 +453,9 @@
       }
       .list-item-title, .list-item-content {
         width: 100%;
+      }
+      .expand-box h2 {
+        font-size: 32px;
       }
     }
   </style>
@@ -552,28 +641,32 @@
     </div>
   </div>
 
-  <!-- Projects -->
-  <div class="section-header fade-up">Projects</div>
+  <!-- Featured Project (Scroll Expansion) -->
+  <div class="section-header fade-up">Featured Project</div>
+
+  <div class="full-bleed-wrapper" id="expansionWrapper">
+    <div class="expand-box" id="expansionBox">
+      <h2>ChatDev & Croto</h2>
+      <p>
+        Pioneering LLM-based multi-agent collaboration. Actively contributed to the development and served as the leader for the Croto branch.<br><br>
+        <strong>32,000+ Stars on GitHub.</strong> Featured by Andrew Ng & DeepMind.
+      </p>
+      <div class="expand-actions">
+        <a href="https://github.com/OpenBMB/ChatDev" class="btn-light">View on GitHub &rarr;</a>
+        <a href="https://arxiv.org/abs/2307.07924" class="btn-outline-light">Read Paper</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Projects -->
   <div class="list-section fade-up">
     <div class="list-item">
       <div class="list-item-title">Multi-Agent E-book</div>
       <div class="list-item-content">
-        A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems, covering agent communication, organizational structures, and co-evolution mechanisms.
+        A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format. Organizes cutting-edge research into task-solving-oriented and social-simulation-oriented systems.
         <div class="list-action-links">
           <a href="https://thinkwee.top/multiagent_ebook">Website</a>
           <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">Dataset</a>
-        </div>
-      </div>
-    </div>
-    <div class="list-item">
-      <div class="list-item-title">ChatDev & Croto & MACNET</div>
-      <div class="list-item-content">
-        Actively contributed to the development of ChatDev and its extended branches with 32k stars, serving as the leader for one key branch (Croto).
-        <div class="list-action-links">
-          <a href="https://github.com/OpenBMB/ChatDev">Code</a>
-          <a href="https://arxiv.org/abs/2307.07924">Paper</a>
-          <a href="https://www.agentico.ai/post/google-andrew-ng-on-agentic-ai">Andrew Ng</a>
-          <a href="https://medium.com/@openbmb/modelbest-adopts-the-llm-based-ai-agents-to-launch-chatdev-its-first-saas-product-fd70f3b969f7">DeepMind</a>
         </div>
       </div>
     </div>
@@ -630,6 +723,9 @@
   </div>
 
   <script>
+    /* =========================================
+       Fade-up Animation Logic
+       ========================================= */
     document.addEventListener("DOMContentLoaded", function() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -643,6 +739,54 @@
       document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     });
 
+    /* =========================================
+       Scroll Expansion Logic
+       ========================================= */
+    const expansionWrapper = document.getElementById('expansionWrapper');
+    const expansionBox = document.getElementById('expansionBox');
+    let isTicking = false;
+
+    function updateExpansion() {
+      if (!expansionWrapper || !expansionBox) return;
+
+      const rect = expansionWrapper.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // 当区块进入视口大约 20% 的位置时开始扩展
+      let progress = 1 - ((rect.top - (windowHeight * 0.2)) / (windowHeight * 0.6));
+      progress = Math.max(0, Math.min(1, progress));
+
+      // 计算当前宽度和圆角
+      const startWidth = Math.min(960, window.innerWidth);
+      const endWidth = window.innerWidth;
+      const currentMaxWidth = startWidth + (endWidth - startWidth) * progress;
+
+      // 圆角从 32px 平滑过渡到 0px
+      const currentRadius = 32 - (32 * progress);
+      // Wrapper 的 padding 从 24px 平滑过渡到 0px
+      const currentPadding = 24 - (24 * progress);
+
+      // 应用样式
+      expansionBox.style.maxWidth = `${currentMaxWidth}px`;
+      expansionBox.style.borderRadius = `${currentRadius}px`;
+      expansionWrapper.style.padding = `0 ${currentPadding}px`;
+
+      isTicking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(updateExpansion);
+        isTicking = true;
+      }
+    });
+
+    // 初始化执行一次
+    updateExpansion();
+
+    /* =========================================
+       Weather Fetcher Logic
+       ========================================= */
     const AUTHOR = { label: 'Hangzhou', lat: 30.2741, lon: 120.1551 };
 
     function codeToDesc(code) {
