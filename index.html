@@ -13,7 +13,10 @@
     :root {
       --bg-primary: #fcfaf6;
       --bg-secondary: #f4f1eb;
-      --text-primary: #1e1e1e;
+      /* 将最深的颜色留给标题和加粗文本 */
+      --text-primary: #1a1a18; 
+      /* 正文使用稍浅一点的炭灰色，拉开对比 */
+      --text-body: #40403a; 
       --text-secondary: #63635e;
       --accent-color: #cb654b; /* Claude's signature rust/terracotta */
       --accent-hover: #a8513b;
@@ -28,7 +31,7 @@
       font-family: var(--font-sans);
       font-size: 15px;
       line-height: 1.7;
-      color: var(--text-primary);
+      color: var(--text-body);
       max-width: 820px;
       margin: 0 auto;
       padding: 70px 24px;
@@ -117,12 +120,14 @@
     p {
       margin-top: 0;
       margin-bottom: 24px;
-      color: #333331;
+      color: var(--text-body);
     }
 
-    strong {
+    /* Claude's refined bold styling */
+    strong, b {
       font-weight: 600;
       color: var(--text-primary);
+      letter-spacing: -0.01em;
     }
 
     .section-title {
@@ -144,7 +149,7 @@
 
     li {
       margin-bottom: 16px;
-      color: #333331;
+      color: var(--text-body);
     }
 
     .paper-title {
@@ -304,28 +309,12 @@
   <p style="color: var(--text-secondary); font-size: 14px;">(* denotes equal contribution)</p>
   <ul>
     <li>
-      <span class="paper-title">Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</span>. <br>
-      Huiyu Bai*, Runze Wang*, <span class="me">Zhuoyun Du*</span>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. 
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2511.20056">paper</a>
-      </span>
-    </li>
-    <li>
       <span class="paper-title">Enabling Agents to Communicate Entirely in Latent Space</span>. <br>
       <span class="me">Zhuoyun Du*</span>, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying. <br>
-      <span class="venue">arXiv Preprint</span>, 2025. 
+      <span class="venue">ACL</span>, 2026. 
       <span class="action-links" style="display:inline-flex; margin-left: 6px;">
         <a href="https://arxiv.org/abs/2511.09149">paper</a>
         <a href="https://github.com/XiaoDu-flying/Interlat">code</a>
-      </span>
-    </li>
-    <li>
-      <span class="paper-title">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</span>. <br>
-      Yuyang Xu, Yi Cheng, Haochao Ying, <span class="me">Zhuoyun Du</span>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu. <br>
-      <span class="venue">arXiv Preprint</span>, 2025.
-      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
-        <a href="https://arxiv.org/abs/2508.12604">paper</a>
       </span>
     </li>
     <li>
@@ -344,6 +333,23 @@
       <span class="action-links" style="display:inline-flex; margin-left: 6px;">
         <a href="https://arxiv.org/abs/2406.08979">paper</a>
         <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>
+      </span>
+    </li>
+    <li>
+      <span class="paper-title">Learning to Evolve: A Self-Improving Framework for Multi-Agent Systems via Textual Parameter Graph Optimization</span>. <br>
+      Shan He, Runze Wang, <span class="me">Zhuoyun Du</span>, Huiyu BAI, zouying cao, YuCheng, Bo Zheng. <br>
+      <span class="venue">ACL</span>, 2026. 
+      <!-- <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2511.09149">paper</a>
+        <a href="https://github.com/XiaoDu-flying/Interlat">code</a>
+      </span> -->
+    </li>
+    <li>
+      <span class="paper-title">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</span>. <br>
+      Yuyang Xu, Yi Cheng, Haochao Ying, <span class="me">Zhuoyun Du</span>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu. <br>
+      <span class="venue">arXiv Preprint</span>, 2025.
+      <span class="action-links" style="display:inline-flex; margin-left: 6px;">
+        <a href="https://arxiv.org/abs/2508.12604">paper</a>
       </span>
     </li>
     <li>
