@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zhuoyun Du's Homepage">
+  <meta name="author" content="Zhuoyun Du">
+  <title>Zhuoyun Du | 杜卓耘</title>
+
+  <link rel="shortcut icon" href="images/apple-touch-ri-logo-white-120x120.png">
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700' rel='stylesheet' type='text/css'>
+
+  <style>
+    :root {
+      --primary-color: #1772d0;
+      --accent-color: #f09228;
+      --text-color: #333;
+      --bg-color: #fff;
+      --gray-light: #f5f5f5;
+      --gray-medium: #666;
+    }
+
+    /* 全局样式重置 */
+    body {
+      font-family: 'Titillium Web', 'Microsoft YaHei', Verdana, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    /* 容器布局 */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* 标题样式 */
+    h1 {
+      font-size: 38px;
+      font-weight: 400;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 5px 0;
+      line-height: 1.4;
+    }
+
+    /* 个人简介区域 */
+    .profile-section {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+
+    .profile-img-container {
+      flex: 0 0 30%;
+      text-align: center;
+    }
+
+    .profile-img {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 50%; /* 圆形头像更现代，如果喜欢方圆角改回 15px */
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    .profile-links {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .profile-links a {
+      margin: 0 5px;
+      font-weight: 600;
+    }
+
+    .profile-bio {
+      flex: 1;
+      text-align: justify;
+    }
+
+    /* 强调框样式 */
+    .highlight-box {
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      border-left: 4px solid var(--accent-color);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-size: 15px;
+    }
+
+    /* --- 机会宣告区域 (New) --- */
+    .opportunities-wrapper {
+      display: flex;
+      gap: 15px; /* 两个框之间的间距 */
+      margin: 25px 0;
+    }
+
+    .anno-box {
+      flex: 1; /* 等宽分布 */
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .anno-box strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* PhD 申请：暖色渐变 (保留原有风格) */
+    .phd-seeking {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+      box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+    }
+
+    /* 实习招聘：冷色渐变 (新风格) */
+    .intern-seeking {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+    }
+
+    /* 响应式适配：手机端自动变为上下排列 */
+    @media (max-width: 768px) {
+      .opportunities-wrapper {
+        flex-direction: column;
+      }
+    }
+
+    .phd-seeking strong { color: #fff; }
+
+    /* 列表样式 */
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* 论文列表 */
+    .paper-item {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+      align-items: flex-start;
+    }
+
+    .paper-img-container {
+      flex: 0 0 220px; /* 固定图片宽度 */
+      padding-top: 5px;
+    }
+
+    .paper-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #eee;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    .paper-img:hover {
+      transform: scale(1.02);
+    }
+
+    .paper-content {
+      flex: 1;
+    }
+
+    .paper-meta {
+      font-style: italic;
+      color: var(--gray-medium);
+      margin-bottom: 8px;
+    }
+
+    .paper-links {
+      font-size: 14px;
+      margin: 10px 0;
+    }
+
+    .paper-links a {
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    .abstract-text {
+      font-size: 14px;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      display: none; /* 默认隐藏，由JS控制 */
+      text-align: justify;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      overflow-x: auto;
+      display: none; /* 默认隐藏 */
+    }
+
+    /* Experience & Projects */
+    .experience-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+
+    .experience-logo {
+      width: 120px;
+      object-fit: contain;
+    }
+
+    /* 天气组件 */
+    .location-weather {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 12px 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      font-size: 13px;
+      z-index: 1000;
+      min-width: 160px;
+      transition: all 0.3s ease;
+    }
+
+    .location-weather .date { color: #666; font-size: 11px; margin-bottom: 4px; }
+    .location-weather .location { color: #333; font-weight: 600; margin-bottom: 2px; }
+    .location-weather .weather { color: #666; display: flex; align-items: center; gap: 5px; }
+
+    /* 响应式设计 (Mobile) */
+    @media (max-width: 768px) {
+      .container { padding: 20px; }
+
+      .profile-section { flex-direction: column; align-items: center; }
+      .profile-img-container { margin-bottom: 20px; }
+      .profile-bio { text-align: left; }
+
+      .paper-item { flex-direction: column; }
+      .paper-img-container { flex: 0 0 auto; width: 100%; max-width: 300px; margin-bottom: 15px; }
+
+      .location-weather {
+        position: static; /* 手机上取消悬浮，放在顶部 */
+        margin: 0 auto 20px auto;
+        width: fit-content;
+        text-align: center;
+        background: #f8f9fa;
+        backdrop-filter: none;
+      }
+      .location-weather .weather { justify-content: center; }
+
+      .experience-item { flex-direction: column-reverse; }
+      .experience-logo { width: 100px; margin-bottom: 10px; align-self: flex-start; }
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+  <script type="text/javascript">
+    function toggleBlock(id) {
+      var block = document.getElementById(id);
+      if (block.style.display === 'none' || block.style.display === '') {
+        block.style.display = 'block';
+      } else {
+        block.style.display = 'none';
+      }
+    }
+
+    function toggleBib(id) {
+      // Find the next sibling that is a <pre> tag
+      var parent = document.getElementById(id);
+      var pre = parent.getElementsByTagName('pre')[0];
+      if (pre.style.display === 'none' || pre.style.display === '') {
+        pre.style.display = 'block';
+      } else {
+        pre.style.display = 'none';
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="location-weather">
+    <div class="date" id="current-date">Loading date...</div>
+    <div class="location" id="current-location">📍 Loading...</div>
+    <div class="weather" id="current-weather">🌤️ Checking weather...</div>
+  </div>
+
+  <div class="container">
+
+    <h1>Zhuoyun Du 「杜卓耘」</h1>
+
+    <div class="profile-section">
+      <div class="profile-img-container">
+        <a href="images/zhuoyun_du.jpg">
+          <img src="images/zhuoyun_du.jpg" alt="Zhuoyun Du" class="profile-img">
+        </a>
+        <div class="profile-links">
+          <a href="assets/cv_dzy.pdf">CV</a> /
+          <a href="mailto:duzy@zju.edu.cn">Email</a> /
+          <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Scholar</a><br>
+          <a href="https://github.com/XiaoDu-flying">GitHub</a> /
+          <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a> /
+          <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3Bjn1Pz0sxRRiGuVWzPtaEXA%3D%3D">Linkedin</a>
+        </div>
+      </div>
+
+      <div class="profile-bio">
+        <p>
+          I am a second-year master's student in <strong>Computer Science</strong> at
+          <a href="https://www.zju.edu.cn/">Zhejiang University</a>. I currently work with <a href="https://zjuvag.org/authors/weichen/">Prof. Wei Chen</a> at
+          <a href="https://zjuvai.cn/">ZJUVAI</a> within the <a href="http://www.en.cs.zju.edu.cn/">State Key Laboratory of CAD&CG</a>.
+          I am also interning with the Taowise team at <a href="https://www.alibaba.com/"><strong>Alibaba</strong></a>.
+        </p>
+
+        <p>
+          Previously, I received my Bachelor's degree in computer science at <a href="https://english.jnu.edu.cn/">Jinan University</a>, Guangzhou. I also serve as a research assistant on the
+          <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> in the
+          <a href="https://www.tsinghua.edu.cn">Dept. of CS&T, Tsinghua University</a>,
+          advised by <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and
+          <a href="https://qianc62.github.io/">Prof. Chen Qian</a> at
+          <a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a>.
+        </p>
+
+        <div class="opportunities-wrapper">
+
+        <div class="anno-box phd-seeking">
+          <div>
+            I am actively seeking <strong>Ph.D. positions (Fall 2027)</strong>. I welcome opportunities, collaborations, and recommendations!
+            <br>
+            <span style="opacity: 0.9; font-size: 13px; display:block; margin-top:5px;">Open to collaborations!</span>
+          </div>
+        </div>
+
+        <div class="anno-box intern-seeking">
+          <div>
+            I am also <strong>recruiting Research Interns</strong> to work on
+            <strong>broad topics</strong> around <strong>LLMs</strong> and <strong>Autonomous Agents</strong>.
+            <br>
+            <span style="opacity: 0.9; font-size: 13px; display:block; margin-top:5px;">
+              <a href="mailto:duzy@zju.edu.cn" style="color:white; text-decoration:underline;">Drop me an email</a>!
+            </span>
+          </div>
+        </div>
+
+</div>
+
+        <p class="highlight-box">
+          <strong>Research Focus:</strong> Designing LLM-based autonomous agents that
+          <strong>collaborate effectively</strong> to tackle complex tasks.
+          My recent work spans software-development agents, self-evolution, and latent-space reasoning/communication.
+        </p>
+
+        <p style="font-size: 14px; color: #666;">
+          Email: xiaodu.flying [AT] gmail.com / duzy [AT] zju.edu.cn
+        </p>
+      </div>
+    </div>
+
+    <h2>News & Timeline</h2>
+    <ul>
+      <li><strong>[2025.11.25]</strong> Introducing a training-free framework for scalable personalized vision-language models: <a href="https://arxiv.org/abs/2511.20056">Online-PVLM</a>.</li>
+      <li><strong>[2025.11.12]</strong> Released <a href="https://arxiv.org/abs/2511.09149">Interlat</a>: Enabling agents to communicate entirely in latent space.</li>
+      <li><strong>[2025.10.24]</strong> EvoPatient <a href="https://github.com/ZJUMAI/EvoPatient">open-sourced</a>!</li>
+      <li><strong>[2025.8.22]</strong> Released <a href="https://arxiv.org/abs/2508.12604">SSPO</a>, a pluggable RL process supervision framework.</li>
+      <li><strong>[2025.5.16]</strong> Two papers accepted at ACL 2025!</li>
+    </ul>
+
+    <details style="margin-left: 20px; color: #666;">
+      <summary style="cursor: pointer; font-weight: 600;">Earlier updates</summary>
+      <ul>
+        <li><strong>[2024.12.16]</strong> <a href="https://arxiv.org/abs/2406.07155">Scaling LLM-based Multi-Agent Collaboration</a> accepted at <strong>ICLR 2025</strong>!</li>
+        <li><strong>[2024.12.16]</strong> <a href="https://arxiv.org/abs/2412.11716">EvoPatient</a>: LLMs as Standardized Patients released.</li>
+        <li><strong>[2024.9.26]</strong> Paper on collaborative agents accepted at <strong>NeurIPS 2024</strong>!</li>
+        <li><strong>[2024.6.25]</strong> Launched <a href="https://thinkwee.top/multiagent_ebook">Interactive E-book</a> on Multi-Agent Collaboration.</li>
+        <li><strong>[2024.5.16]</strong> Two papers accepted at <strong>ACL 2024</strong> main conference.</li>
+        <li><strong>[2023.8.29]</strong> ChatDev open-sourced!</li>
+      </ul>
+    </details>
+
+    <h2>Selected Publications</h2>
+    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
+      <sup>†</sup> denotes equal contribution.
+    </p>
+
+    <div class="paper-item" id="opvlm">
+      <div class="paper-img-container">
+        <img src="images/paper/opvlm.png" alt="Online-PVLM" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2511.20056"><h3>Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</h3></a>
+        <div class="paper-meta">
+          Huiyu Bai<sup>†</sup>, Runze Wang<sup>†</sup>, <strong>Zhuoyun Du</strong><sup>†</sup>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, Xuejiao Zhao<sup>*</sup><br>
+          arXiv Preprint
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2511.20056">[Paper]</a>
+          <a href="javascript:toggleBlock('opvlm_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('opvlm')">[BibTeX]</a>
+        </div>
+        <div id="opvlm_abs" class="abstract-text">
+          Personalized vision-language models (VLMs) often struggle to adapt to new user-defined concepts in real time, requiring per-concept training that is neither scalable nor efficient. To address this, we propose Online-PVLM, a training-free framework for online concept learning in latent space. Our method leverages hyperbolic representations to generate compact, discriminative concept embeddings on the fly from a few reference images—without any test-time training. Furthermore, we introduce OP-Eval, a large-scale benchmark with 1,292 concepts and over 30K high-quality instances to rigorously evaluate online personalization. Experiments show that Online-PVLM achieves state-of-the-art performance across diverse tasks while enabling efficient caching and retrieval, paving the way for real-world personalized multimodal AI.
+        </div>
+        <pre>
+@article{bai2025onlinepvlm,
+  title={Online-PVLM: Advancing Personalized VLMs with Online Concept Learning},
+  author={Bai, Huiyu and Wang, Runze and Du, Zhuoyun and Zhao, Yiyang and Zhang, Fengji and Chen, Haoyu and Zhu, Xiaoyong and Zheng, Bo and Zhao, Xuejiao},
+  journal={arXiv preprint arXiv:2511.20056},
+  year={2025}
+}</pre>
+      </div>
+    </div>
+
+    <div class="paper-item" id="interlat">
+      <div class="paper-img-container">
+        <img src="images/paper/interlat.png" alt="Interlat" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2511.09149"><h3>Enabling Agents to Communicate Entirely in Latent Space</h3></a>
+        <div class="paper-meta">
+          <strong>Zhuoyun Du</strong><sup>†</sup>, Runze Wang<sup>†</sup>, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, Haochao Ying<br>
+          arXiv Preprint
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2511.09149">[Paper]</a>
+          <a href="javascript:toggleBlock('interlat_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('interlat')">[BibTeX]</a>
+        </div>
+        <div id="interlat_abs" class="abstract-text">
+          While natural language is the de facto communication medium for LLM-based agents, it presents a fundamental constraint. The process of downsampling rich, internal latent states into discrete tokens inherently limits the depth and nuance of information that can be transmitted, thereby hindering collaborative problem-solving. Inspired by human mind-reading, we propose Interlat (Inter-agent Latent Space Communication), a paradigm that leverages the last hidden states of an LLM as a representation of its mind for direct transmission (termed latent communication). An additional compression process further compresses latent communication via entirely latent space reasoning. Experiments demonstrate that Interlat outperforms both fine-tuned chain-of-thought (CoT) prompting and single-agent baselines, promoting more exploratory behavior and enabling genuine utilization of latent information. Further compression not only substantially accelerates inference but also maintains competitive performance through an efficient information-preserving mechanism. We position this work as a feasibility study of entirely latent space inter-agent communication, and our results highlight its potential, offering valuable insights for future research.
+        </div>
+        <pre>
+@article{du2025interlat,
+  title={Enabling Agents to Communicate Entirely in Latent Space},
+  author={Du, Zhuoyun and Wang, Runze and Bai, Huiyu and Cao, Zouying and Zhu, Xiaoyong and Zheng, Bo and Chen, Wei and Ying, Haochao},
+  journal={arXiv preprint arXiv:2511.09149},
+  year={2025}
+}</pre>
+      </div>
+    </div>
+
+    <div class="paper-item" id="sspo">
+      <div class="paper-img-container">
+        <img src="images/paper/sspo.png" alt="SSPO" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2508.12604"><h3>SSPO: Self-traced Step-wise Preference Optimization</h3></a>
+        <div class="paper-meta">
+          Yuyang Xu, Yi Cheng, Haochao Ying, <strong>Zhuoyun Du</strong>, Renjun Hu, Xing Shi, Wei Lin, Jian Wu<br>
+          arXiv Preprint
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2508.12604">[Paper]</a>
+          <a href="javascript:toggleBlock('sspo_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('sspo')">[BibTeX]</a>
+        </div>
+        <div id="sspo_abs" class="abstract-text">
+          Test-time scaling has proven effective in further enhancing the performance of pretrained Large Language Models (LLMs). However, mainstream post-training methods (i.e., reinforcement learning (RL) with chain-of-thought (CoT) reasoning) often incur substantial computational overhead due to auxiliary models and overthinking. In this paper, we empirically reveal that the incorrect answers partially stem from verbose reasoning processes lacking correct self-fix, where errors accumulate across multiple reasoning steps. To this end, we propose Self-traced Step-wise Preference Optimization (SSPO), a pluggable RL process supervision framework that enables fine-grained optimization of each reasoning step. Specifically, SSPO requires neither auxiliary models nor stepwise manual annotations. Instead, it leverages step-wise preference signals generated by the model itself to guide the optimization process for reasoning compression. Experiments demonstrate that the generated reasoning sequences from SSPO are both accurate and succinct, effectively mitigating overthinking behaviors without compromising model performance across diverse domains and languages.
+        </div>
+        <pre>
+@article{xu2025sspo,
+  title={SSPO: Self-traced Step-wise Preference Optimization},
+  author={Xu, Yuyang and Cheng, Yi and Ying, Haochao and Du, Zhuoyun, et al.},
+  journal={arXiv preprint arXiv:2508.12604},
+  year={2025}
+}</pre>
+      </div>
+    </div>
+
+    <div class="paper-item" id="evopatient">
+      <div class="paper-img-container">
+        <img src="images/paper/evopatient_overview.png" alt="EvoPatient" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2412.11716"><h3>LLMs Can Simulate Standardized Patients via Agent Coevolution</h3></a>
+        <div class="paper-meta">
+          <strong>Zhuoyun Du</strong><sup>†</sup>, Lujie Zheng<sup>†</sup>, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, Haohao Ying<br>
+          ACL 2025
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2412.11716">[Paper]</a>
+          <a href="https://github.com/ZJUMAI/EvoPatient">[Code]</a>
+          <a href="javascript:toggleBlock('evopatient_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('evopatient')">[BibTeX]</a>
+        </div>
+        <div id="evopatient_abs" class="abstract-text">
+          Training medical personnel using standardized patients (SPs) remains a complex challenge, requiring extensive domain expertise and role-specific practice. Previous research on Large Language Model (LLM)-based SPs mostly focuses on improving data retrieval accuracy or adjusting prompts through human feedback. However, this focus has overlooked the critical need for patient agents to learn a standardized presentation pattern that transforms data into human-like patient responses through unsupervised simulations. To address this gap, we propose EvoPatient, a novel simulated patient framework in which a patient agent and doctor agents simulate the diagnostic process through multi-turn dialogues, simultaneously gathering experience to improve the quality of both questions and answers, ultimately enabling human doctor training. Extensive experiments on various cases demonstrate that, by providing only overall SP requirements, our framework improves over existing reasoning methods by more than 10\% in requirement alignment and better human preference, while achieving an optimal balance of resource consumption after evolving over 200 cases for 10 hours, with excellent generalizability.
+        </div>
+        <pre>
+@article{du2024evopatient,
+  title={LLMs Can Simulate Standardized Patients via Agent Coevolution},
+  author={Du, Zhuoyun and Zheng, Lujie and Hu, Renjun, et al.},
+  journal={arXiv preprint arXiv:2412.11716},
+  year={2024}
+}</pre>
+      </div>
+    </div>
+
+    <div class="paper-item" id="crossteam">
+      <div class="paper-img-container">
+        <img src="images/paper/aggregate_ctc.png" alt="Cross Team" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2406.08979"><h3>Multi-Agent Collaboration via Cross-Team Orchestration</h3></a>
+        <div class="paper-meta">
+          <strong>Zhuoyun Du</strong><sup>†</sup>, Chen Qian<sup>†</sup>, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, Cheng Yang<br>
+          ACL 2025 Findings
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2406.08979">[Paper]</a>
+          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">[Code]</a>
+          <a href="javascript:toggleBlock('crossteam_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('crossteam')">[BibTeX]</a>
+        </div>
+        <div id="crossteam_abs" class="abstract-text">
+          Large Language Models (LLMs) have significantly impacted various domains, especially through organized LLM-driven autonomous agents. A representative scenario is in software development, where agents can collaborate in a team like humans, following predefined phases to complete sub-tasks sequentially. However, for an agent team, each phase yields only one possible outcome. This results in the completion of only one development chain, thereby losing the opportunity to explore multiple potential decision paths within the solution space. Consequently leading to suboptimal results or extensive trial and error. To address this, we introduce Cross-Team Orchestration (Croto), a scalable multi-team framework that enables orchestrated teams to jointly propose various task-oriented solutions and interact with their insights in a self-independence while cross-team collaboration environment for superior solutions generation. Experiments reveal a notable increase in software quality compared to state-of-the-art baselines. We further tested our framework on story generation tasks, which demonstrated a promising generalization ability of our framework in other domains.
+        </div>
+        <pre>
+@article{du2024crossteam,
+  title={Multi-Agent Software Development through Cross-Team Collaboration},
+  author={Du, Zhuoyun and Qian, Chen and Liu, Wei, et al.},
+  journal={arXiv preprint arXiv:2406.08979},
+  year={2024}
+}</pre>
+      </div>
+    </div>
+
+    <div class="paper-item" id="scalingmas">
+      <div class="paper-img-container">
+        <img src="images/paper/macnet.png" alt="Scaling MAS" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2406.07155"><h3>Scaling Large-Language-Model-based Multi-Agent Collaboration</h3></a>
+        <div class="paper-meta">
+          Chen Qian<sup>†</sup>, Zihao Xie<sup>†</sup>, Yifei Wang<sup>†</sup>, Wei Liu, Yufan Dang, <strong>Zhuoyun Du</strong>, Weize Chen, Cheng Yang, Zhiyuan Liu, Maosong Sun<br>
+          ICLR 2025
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2406.07155">[Paper]</a>
+          <a href="https://github.com/OpenBMB/ChatDev/tree/macnet">[Code]</a>
+          <a href="javascript:toggleBlock('scalingmas_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('scalingmas')">[BibTeX]</a>
+        </div>
+        <div id="scalingmas_abs" class="abstract-text">
+          Recent breakthroughs in large language model-driven autonomous agents have revealed that multi-agent collaboration often surpasses each individual through collective reasoning. Inspired by the neural scaling law--increasing neurons enhances performance, this study explores whether the continuous addition of collaborative agents can yield similar benefits. Technically, we utilize directed acyclic graphs to organize agents into a multi-agent collaboration network (MacNet), upon which their interactive reasoning is topologically orchestrated for autonomous task solving. Extensive evaluations reveal that it effectively supports collaboration among over a thousand agents, with irregular topologies outperforming regular ones. We also identify a collaborative scaling law--the overall performance follows a logistic growth pattern as agents scale, with collaborative emergence occurring earlier than traditional neural emergence. We speculate this may be because scaling agents catalyzes their multidimensional considerations during interactive reflection and refinement, thereby producing more comprehensive artifacts.
+        </div>
+        <pre>
+@article{qian2024scaling,
+  title={Scaling Large-Language-Model-based Multi-Agent Collaboration},
+  author={Qian, Chen and Xie, Zihao and Wang, Yifei, et al.},
+  journal={arXiv preprint arXiv:2406.07155},
+  year={2024}
+}</pre>
+      </div>
+    </div>
+
+     <div class="paper-item" id="asymmetry">
+      <div class="paper-img-container">
+        <img src="images/paper/asymmetry.svg" alt="Asymmetry" class="paper-img">
+      </div>
+      <div class="paper-content">
+        <a href="https://arxiv.org/abs/2406.14928"><h3>Autonomous Agents for Collaborative Task under Information Asymmetry</h3></a>
+        <div class="paper-meta">
+          Wei Liu<sup>†</sup>, Chenxi Wang<sup>†</sup>, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <strong>Zhuoyun Du</strong>, Weize Chen, Cheng Yang, Chen Qian<br>
+          NeurIPS 2024
+        </div>
+        <div class="paper-links">
+          <a href="https://arxiv.org/abs/2406.14928">[Paper]</a>
+          <a href="https://github.com/thinkwee/iAgents">[Code]</a>
+          <a href="javascript:toggleBlock('asymmetry_abs')">[Abstract]</a>
+          <a href="javascript:toggleBib('asymmetry')">[BibTeX]</a>
+        </div>
+        <div id="asymmetry_abs" class="abstract-text">
+          Large Language Model Multi-Agent Systems (LLM-MAS) have achieved great progress in solving complex tasks. It performs communication among agents within the system to collaboratively solve tasks, under the premise of shared information. However, when agents' collaborations are leveraged to perform multi-person tasks, a new challenge arises due to information asymmetry, since each agent can only access the information of its human user. Previous MAS struggle to complete tasks under this condition. To address this, we propose a new MAS paradigm termed iAgents, which denotes Informative Multi-Agent Systems. In iAgents, the human social network is mirrored in the agent network, where agents proactively exchange human information necessary for task resolution, thereby overcoming information asymmetry. iAgents employs a novel agent reasoning mechanism, InfoNav, to navigate agents' communication toward effective information exchange. Together with InfoNav, iAgents organizes human information in a mixed memory to provide agents with accurate and comprehensive information for exchange. Additionally, we introduce InformativeBench, the first benchmark tailored for evaluating LLM agents' task-solving ability under information asymmetry. Experimental results show that iAgents can collaborate within a social network of 140 individuals and 588 relationships, autonomously communicate over 30 turns, and retrieve information from nearly 70,000 messages to complete tasks within 3 minutes.
+        </div>
+        <pre>
+@article{liu2024autonomous,
+  title={Autonomous Agents for Collaborative Task under Information Asymmetry},
+  author={Liu, Wei and Wang, Chenxi and Wang, Yifei, et al.},
+  journal={arXiv preprint arXiv:2406.14928},
+  year={2024}
+}</pre>
+      </div>
+    </div>
+
+    <h2>Experience</h2>
+    <div class="experience-item">
+      <div class="experience-text">
+        <h3><a href="https://www.alibaba.com/">Taowise @ Taotian (Alibaba Group)</a></h3>
+        <div><em>Algorithm Engineer Intern | Jan 2025 – Present</em></div>
+        <p>Focusing on research on new paradigm in multi-agent latent space reasoning/communication enhancement and supervised fine-tuning (SFT) methodologies for LLMs. Working on advanced AI applications in e-commerce.</p>
+      </div>
+      <img src="images/alibaba_logo.png" alt="Alibaba" class="experience-logo">
+    </div>
+
+    <div class="experience-item">
+      <div class="experience-text">
+        <h3><a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP @ Tsinghua University</a></h3>
+        <div><em>Research Assistant | Nov 2023 – Aug 2024</em></div>
+        <p>Deeply involved in the development of the <a href="https://github.com/OpenBMB/ChatDev/">ChatDev</a> project <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> and related works, focusing on multi-agent cross-team collaboration.</p>
+      </div>
+      <img src="images/thunlp_logo.png" alt="THU" class="experience-logo">
+    </div>
+
+    <h2>Projects</h2>
+
+    <div class="paper-item">
+      <div class="paper-img-container">
+        <a href="https://thinkwee.top/multiagent_ebook">
+          <img src="images/web_thunlp.jpg" alt="E-book" class="paper-img">
+        </a>
+      </div>
+      <div class="paper-content">
+        <a href="https://thinkwee.top/multiagent_ebook"><h3>Multi-Agent Research Interactive E-book</h3></a>
+        <p>A comprehensive collection of research papers on LLM-based multi-agent systems presented in an interactive e-book format.</p>
+        <div class="paper-links">
+          <a href="https://thinkwee.top/multiagent_ebook">[Interactive eBook]</a>
+          <a href="https://github.com/OpenBMB/ChatDev/blob/main/MultiAgentEbook/papers.csv">[Download Papers]</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="paper-item">
+      <div class="paper-img-container">
+        <a href="https://github.com/OpenBMB/ChatDev">
+          <img src="images/paper/logo.png" alt="ChatDev" class="paper-img">
+        </a>
+      </div>
+      <div class="paper-content">
+        <a href="https://github.com/OpenBMB/ChatDev"><h3>ChatDev & Croto & MACNET</h3></a>
+        <p>Actively contributed to ChatDev <img src="https://img.shields.io/github/stars/OpenBMB/ChatDev.svg" alt="stars"> and led key branches (Croto) focusing on collaboration network topology.</p>
+        <div class="paper-links">
+          <a href="https://github.com/OpenBMB/ChatDev">[Code]</a>
+          <a href="https://arxiv.org/abs/2307.07924">[Paper]</a>
+        </div>
+      </div>
+    </div>
+
+    <h2>Awards & Honors</h2>
+    <ul>
+      <li><strong>National Scholarship</strong>, 2025 (Top 0.2%)</li>
+      <li><strong>Outstanding Student Scholarship</strong>, 2025</li>
+      <li><strong>First-Class Scholarship</strong>, 2024 (Outstanding Graduate Student)</li>
+      <li><strong>Second-Class Scholarship</strong>, 2023 & 2022</li>
+    </ul>
+
+    <h2>Academic Service</h2>
+    <p><strong>Program Committee / Reviewer:</strong> NeurIPS 2025, ICLR 2026</p>
+
+    <h2>Beyond Research</h2>
+    <p>
+      <strong>Sports:</strong> Soccer, Fencing, Snowboarding, Billiards, Badminton<br>
+      <strong>Music & Hobbies:</strong> Piano, Guitar (Beginner), Photography, Reading, Physics<br>
+      Visit my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a> for more.
+    </p>
+
+    <div style="text-align: center; margin-top: 40px;">
+      <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
+    </div>
+
+    <div class="footer">
+      Website template inspired by <a href="http://www.cs.berkeley.edu/~barron/">Jon Barron</a>.
+    </div>
+
+  </div> <script>
+    const AUTHOR = {
+      label: '@Hangzhou',
+      lat: 30.2741,
+      lon: 120.1551,
+      timeZone: 'Asia/Shanghai'
+    };
+
+    function codeToDesc(code) {
+      const map = {
+        0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',
+        45:'Fog',48:'Depositing rime fog',
+        51:'Light drizzle',53:'Moderate drizzle',55:'Dense drizzle',
+        61:'Light rain',63:'Moderate rain',65:'Heavy rain',
+        71:'Light snow',73:'Moderate snow',75:'Heavy snow',
+        80:'Rain showers',81:'Rain showers',82:'Violent rain showers',
+        95:'Thunderstorm',96:'Thunderstorm w/ hail',99:'Thunderstorm w/ heavy hail'
+      };
+      return map[code] || 'Unknown';
+    }
+
+    function updateDate() {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        timeZone: AUTHOR.timeZone
+      });
+      document.getElementById('current-date').textContent = fmt.format(now);
+    }
+
+    async function fetchWeatherForAuthor() {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${AUTHOR.lat}&longitude=${AUTHOR.lon}&current_weather=true`;
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        const cw = data.current_weather;
+        if (!cw) throw new Error('No weather data');
+        return {
+          temp: Math.round(cw.temperature) + '°C',
+          desc: codeToDesc(cw.weathercode)
+        };
+      } catch (e) {
+        return { temp: '--', desc: 'Unavailable' };
+      }
+    }
+
+    async function updateLocationWeather() {
+      updateDate();
+      const w = await fetchWeatherForAuthor();
+      document.getElementById('current-location').textContent = `${AUTHOR.label}, ${w.temp}`;
+      document.getElementById('current-weather').textContent = w.desc;
+    }
+
+    window.onload = function () {
+      updateLocationWeather();
+      setInterval(updateLocationWeather, 30 * 60 * 1000);
+    };
+  </script>
+
+</body>
+</html>
