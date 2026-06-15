@@ -236,8 +236,22 @@
       font-size: 10pt;
     }
 
-    .visitor-counter {
+    .visitor-area {
       margin-top: 40px;
+      color: var(--muted);
+      font-size: 10pt;
+      text-align: center;
+    }
+
+    .visitor-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .visitor-map {
       display: flex;
       justify-content: center;
       overflow: hidden;
@@ -245,14 +259,14 @@
       transition: filter 0.2s ease;
     }
 
-    .visitor-counter:hover {
+    .visitor-map:hover {
       filter: grayscale(0%) opacity(1);
     }
 
-    .visitor-counter img,
-    .visitor-counter iframe,
-    .visitor-counter canvas,
-    .visitor-counter svg {
+    .visitor-map img,
+    .visitor-map iframe,
+    .visitor-map canvas,
+    .visitor-map svg {
       max-width: 100%;
     }
 
@@ -478,9 +492,17 @@
     </section>
   </main>
 
-  <div class="visitor-counter" aria-label="Visitor counter">
-    <script type="text/javascript" id="clustrmaps" src="https://clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
+  <div class="visitor-area" aria-label="Visitor counter">
+    <div class="visitor-stats">
+      <span>Visitors: <span id="busuanzi_value_site_uv">loading</span></span>
+      <span>Views: <span id="busuanzi_value_site_pv">loading</span></span>
+    </div>
+    <div class="visitor-map" aria-label="Visitor map">
+      <script type="text/javascript" id="clustrmaps" src="https://clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
+    </div>
   </div>
+
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   <footer class="footer">
     Last updated: June 2026. &copy; Zhuoyun Du.
