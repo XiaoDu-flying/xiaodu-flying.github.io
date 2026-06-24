@@ -226,6 +226,15 @@
       color: var(--strong);
     }
 
+    .experience ul {
+      margin: 6px 0 0;
+      padding-left: 24px;
+    }
+
+    .experience li {
+      margin: 3px 0;
+    }
+
     .date {
       color: var(--muted);
     }
@@ -370,6 +379,7 @@
       <ul>
         <li><b>Apr. 2026:</b> Three papers have been accepted to ACL 2026.</li>
         <li><b>Mar. 2026:</b> I joined ByteDance as a Data Dept Talent Program intern.</li>
+        <li><b>Nov. 2025:</b> Released <a href="https://arxiv.org/abs/2511.09149">Interlat</a>, a latent-space communication framework for LLM agents, with <a href="https://github.com/XiaoDu-flying/Interlat">code</a> online.</li>
       </ul>
     </section>
 
@@ -440,30 +450,42 @@
 
     </section>
 
-    <!-- <section>
-      <h2>Selected Project Experience</h2>
-      <ul>
-        <li><b>Interlat</b>: proposed a new paradigm for direct agent communication in latent space, transmitting hidden states instead of natural language with efficient compression and up to 24x efficiency gains.</li>
-        <li><b>EvoPatient</b>: built a multi-agent coevolution framework for LLM-simulated standardized patients, autonomously generating and validating high-fidelity diagnostic trajectories.</li>
-        <li><b>Croto</b>: proposed a scalable multi-team framework that expands the solution space in agent collaboration through cross-team orchestration.</li>
-      </ul>
-    </section> -->
-
     <section>
       <h2>Experience</h2>
       <div class="experience">
         <div class="experience-title"><b>Talent Program Intern</b>, ByteDance <span class="date">(Mar. 2026 - present)</span></div>
-        <div>Working on LLM post-training, preference alignment, interactive evaluation, and high-fidelity human-like agent simulation for SFT and RLHF/DPO data generation.</div>
+        <ul>
+          <li>Built the team's first data-flywheel rollout system for multi-turn, task-oriented dialogue, supporting downstream multi-turn dialogue RL and agentic RL experiments.</li>
+          <li>Designed self-play simulation and evaluation environments with high-fidelity, persona-conditioned user-simulation agents.</li>
+          <li>Worked on LLM post-training, preference alignment, and autonomous agent-driven evaluation for dialogue policies.</li>
+        </ul>
       </div>
 
       <div class="experience">
         <div class="experience-title"><b>Research Intern</b>, Future Living Lab (now part of Token Foundry), Alibaba Group <span class="date">(Jan. 2025 - Mar. 2026)</span></div>
-        <div>Worked on multi-agent reasoning and latent-space communication, leading a research project on hidden-state communication and efficient communication compression.</div>
+        <ul>
+          <li>Proposed <b><a href="https://arxiv.org/abs/2511.09149">Interlat</a></b> (<a href="https://github.com/XiaoDu-flying/Interlat">code</a>), a latent-space communication framework that replaces natural-language message passing with temporally aligned hidden-state exchange.</li>
+          <li>Designed a token-latent curriculum and learned compression scheme, achieving up to 24x communication speedup at comparable task performance.</li>
+          <li>Gained hands-on experience with distributed training on 128+ GPUs; co-authored Online-PVLM, MemCoRL, and Learning to Evolve.</li>
+        </ul>
       </div>
 
       <div class="experience">
-        <div class="experience-title"><b>Research Assistant</b>, THUNLP, Tsinghua University <span class="date">(Dec. 2023 - Aug. 2024)</span></div>
-        <div>Contributed to <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a>, a 33k+ star open-source project on LLM-based multi-agent collaboration. Led and contributed to the Croto and MACNet branches, focusing on cross-team collaboration and scaling laws for coding agents.</div>
+        <div class="experience-title"><b>M.Eng. Research</b>, Zhejiang University, State Key Lab of CAD&amp;CG <span class="date">(Sept. 2024 - present)</span></div>
+        <ul>
+          <li>Led <b><a href="https://arxiv.org/abs/2412.11716">EvoPatient</a></b> (<a href="https://github.com/ZJUMAI/EvoPatient">code</a>), an open-source doctor-patient coevolution system for virtual standardized patients, accepted to ACL 2025.</li>
+          <li>Drove the project end-to-end, including research formulation, system implementation, medical-case curation, expert evaluation, and paper writing.</li>
+          <li>Improved patient-answer ability from 0.763 to 0.860 after 200 training cases.</li>
+        </ul>
+      </div>
+
+      <div class="experience">
+        <div class="experience-title"><b>Research Assistant</b>, <a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a>, Tsinghua University <span class="date">(Dec. 2023 - Aug. 2024)</span></div>
+        <ul>
+          <li>Worked with <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and <a href="https://qianc62.github.io/">Prof. Chen Qian</a> on <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a>-based multi-agent collaboration, studying role organization, information exchange, and coordination.</li>
+          <li>Led <b><a href="https://arxiv.org/abs/2406.08979">Croto</a></b> (<a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>), designing cross-team orchestration with parallel teams, hierarchy partitioning, and greedy aggregation for multi-agent software development.</li>
+          <li>Contributed to <a href="https://arxiv.org/abs/2406.07155">MACNet</a> (<a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>) and <a href="https://arxiv.org/abs/2406.14928">iAgent</a> (<a href="https://github.com/thinkwee/iAgents">code</a>); related OpenBMB/ChatDev projects have accumulated over 33k GitHub stars.</li>
+        </ul>
       </div>
     </section>
 
@@ -486,7 +508,7 @@
     <section>
       <h2>Miscellaneous</h2>
       <p>
-        Beyond research, I enjoy soccer, fencing, snowboarding, billiards, piano, photography, and physics.
+        Beyond research, I enjoy soccer, fencing, snowboarding, billiards, ballroom dancing, piano, photography, and physics.
         I occasionally write notes on my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a>.
       </p>
     </section>
