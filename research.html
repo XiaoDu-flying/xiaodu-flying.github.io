@@ -35,7 +35,7 @@
 
     <main id="main" class="research-page">
       <section aria-labelledby="featured-heading">
-        <h2 id="featured-heading">Featured Recent Papers</h2>
+        <h2 id="featured-heading">Featured Papers</h2>
         <div class="paper-list">
           <article class="paper">
             <h3><a href="https://arxiv.org/abs/2511.09149">Enabling Agents to Communicate Entirely in Latent Space</a></h3>
@@ -108,28 +108,28 @@
 
       <p class="note">* denotes equal contribution.</p>
 
-      <section aria-labelledby="experience-heading">
+      <section id="experience" aria-labelledby="experience-heading">
         <h2 id="experience-heading">Experience</h2>
 
-        <div class="experience">
+        <div class="experience" id="bytedance">
           <div class="experience-title"><strong>Talent Program Intern</strong>, ByteDance <span class="date">(Mar. 2026 - Jul. 2026)</span></div>
           <ul>
-            <li>Developed a rollout and data-flywheel system for multi-turn, task-oriented dialogue, supporting LLM post-training experiments.</li>
-            <li>Built persona-conditioned self-play simulation and evaluation environments.</li>
-            <li>Explored preference alignment and agent-based evaluation for dialogue models.</li>
+            <li>Built the team's first data-flywheel rollout system for multi-turn, task-oriented dialogue, supporting downstream multi-turn dialogue RL and agentic RL.</li>
+            <li>Designed a self-play simulation and evaluation environment with high-fidelity, persona-conditioned user-simulation agents for rollout generation and evaluation signals.</li>
+            <li>Conducted post-training and preference alignment of large-scale LLMs (e.g., Qwen3.5-122B/397B) using SFT and RLHF/DPO, alongside autonomous agent-driven evaluation of dialogue policies.</li>
           </ul>
         </div>
 
-        <div class="experience">
+        <div class="experience" id="alibaba">
           <div class="experience-title"><strong>Research Intern</strong>, Future Living Lab (now part of Token Foundry), Alibaba Group <span class="date">(Jan. 2025 - Mar. 2026)</span></div>
           <ul>
             <li>Proposed <strong><a href="https://arxiv.org/abs/2511.09149">Interlat</a></strong> (<a href="https://github.com/XiaoDu-flying/Interlat">code</a>), a latent-space communication framework that replaces natural-language message passing with temporally aligned hidden-state exchange.</li>
             <li>Designed a token-latent curriculum and learned compression scheme, achieving up to 24x communication speedup at comparable task performance.</li>
-            <li>Gained hands-on experience with distributed training on 128+ GPUs; co-authored Online-PVLM, MemCoRL, and Learning to Evolve.</li>
+            <li>Gained hands-on experience with distributed training on 256+ GPUs; co-authored Online-PVLM, MemCoRL, and Learning to Evolve.</li>
           </ul>
         </div>
 
-        <div class="experience">
+        <div class="experience" id="zhejiang">
           <div class="experience-title"><strong>M.Eng. Research</strong>, Zhejiang University, State Key Lab of CAD&amp;CG <span class="date">(Sept. 2024 - present)</span></div>
           <ul>
             <li>Led <strong><a href="https://arxiv.org/abs/2412.11716">EvoPatient</a></strong> (<a href="https://github.com/ZJUMAI/EvoPatient">code</a>), an open-source doctor-patient coevolution system for virtual standardized patients, accepted to ACL 2025.</li>
@@ -138,7 +138,7 @@
           </ul>
         </div>
 
-        <div class="experience">
+        <div class="experience" id="thunlp">
           <div class="experience-title"><strong>Research Assistant</strong>, <a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a>, Tsinghua University <span class="date">(Dec. 2023 - Aug. 2024)</span></div>
           <ul>
             <li>Worked with <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and <a href="https://qianc62.github.io/">Prof. Chen Qian</a> on <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a>-based multi-agent collaboration, studying role organization, information exchange, and coordination.</li>
@@ -176,7 +176,7 @@
   </div>
 
   <footer>
-    This site is handcrafted; the <a href="archive/2026-08-01/">previous homepage</a> is preserved in the archive.
+    This site is handcrafted.
   </footer>
 </body>
 </html>
