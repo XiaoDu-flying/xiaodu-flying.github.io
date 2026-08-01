@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Zhuoyun Du's homepage">
+  <meta name="author" content="Zhuoyun Du">
+  <title>Zhuoyun Du | 杜卓耘</title>
+  <base href="../../">
+  <link rel="icon" href="images/favicon.ico">
+
+  <style>
+    :root {
+      --text: #444444;
+      --strong: #000000;
+      --muted: #808080;
+      --rule: #e5e5e5;
+      --highlight: #ffcc99;
+      --bg: #ffffff;
+    }
+
+    html {
+      background: var(--bg);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      width: min(960px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 20px 0 52px;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    p {
+      margin: 3px 0;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      color: var(--text);
+      font-size: 20pt;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    h2 {
+      margin: 34px 0 12px;
+      color: var(--text);
+      font-size: 14pt;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 36px;
+    }
+
+    li {
+      margin: 4px 0;
+      padding-left: 4px;
+    }
+
+    strong,
+    b {
+      color: var(--strong);
+      font-weight: 700;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 323px 1fr;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .portrait-wrap {
+      text-align: center;
+    }
+
+    .portrait {
+      display: block;
+      width: 256px;
+      height: 256px;
+      margin: 0 auto;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .identity p {
+      margin: 0 0 14px;
+    }
+
+    .identity,
+    main,
+    section,
+    .publication {
+      min-width: 0;
+    }
+
+    .identity p,
+    main p,
+    li,
+    .publication-title,
+    .authors,
+    .venue {
+      overflow-wrap: break-word;
+    }
+
+    .quick-links {
+      margin-top: 16px;
+      line-height: 1.65;
+    }
+
+    .quick-links a {
+      white-space: nowrap;
+    }
+
+    .quick-links a + a::before {
+      content: " / ";
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .intro {
+      margin-top: 0;
+    }
+
+    .intro p {
+      margin: 0 0 22px;
+    }
+
+    .intro .prospective {
+      position: relative;
+      margin-top: 38px;
+      padding: 8px 0 8px 44px;
+      background: transparent;
+      line-height: 1.55;
+    }
+
+    .intro .prospective::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 19px;
+      width: 14px;
+      background: var(--highlight);
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 10pt;
+      margin: -4px 0 8px;
+    }
+
+    .publication {
+      position: relative;
+      margin: 0 0 15px;
+      padding: 0 0 14px 34px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .publication::before {
+      content: attr(data-number);
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 22px;
+      color: var(--muted);
+      font-size: 10pt;
+      text-align: right;
+    }
+
+    .publication-title {
+      color: var(--strong);
+      font-size: 11pt;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .publication-title a {
+      color: var(--strong);
+      text-decoration: none;
+    }
+
+    .authors {
+      color: var(--strong);
+      font-size: 10pt;
+    }
+
+    .venue,
+    .paper-links {
+      font-size: 10pt;
+    }
+
+    .paper-links,
+    .paper-links a {
+      color: var(--muted);
+    }
+
+    .paper-links a {
+      margin-right: 12px;
+      white-space: nowrap;
+    }
+
+    .experience {
+      margin: 0 0 16px;
+    }
+
+    .experience-title {
+      color: var(--strong);
+    }
+
+    .experience ul {
+      margin: 6px 0 0;
+      padding-left: 24px;
+    }
+
+    .experience li {
+      margin: 3px 0;
+    }
+
+    .date {
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 44px;
+      color: var(--muted);
+      font-size: 10pt;
+    }
+
+    .visitor-area {
+      margin-top: 40px;
+      color: var(--muted);
+      font-size: 10pt;
+      text-align: center;
+    }
+
+    .visitor-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .visitor-map {
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      filter: grayscale(100%) opacity(0.65);
+      transition: filter 0.2s ease;
+    }
+
+    .visitor-map:hover {
+      filter: grayscale(0%) opacity(1);
+    }
+
+    .visitor-map img,
+    .visitor-map iframe,
+    .visitor-map canvas,
+    .visitor-map svg {
+      max-width: 100%;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        width: calc(100% - 28px);
+        padding-top: 18px;
+        font-size: 10.5pt;
+      }
+
+      .header {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .portrait {
+        width: 220px;
+        height: 220px;
+      }
+
+      h1 {
+        font-size: 18pt;
+      }
+
+      .publication {
+        padding-left: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="portrait-wrap">
+      <img class="portrait" src="images/profile-2.png" alt="Zhuoyun Du">
+    </div>
+
+    <div class="identity">
+      <h1>Zhuoyun Du <span lang="zh-CN">杜卓耘</span></h1>
+      <p>M.Eng. Student, Data Science and Engineering, Zhejiang University</p>
+      <p>State Key Laboratory of CAD&amp;CG, advised by Prof. Wei Chen</p>
+      <p><a href="mailto:duzy@zju.edu.cn">duzy@zju.edu.cn</a></p>
+      <p class="quick-links">
+        <a href="assets/cv_dzy.pdf">CV</a>
+        <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&hl=zh-CN">Google Scholar</a>
+        <a href="https://github.com/XiaoDu-flying">GitHub</a>
+        <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">Blog</a>
+        <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-label="Biography">
+      <p>
+        I am a master's student in Data Science and Engineering at
+        <a href="https://www.zju.edu.cn/">Zhejiang University</a> (Sept. 2024 - Jul. 2027 expected), advised by
+        <a href="https://zjuvag.org/authors/weichen/">Prof. Wei Chen</a> at ZJUVAI within the State Key Laboratory of CAD&CG.
+        Before joining Zhejiang University, I received my B.Eng. degree in Computer Science from Jinan University.
+        My research focuses on LLM-based autonomous agents, especially multi-agent collaboration,
+        recursive self-improvement (RSI), latent-space communication and reasoning,
+        evaluation, and post-training.
+      </p>
+
+      <p>
+        Most recently, I was a Talent Program intern at ByteDance, where I worked on
+        LLM post-training, preference alignment, interactive evaluation, and
+        high-fidelity user simulation for SFT and RLHF/DPO data generation.
+        Previously, I worked as a research intern at Alibaba Group's Future Living Lab
+        and as a research assistant at THUNLP, Tsinghua University.
+      </p>
+
+      <!-- <p>
+        I have led or co-led projects on latent-space agent communication, agent coevolution for standardized patients,
+        and cross-team orchestration for multi-agent collaboration. My work has appeared at ACL, ICLR, and NeurIPS.
+      </p> -->
+
+      <p class="prospective">
+        <b>Prospective PhD applications</b>: I am actively seeking Ph.D. positions starting in Fall 2027.
+        I am especially interested in labs working on foundation models, LLM agents, multi-agent systems, autonomous evolution and evaluation,
+        latent-space communication and reasoning, and post-training. Please feel free to reach out if my background may align with your group.
+      </p>
+      <p>
+        <b>Prospective research internships and collaborations</b>: I am looking for research internship or collaboration
+        opportunities around foundation models, LLM agents, multi-agent systems, and latent-space communication.
+      </p>
+    </section>
+
+    <section>
+      <h2>Research Interests</h2>
+      <ul>
+        <li>
+          <b>Recursive self-improvement in agentic systems</b>:
+          enabling agents to continually learn from experience and improve their own
+          learning and coordination mechanisms, while reducing overengineering through
+          fewer heuristics and more general, reusable mechanisms.
+        </li>
+        <li><b>Latent-space communication and reasoning</b>: replacing the autoregressive token bottleneck with efficient, high-dimensional machine-native interaction.</li>
+        <li><b>Autonomous evaluation</b>: studying how agents can build self-referential evaluation frameworks for open-ended self-improvement without human-curated reward models.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>News</h2>
+      <ul>
+        <li><b>Jul. 2026:</b> I concluded my Talent Program internship at ByteDance, where I worked on LLM post-training and agent-based simulation and evaluation.</li>
+        <li><b>Apr. 2026:</b> Three papers have been accepted to ACL 2026.</li>
+        <li><b>Mar. 2026:</b> I joined ByteDance as a Data Dept Talent Program intern.</li>
+        <li><b>Nov. 2025:</b> Released <a href="https://arxiv.org/abs/2511.09149">Interlat</a>, a latent-space communication framework for LLM agents, with <a href="https://github.com/XiaoDu-flying/Interlat">code</a> online.</li>
+      </ul>
+    </section>
+
+    <section id="selected-publications">
+      <h2>Selected Publications</h2>
+      <p class="note">* denotes equal contribution.</p>
+
+      <div class="publication" data-number="1">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2511.09149">Enabling Agents to Communicate Entirely in Latent Space</a></div>
+          <div class="authors"><b>Zhuoyun Du*</b>, Runze Wang*, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Bo Zheng, Wei Chen, and Haochao Ying</div>
+          <div class="venue">Association for Computational Linguistics (<b>ACL</b>), 2026, oral recommended</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2511.09149">paper</a><a href="https://github.com/XiaoDu-flying/Interlat">code</a></div>
+      </div>
+
+      <div class="publication" data-number="2">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2412.11716">LLMs Can Simulate Standardized Patients via Agent Coevolution</a></div>
+          <div class="authors"><b>Zhuoyun Du*</b>, Lujie Zheng*, Renjun Hu, Yuyang Xu, Xiawei Li, Ying Sun, Wei Chen, Jian Wu, Haolei Cai, and Haohao Ying</div>
+          <div class="venue">Association for Computational Linguistics (<b>ACL</b>), 2025</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2412.11716">paper</a><a href="https://github.com/ZJUMAI/EvoPatient">code</a></div>
+      </div>
+
+      <div class="publication" data-number="3">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2406.08979">Multi-Agent Collaboration via Cross-Team Orchestration</a></div>
+          <div class="authors"><b>Zhuoyun Du*</b>, Chen Qian*, Wei Liu, Zihao Xie, Yifei Wang, Yufan Dang, Weize Chen, and Cheng Yang</div>
+          <div class="venue">Findings of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2406.08979">paper</a><a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a></div>
+      </div>
+
+      <div class="publication" data-number="4">
+          <div class="publication-title">Learning to Evolve: A Self-Improving Framework for Multi-Agent Systems via Textual Parameter Graph Optimization</div>
+          <div class="authors">Shan He, Runze Wang, <b>Zhuoyun Du</b>, Huiyu Bai, Zouying Cao, Yucheng, and Bo Zheng</div>
+          <div class="venue">Findings of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026</div>
+      </div>
+
+      <div class="publication" data-number="5">
+          <div class="publication-title">MemCoRL: Alternating Co-Optimization of Memory Retrieval and Utilization via Collaborative Reinforcement Learning</div>
+          <div class="authors">Yuewen Liu, Peng Xu, <b>Zhuoyun Du</b>, Muxi Diao, Anyi Zhang, Yang Li, and Yutong Zhang</div>
+          <div class="venue">Association for Computational Linguistics (<b>ACL</b>), 2026</div>
+      </div>
+
+      <div class="publication" data-number="6">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2511.20056">Online-PVLM: Advancing Personalized VLMs with Online Concept Learning</a></div>
+          <div class="authors">Huiyu Bai*, Runze Wang*, <b>Zhuoyun Du*</b>, Yiyang Zhao, Fengji Zhang, Haoyu Chen, Xiaoyong Zhu, Bo Zheng, and Xuejiao Zhao</div>
+          <div class="venue">arXiv preprint, 2025</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2511.20056">arXiv</a></div>
+      </div>
+
+      <div class="publication" data-number="7">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2406.07155">Scaling Large-Language-Model-based Multi-Agent Collaboration</a></div>
+          <div class="authors">Chen Qian*, Zihao Xie*, Yifei Wang*, Wei Liu, Yufan Dang, <b>Zhuoyun Du</b>, Weize Chen, Cheng Yang, Zhiyuan Liu, and Maosong Sun</div>
+          <div class="venue">International Conference on Learning Representations (<b>ICLR</b>), 2025</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2406.07155">paper</a><a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a></div>
+      </div>
+
+      <div class="publication" data-number="8">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2406.14928">Autonomous Agents for Collaborative Task under Information Asymmetry</a></div>
+          <div class="authors">Wei Liu*, Chenxi Wang*, Yifei Wang, Zihao Xie, Rennai Qiu, Yufan Dang, <b>Zhuoyun Du</b>, Weize Chen, Cheng Yang, and Chen Qian</div>
+          <div class="venue">Conference on Neural Information Processing Systems (<b>NeurIPS</b>), 2024</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2406.14928">paper</a><a href="https://github.com/thinkwee/iAgents">code</a></div>
+      </div>
+
+      <div class="publication" data-number="9">
+          <div class="publication-title"><a href="https://arxiv.org/abs/2508.12604">SSPO: Self-traced Step-wise Preference Optimization for Process Supervision and Reasoning Compression</a></div>
+          <div class="authors">Yuyang Xu, Yi Cheng, Haochao Ying, <b>Zhuoyun Du</b>, Renjun Hu, Xing Shi, Wei Lin, and Jian Wu</div>
+          <div class="venue">arXiv preprint, 2025</div>
+          <div class="paper-links"><a href="https://arxiv.org/abs/2508.12604">arXiv</a></div>
+      </div>
+
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+      <div class="experience">
+        <div class="experience-title"><b>Talent Program Intern</b>, ByteDance <span class="date">(Mar. 2026 - Jul. 2026)</span></div>
+        <ul>
+          <li>Developed a rollout and data-flywheel system for multi-turn, task-oriented dialogue, supporting LLM post-training experiments.</li>
+          <li>Built persona-conditioned self-play simulation and evaluation environments.</li>
+          <li>Explored preference alignment and agent-based evaluation for dialogue models.</li>
+        </ul>
+      </div>
+
+      <div class="experience">
+        <div class="experience-title"><b>Research Intern</b>, Future Living Lab (now part of Token Foundry), Alibaba Group <span class="date">(Jan. 2025 - Mar. 2026)</span></div>
+        <ul>
+          <li>Proposed <b><a href="https://arxiv.org/abs/2511.09149">Interlat</a></b> (<a href="https://github.com/XiaoDu-flying/Interlat">code</a>), a latent-space communication framework that replaces natural-language message passing with temporally aligned hidden-state exchange.</li>
+          <li>Designed a token-latent curriculum and learned compression scheme, achieving up to 24x communication speedup at comparable task performance.</li>
+          <li>Gained hands-on experience with distributed training on 128+ GPUs; co-authored Online-PVLM, MemCoRL, and Learning to Evolve.</li>
+        </ul>
+      </div>
+
+      <div class="experience">
+        <div class="experience-title"><b>M.Eng. Research</b>, Zhejiang University, State Key Lab of CAD&amp;CG <span class="date">(Sept. 2024 - present)</span></div>
+        <ul>
+          <li>Led <b><a href="https://arxiv.org/abs/2412.11716">EvoPatient</a></b> (<a href="https://github.com/ZJUMAI/EvoPatient">code</a>), an open-source doctor-patient coevolution system for virtual standardized patients, accepted to ACL 2025.</li>
+          <li>Drove the project end-to-end, including research formulation, system implementation, medical-case curation, expert evaluation, and paper writing.</li>
+          <li>Improved patient-answer ability from 0.763 to 0.860 after 200 training cases.</li>
+        </ul>
+      </div>
+
+      <div class="experience">
+        <div class="experience-title"><b>Research Assistant</b>, <a href="https://nlp.csai.tsinghua.edu.cn/">THUNLP</a>, Tsinghua University <span class="date">(Dec. 2023 - Aug. 2024)</span></div>
+        <ul>
+          <li>Worked with <a href="https://nlp.csai.tsinghua.edu.cn/~lzy/">Prof. Zhiyuan Liu</a> and <a href="https://qianc62.github.io/">Prof. Chen Qian</a> on <a href="https://github.com/OpenBMB/ChatDev">ChatDev</a>-based multi-agent collaboration, studying role organization, information exchange, and coordination.</li>
+          <li>Led <b><a href="https://arxiv.org/abs/2406.08979">Croto</a></b> (<a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>), designing cross-team orchestration with parallel teams, hierarchy partitioning, and greedy aggregation for multi-agent software development.</li>
+          <li>Contributed to <a href="https://arxiv.org/abs/2406.07155">MACNet</a> (<a href="https://github.com/OpenBMB/ChatDev/tree/macnet">code</a>) and <a href="https://arxiv.org/abs/2406.14928">iAgent</a> (<a href="https://github.com/thinkwee/iAgents">code</a>); related OpenBMB/ChatDev projects have accumulated over 33k GitHub stars.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Awards and Honors</h2>
+      <ul>
+        <li><b>2025:</b> National Scholarship; Outstanding Graduate Student Scholarship.</li>
+        <li><b>2024:</b> First-Class Scholarship for Outstanding Graduates.</li>
+        <li><b>Undergraduate:</b> three undergraduate scholarships.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Academic Service</h2>
+      <ul>
+        <li>Reviewer: <a href="https://neurips.cc/Conferences/2025">NeurIPS 2025</a>, <a href="https://iclr.cc/Conferences/2026">ICLR 2026</a>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Miscellaneous</h2>
+      <p>
+        Beyond research, I enjoy soccer, fencing, snowboarding, billiards, ballroom dancing, piano, photography, and physics.
+        I occasionally write notes on my <a href="https://xiaodu-flying.notion.site/Welcome-to-my-blog-1d6df6af187d4b3ea1020fcc73aeec43">personal blog</a>.
+      </p>
+    </section>
+  </main>
+
+  <div class="visitor-area" aria-label="Visitor counter">
+    <div class="visitor-stats">
+      <span>Visitors: <span id="busuanzi_value_site_uv">loading</span></span>
+      <span>Views: <span id="busuanzi_value_site_pv">loading</span></span>
+    </div>
+    <div class="visitor-map" aria-label="Visitor map">
+      <script type="text/javascript" id="clustrmaps" src="https://clustrmaps.com/map_v2.js?d=Yu_RA2IUlBbGVk640y6XENl98eHvWDaLIakCNSAexB8&cl=ffffff&w=a"></script>
+    </div>
+  </div>
+
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <footer class="footer">
+    Last updated: August 2026. &copy; Zhuoyun Du.
+  </footer>
+</body>
+</html>

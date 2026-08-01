@@ -1,0 +1,368 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --text: #111111;
+  --muted: #666666;
+  --rule: #aaaaaa;
+  --link: #038cfc;
+  --link-hover: #026abf;
+  --accent: #533980;
+  --award: #d94747;
+  --background: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--background);
+  font-family: "Open Sans", "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--link-hover);
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  padding: 8px 12px;
+  transform: translateY(-160%);
+  color: #ffffff;
+  background: var(--accent);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+#content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
+h1 {
+  margin: 0.45em 0 0.55em;
+  font-size: 2.2rem;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+h1 span {
+  margin-left: 0.2em;
+  color: var(--muted);
+  font-size: 0.62em;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+nav {
+  border-bottom: 1px solid var(--rule);
+}
+
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.15em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: "Open Sans", "Segoe UI", Arial, sans-serif;
+}
+
+.navbar a {
+  display: block;
+  padding: 0 0 0.25em;
+  color: var(--muted);
+}
+
+.navbar a:hover,
+.navbar a:focus-visible {
+  color: #333333;
+}
+
+.navbar a.active {
+  color: var(--accent);
+}
+
+main > p {
+  margin: 0 0 1em;
+}
+
+.infoblock {
+  margin: 2em auto;
+  min-height: 14em;
+}
+
+.infoblock::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.headshot {
+  float: left;
+  width: 14em;
+  height: 14em;
+  margin: 0 3em;
+  border-radius: 3px;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.contact-info {
+  padding-top: 0.15em;
+}
+
+.contact-info p {
+  margin: 0 0 0.75em;
+}
+
+.contact-info strong {
+  font-weight: 600;
+}
+
+.research-page section {
+  margin: 1.25em 0 3em;
+}
+
+.research-page h2 {
+  margin: 0 0 1.15em;
+  font-size: 1.17em;
+  font-weight: 700;
+}
+
+.paper-list {
+  padding: 0 1em;
+}
+
+.paper {
+  margin: 0 0 1.25em;
+}
+
+.paper h3,
+.paper p {
+  margin: 0 0 3px;
+}
+
+.paper h3 {
+  color: var(--accent);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.paper h3 a {
+  color: var(--accent);
+}
+
+.paper h3 a:hover,
+.paper h3 a:focus-visible {
+  color: var(--link-hover);
+}
+
+.authors strong {
+  font-weight: 700;
+}
+
+.venue {
+  font-style: italic;
+}
+
+.award {
+  color: var(--award);
+  font-weight: 700;
+}
+
+.paper-links {
+  color: var(--text);
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+.experience {
+  margin: 0 0 1.45em;
+}
+
+.experience-title {
+  line-height: 1.45;
+}
+
+.experience-title strong {
+  font-weight: 700;
+}
+
+.date {
+  color: var(--muted);
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+
+.experience ul,
+.compact-list {
+  margin: 0.45em 0 0;
+  padding-left: 1.4em;
+}
+
+.experience li,
+.compact-list li {
+  margin: 0.28em 0;
+}
+
+.miscellaneous p {
+  margin: 0;
+}
+
+.visitor-area {
+  margin: 3.5em 0 2em;
+  color: var(--muted);
+  font-size: 0.82em;
+  text-align: center;
+}
+
+.visitor-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5em 1.5em;
+  margin-bottom: 1.2em;
+}
+
+.visitor-map {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  overflow: hidden;
+  filter: grayscale(100%) opacity(0.7);
+}
+
+.visitor-map img,
+.visitor-map iframe,
+.visitor-map canvas,
+.visitor-map svg {
+  max-width: 100%;
+}
+
+footer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8px 20px 24px;
+  color: var(--muted);
+  font-size: 0.75em;
+  font-style: italic;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  #content {
+    padding: 18px 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .infoblock {
+    display: grid;
+    grid-template-columns: minmax(0, 11em) minmax(0, 1fr);
+    gap: 1.5em;
+    min-height: 0;
+  }
+
+  .headshot {
+    float: none;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    aspect-ratio: 1;
+  }
+
+  .contact-info {
+    padding-top: 0;
+  }
+
+  .contact-info p {
+    margin-bottom: 0.55em;
+  }
+}
+
+@media (max-width: 430px) {
+  h1 span {
+    display: block;
+    margin: 0.16em 0 0;
+  }
+
+  .infoblock {
+    grid-template-columns: 1fr;
+  }
+
+  .headshot {
+    width: min(14em, 72vw);
+  }
+
+  .paper-list {
+    padding: 0;
+  }
+}
