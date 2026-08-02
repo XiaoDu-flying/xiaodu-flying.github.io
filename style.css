@@ -753,6 +753,25 @@ footer {
   text-align: center;
 }
 
+.post-view-count {
+  margin: 2.8em 0 0.9em;
+  color: var(--muted);
+  font-size: 0.84em;
+  text-align: center;
+}
+
+.post-view-count [data-post-views],
+.post-view-count [data-post-views] > div {
+  display: inline;
+}
+
+.post-view-count iframe {
+  width: 72px;
+  height: 22px;
+  border: 0;
+  vertical-align: -0.4em;
+}
+
 @media (max-width: 640px) {
   #content {
     padding: 18px 20px;
