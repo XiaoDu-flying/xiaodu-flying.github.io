@@ -474,9 +474,8 @@ main > p {
 }
 
 .post-figure {
-  width: min(930px, calc(100vw - 40px));
-  margin: 2.2em 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  margin: 2.2em 0;
 }
 
 .post-figure img {
@@ -791,9 +790,6 @@ footer {
     font-size: 1em;
   }
 
-  .post-figure {
-    width: calc(100vw - 24px);
-  }
 }
 
 @media (max-width: 430px) {
