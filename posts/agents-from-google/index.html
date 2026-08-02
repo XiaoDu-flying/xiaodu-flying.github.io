@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A systems-oriented guide to Google's Agents white paper: models, tools, orchestration, function calling, data stores, and targeted learning.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Agents from Google: A Systems View of Models, Tools, and Orchestration">
+  <meta property="og:description" content="A systems-oriented guide to what turns a language model into an agent and how tool interfaces shape control, data flow, and reliability.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/agents-from-google/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/posts/agents-from-google/images/agent-architecture.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Agents from Google: A Systems View | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/agents-from-google/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du</h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Reading Notes</p>
+          <h2 class="post-title">Agents from Google: A Systems View of Models, Tools, and Orchestration</h2>
+          <p class="post-deck">A systems-oriented guide to what turns a language model into an agent, how tool interfaces shape control and data flow, and where learning enters the architecture.</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> | 8 min read | Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">
+          A language model can reason about a request, but reasoning alone does not let it inspect a private database, reserve a flight, or continue working across multiple turns. Google's <em>Agents</em> white paper offers a compact systems view of the missing pieces. Its central claim is architectural: an agent is not simply a more capable model. It is an application that combines a model, a set of tools, and an orchestration loop to observe, decide, and act toward a goal.
+        </p>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#what-is-an-agent">What is an agent?</a></li>
+            <li><a href="#three-components">The three core components</a></li>
+            <li><a href="#agents-vs-models">Agents vs. models</a></li>
+            <li><a href="#tools">Tools as the interface to the world</a></li>
+            <li><a href="#targeted-learning">Targeted learning</a></li>
+            <li><a href="#takeaways">Takeaways</a></li>
+          </ol>
+        </aside>
+
+        <section id="what-is-an-agent">
+          <h3>What is an agent?</h3>
+          <p>
+            An agent is an application that pursues a goal by observing its environment and acting through the tools available to it. The important word is <em>pursues</em>. Rather than waiting for a human to prescribe every step, the system can choose a next action, inspect the result, and revise its plan.
+          </p>
+          <p>
+            Agency is therefore a property of the entire runtime, not of the language model alone. The model may generate the reasoning behind the next action, but the surrounding application supplies memory, permissions, tool definitions, execution, and the feedback that closes the loop.
+          </p>
+        </section>
+
+        <section id="three-components">
+          <h3>The three core components</h3>
+          <p>The white paper divides a basic agent into three cooperating parts:</p>
+
+          <figure class="post-figure">
+            <img src="images/agent-architecture.png" alt="Diagram of an agent runtime containing orchestration, memory, model-based reasoning, a model, and tools, connected to a user query and response." width="950" height="450" loading="eager">
+            <figcaption>Figure 1. A general agent runtime. Adapted from Google, <em>Agents</em>.</figcaption>
+          </figure>
+
+          <h4>The model</h4>
+          <p>
+            The model serves as the central decision maker. Depending on the application, an agent may use one or several language models: small or large, general-purpose or specialized, text-only or multimodal. Reasoning frameworks such as ReAct, Chain-of-Thought, and Tree-of-Thoughts can help the model decompose a task and select an action.
+          </p>
+          <p>
+            One important caveat is that the base model is rarely trained for the exact combination of tools and orchestration used by a particular agent. The runtime must therefore communicate its local interface through instructions, tool schemas, and examples. Model capability matters, but so does the clarity of the system around it.
+          </p>
+
+          <h4>The tools</h4>
+          <p>
+            Tools connect the agent's internal reasoning to external information and actions. They can retrieve current or private data, execute code, call an API, or trigger a real-world operation. Without tools, even a highly capable model remains bounded by its training data and the information placed in its context window.
+          </p>
+
+          <h4>The orchestration layer</h4>
+          <p>
+            Orchestration is the recurring control process: receive information, reason over the current state, choose an action, execute it, observe the result, and decide what to do next. It also manages the agent's profile, instructions, short- and long-term memory, stopping conditions, and error handling. In practice, this layer determines whether isolated model calls form a coherent multi-step system.
+          </p>
+        </section>
+
+        <section id="agents-vs-models">
+          <h3>Agents vs. models</h3>
+          <p>
+            The difference is architectural. A standalone model maps an input to an output. An agent embeds that model within state, tools, and a policy for continuing the interaction. Four practical distinctions follow:
+          </p>
+
+          <figure class="post-figure">
+            <img src="images/agents-vs-models.png" alt="Comparison table showing that agents extend model knowledge with tools, manage sessions, implement tools natively, and include a reasoning architecture." width="950" height="610" loading="lazy">
+            <figcaption>Figure 2. The white paper's comparison of models and agents.</figcaption>
+          </figure>
+
+          <ul>
+            <li><strong>Knowledge:</strong> a model is limited to its parameters and current context; an agent can reach external systems.</li>
+            <li><strong>State:</strong> a model call is normally a single prediction; an agent can maintain history and memory across turns.</li>
+            <li><strong>Action:</strong> a model describes or proposes; an agent can invoke tools and feed the result back into the next decision.</li>
+            <li><strong>Control:</strong> a model follows a prompt; an agent adds a native loop for planning, execution, observation, and termination.</li>
+          </ul>
+
+          <p>
+            This framing also explains why agent quality cannot be judged from model benchmarks alone. Tool selection, argument generation, state management, recovery, and the execution environment all contribute to end-to-end reliability.
+          </p>
+        </section>
+
+        <section id="tools">
+          <h3>Tools as the interface to the world</h3>
+          <p>
+            The white paper groups Google's agent tools into three categories: Extensions, Functions, and Data Stores. All three expand what the model can access, but each places execution and control at a different point in the system.
+          </p>
+
+          <h4>Extensions: standardized, agent-side API access</h4>
+          <p>
+            An Extension provides a standardized bridge between an agent and an API. Along with the endpoint, it supplies descriptions and examples that teach the agent when the capability is useful and which arguments it requires. At runtime, the model selects an appropriate Extension and the agent-side system performs the call.
+          </p>
+
+          <figure class="post-figure">
+            <img src="images/extension-bridge.png" alt="Diagram showing an agent connected through an Extension to the Google Flights API, with usage examples beneath the Extension." width="950" height="315" loading="lazy">
+            <figcaption>Figure 3. An Extension standardizes the path from an agent to an external API.</figcaption>
+          </figure>
+
+          <p>
+            This design is especially useful when the agent should directly control a sequence of API interactions. Examples embedded in the Extension act as interface-level demonstrations, helping the model infer both when to call the tool and how to format the request.
+          </p>
+
+          <h4>Functions: model-generated intent, client-side execution</h4>
+          <p>
+            Function calling separates the model's decision from execution. The model returns a function name and its arguments, while the client application decides whether and how to run it. The client can authenticate the request, validate or transform arguments, enforce ordering, request human approval, and reshape the returned data before passing it back to the agent.
+          </p>
+
+          <figure class="post-figure">
+            <img src="images/extension-vs-function.png" alt="Two flows comparing an agent-side Extension call with a client-side Function call to the same Google Flights API." width="950" height="395" loading="lazy">
+            <figcaption>Figure 4. Extensions keep execution on the agent side; Functions return control to the client.</figcaption>
+          </figure>
+
+          <p>
+            The distinction may look minor in a diagram, but it changes the system's trust boundary. Functions are the better fit when security, authentication, data governance, human review, timing constraints, or custom business logic require the application to retain control.
+          </p>
+
+          <h4>Data Stores: grounding with dynamic knowledge</h4>
+          <p>
+            A Data Store gives an agent access to information that is absent from the base model or changes too frequently to encode in its weights. Documents, websites, tables, and other sources are indexed by a retrieval system. The agent can then fetch relevant content at runtime without retraining the model or turning every source into a handcrafted tool.
+          </p>
+
+          <figure class="post-figure">
+            <img src="images/data-store.png" alt="Diagram showing an agent connected to a Data Store that reaches private documents, websites, and structured data." width="950" height="430" loading="lazy">
+            <figcaption>Figure 5. A Data Store connects the agent to private, current, and structured information.</figcaption>
+          </figure>
+
+          <p>
+            Retrieval-augmented generation is the most familiar implementation. The system embeds a query, matches it against a vector database, and retrieves supporting content. The agent receives both the original request and the retrieved evidence, then produces a response or chooses another action.
+          </p>
+
+          <figure class="post-figure">
+            <img src="images/rag-lifecycle.png" alt="Five-step RAG lifecycle from user query to embeddings, vector database, retrieved content, agent, and response." width="950" height="620" loading="lazy">
+            <figcaption>Figure 6. The lifecycle of a request in a retrieval-augmented agent.</figcaption>
+          </figure>
+
+          <h4>Choosing among the three</h4>
+          <div class="table-scroll" role="region" aria-label="Tool choice comparison" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Tool type</th>
+                  <th scope="col">Execution</th>
+                  <th scope="col">Best fit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Extension</th>
+                  <td>Agent-side</td>
+                  <td>Native API integrations and multi-hop workflows where the agent should control the next call.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Function</th>
+                  <td>Client-side</td>
+                  <td>Protected APIs, human review, strict sequencing, transformations, and application-owned execution.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Data Store</th>
+                  <td>Agent-side</td>
+                  <td>Retrieval over private, current, structured, or unstructured knowledge.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            These categories are complementary. A production agent might retrieve a policy from a Data Store, use a Function to obtain approval, and then invoke an Extension to complete the external action.
+          </p>
+        </section>
+
+        <section id="targeted-learning">
+          <h3>Enhancing performance with targeted learning</h3>
+          <p>
+            Giving a model access to a tool does not guarantee that it will select the right tool, supply valid arguments, or know when to stop. The white paper describes three ways to teach this task-specific behavior:
+          </p>
+          <ol>
+            <li><strong>In-context learning.</strong> Place tool definitions, instructions, and a small set of demonstrations directly in the inference context. ReAct is a natural-language example of this approach.</li>
+            <li><strong>Retrieval-based in-context learning.</strong> Retrieve the most relevant tools and demonstrations from external memory for each request, keeping the prompt focused as the tool library grows.</li>
+            <li><strong>Fine-tuning.</strong> Train on a larger collection of tool-use examples so that the model internalizes recurring selection and argument patterns before inference.</li>
+          </ol>
+          <p>
+            These approaches trade deployment effort for specialization. Prompted examples are quick to iterate, retrieval scales the available repertoire, and fine-tuning can make repeated behavior more consistent. They can also be combined: retrieval may supply task-specific context to a model already fine-tuned for structured tool use.
+          </p>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <p>
+            The strongest lesson I take from the white paper is that designing an agent means designing interfaces and feedback loops. The model matters, but the working system is defined by what it can observe, which actions it may propose, where those actions execute, and how their results inform the next decision.
+          </p>
+          <ul>
+            <li><strong>Agency lives in the runtime.</strong> Memory, tools, and orchestration turn predictions into goal-directed behavior.</li>
+            <li><strong>Tool choice is also a control choice.</strong> Extensions, Functions, and Data Stores place authority and data flow in different locations.</li>
+            <li><strong>Examples are part of the interface.</strong> A schema says what a tool accepts; demonstrations teach the model when and how to use it.</li>
+            <li><strong>Reliability is end-to-end.</strong> A better model helps, but validation, permissions, recovery, retrieval quality, and stopping rules remain system-level responsibilities.</li>
+          </ul>
+          <p>
+            As tools and reasoning improve, specialized agents may be composed into a broader "mixture of agent experts." The white paper closes with appropriately practical advice: complex agent architectures require experimentation and refinement because the right balance of model, tools, and orchestration depends on the task and its operational constraints.
+          </p>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Sources</h3>
+          <ol>
+            <li>Julia Wiesinger, Patrick Marlow, and Vladimir Vuskovic. <a href="https://www.kaggle.com/whitepaper-agents"><em>Agents</em></a>. Google, September 2024.</li>
+            <li><a href="https://app.notion.com/p/1a0b02b8256381969386d9b1803a7858">My original reading notes in Notion</a>.</li>
+          </ol>
+          <p class="figure-credit">Figures are cropped from the Google white paper for commentary and study. The explanatory text is my own synthesis of the paper and the original reading notes.</p>
+        </section>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">Back to all posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>

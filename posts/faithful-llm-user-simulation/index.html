@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A research synthesis on building faithful LLM user simulators: persona grounding, knowledge, memory, multi-turn learning, and human-calibrated evaluation.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Faithful LLM User Simulation: Closing the Gap Between Synthetic Users and Real People">
+  <meta property="og:description" content="Why cooperative synthetic users create an easy mode for agent evaluation, and how to build simulators that better reflect real behavior.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/faithful-llm-user-simulation/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/images/og.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Faithful LLM User Simulation | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/faithful-llm-user-simulation/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du <span lang="zh-CN">杜卓耘</span></h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Literature Synthesis</p>
+          <h2 class="post-title">Faithful LLM User Simulation: Closing the Gap Between Synthetic Users and Real People</h2>
+          <p class="post-deck">LLM-based users make interactive agents cheap to train and test, but a simulator that is articulate, patient, and cooperative can turn evaluation into an unrealistic easy mode. Faithful simulation requires more than a persona prompt.</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> · 13 min read · Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">
+          Interactive agents are difficult to improve without interaction data. Real users are expensive to recruit, slow to coordinate, and risky to expose to immature systems. An LLM user simulator offers an attractive alternative: it can generate conversations at scale, reproduce a test case, explore rare situations, and provide feedback throughout training. The central question, however, is not whether an LLM can produce plausible dialogue. It is whether decisions made under simulation continue to hold when the agent meets real people.
+        </p>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#why-simulate">Why simulate users?</a></li>
+            <li><a href="#reading-map">Annotated reading map</a></li>
+            <li><a href="#sim2real">The simulator can create an easy mode</a></li>
+            <li><a href="#stack">A five-layer stack for faithful simulation</a></li>
+            <li><a href="#training">Training without optimizing for the simulator</a></li>
+            <li><a href="#evaluation">What should be measured?</a></li>
+            <li><a href="#blueprint">A practical development blueprint</a></li>
+            <li><a href="#takeaways">Takeaways</a></li>
+          </ol>
+        </aside>
+
+        <section id="why-simulate">
+          <h3>Why simulate users?</h3>
+          <p>
+            Static benchmarks evaluate an agent on a fixed input and expected output. Many useful agents instead operate through a trajectory: the user reveals information gradually, the agent asks questions, tools change the environment, and both sides adapt to earlier turns. The quality of the agent depends on the entire interaction, not a single response.
+          </p>
+          <p>
+            User simulators make these trajectories programmable. They can support three related workflows:
+          </p>
+          <ul>
+            <li><strong>Evaluation:</strong> replay scenarios and compare agents under controlled conditions.</li>
+            <li><strong>Training:</strong> generate multi-turn experience for supervised learning, preference learning, or reinforcement learning.</li>
+            <li><strong>Diagnosis:</strong> vary user knowledge, goals, patience, or communication style to expose specific failure modes.</li>
+          </ul>
+          <p>
+            These advantages explain why simulation is becoming part of the infrastructure around agent development. But scale and reproducibility do not imply realism. A simulator may generate fluent conversations while systematically changing the difficulty and meaning of the task.
+          </p>
+        </section>
+
+        <section id="reading-map">
+          <h3>Annotated reading map</h3>
+          <p>
+            This post synthesizes a 22-entry reading workspace rather than a single paper. The map below preserves the full collection while keeping the main article argument-driven. Paper titles open the public source; <em>My notes</em> opens the corresponding private Notion page and therefore requires access to my workspace.
+          </p>
+
+          <h4>Framing and evaluation</h4>
+          <ul>
+            <li><strong><a href="https://arxiv.org/abs/2603.11245">Mind the Sim2Real Gap in User Simulation for Agentic Tasks</a></strong> — compares human and LLM users directly, showing how cooperative simulators distort both behavior and evaluation. <a href="https://app.notion.com/p/32eb02b82563811ba8afe1528644662f">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2507.05639">ECom-Bench: Can LLM Agent Resolve Real-World E-commerce Customer Support Issues?</a></strong> — evaluates support agents across realistic e-commerce tasks, policies, and tool-mediated outcomes. <a href="https://app.notion.com/p/344b02b825638084ba5ace3dc5721d77">My notes</a>.</li>
+            <li><strong><a href="https://app.notion.com/p/344b02b8256380dfa8f9ecfa396d92d8">Building Realistic Multi-Turn Tests for AI Agents</a></strong> — studies the ALMA testing pipeline, which converts procedures into dialogue graphs and injects interruptions and detours.</li>
+            <li><strong><a href="https://arxiv.org/abs/2402.10811">Quantifying the Persona Effect in LLM Simulations</a></strong> — asks whether assigned demographic and persona attributes produce measurable changes in simulated behavior. <a href="https://app.notion.com/p/343b02b82563805a8163ef65211c5951">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2601.07110">The Necessity of Sociopsychologically Grounded Persona Frameworks for User Simulation</a></strong> — introduces SCOPE, grounding persona construction and evaluation in sociopsychological dimensions. <a href="https://app.notion.com/p/344b02b82563806bba9cdb3ae7d795e0">My notes</a>.</li>
+          </ul>
+
+          <h4>Simulator architectures, knowledge, and memory</h4>
+          <ul>
+            <li><strong><a href="https://arxiv.org/abs/2401.16454">KAUCUS: Knowledge Augmented User Simulators for Training Language Model Assistants</a></strong> — conditions simulated users on knowledge so that their questions and reactions remain grounded in a domain. <a href="https://app.notion.com/p/342b02b825638046ae00d3edc6f67f5f">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2306.02552">User Behavior Simulation with Large Language Model-Based Agents</a></strong> — presents RecAgent, combining profile, memory, action, and reflection to model user behavior in recommender systems. <a href="https://app.notion.com/p/343b02b82563809b8cace4813bc0907c">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2510.07230">Customer-R1: Personalized Simulation of Human Behaviors via RL-Based LLM Agent in Online Shopping</a></strong> — uses reinforcement learning to model personalized shopping behavior rather than a single generic customer policy. <a href="https://app.notion.com/p/344b02b825638001a862ff5ff02fe44c">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2504.19413">Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory</a></strong> — develops an explicit memory layer that extracts, updates, and retrieves persistent information across interactions. <a href="https://app.notion.com/p/343b02b8256380388d9cf5cdddf95dd9">My notes</a>.</li>
+          </ul>
+
+          <h4>Persona and role consistency</h4>
+          <ul>
+            <li><strong><a href="https://arxiv.org/abs/2502.03821">PsyPlay: Personality-Infused Role-Playing Conversational Agents</a></strong> — injects personality through planning, dialogue generation, and refinement rather than relying on a shallow role description. <a href="https://app.notion.com/p/343b02b82563807ea8b5d83dce9a88fa">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2503.16527">LLM Generated Persona Is a Promise with a Catch</a></strong> — examines the diversity and bias trade-offs that arise when LLMs generate synthetic persona populations. <a href="https://app.notion.com/p/343b02b82563807cbcc4fd84c4b9d694">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2310.00746">RoleLLM: Benchmarking, Eliciting, and Enhancing Role-Playing Abilities of Large Language Models</a></strong> — provides data, training methods, and benchmarks for evaluating whether models retain role-specific knowledge and style. <a href="https://app.notion.com/p/343b02b8256380f58ad4df2babdec158">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2503.17662">Enhancing Persona Consistency Using Persona-Aware Contrastive Learning</a></strong> — combines persona reflection with contrastive self-play to distinguish consistent responses from subtle role violations. <a href="https://app.notion.com/p/343b02b8256380469f48d6f10d608d75">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2511.00222">Consistently Simulating Human Personas with Multi-Turn Reinforcement Learning</a></strong> — optimizes persona fidelity across an entire conversation and targets the long-horizon problem of persona drift. <a href="https://app.notion.com/p/344b02b82563806cb84cfce9d01e7da1">My notes</a>.</li>
+          </ul>
+
+          <h4>Multi-turn learning and synthetic data</h4>
+          <ul>
+            <li><strong><a href="https://arxiv.org/abs/2409.02392">Building Math Agents with Multi-Turn Iterative Preference Learning</a></strong> — improves agents through repeated interaction, feedback, and preference updates rather than isolated single-turn solutions. <a href="https://app.notion.com/p/342b02b8256380d7b31ff86fb05ddfa6">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2511.21638">Aligning LLMs Toward Multi-Turn Conversational Outcomes Using Iterative PPO</a></strong> — learns a value signal for intermediate turns so standard policy optimization can target final conversational outcomes. <a href="https://app.notion.com/p/344b02b8256380efa2a9f083dd7f2933">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2304.12244">WizardLM: Empowering Large Pre-Trained Language Models to Follow Complex Instructions</a></strong> — introduces Evol-Instruct, which systematically increases instruction complexity to generate stronger training data. <a href="https://app.notion.com/p/343b02b825638025b1cde771effea3b2">My notes</a>.</li>
+            <li><strong><a href="https://arxiv.org/abs/2402.13064">Synthetic Data (Almost) from Scratch: Generalized Instruction Tuning for Language Models</a></strong> — uses a human-education-inspired taxonomy to generate broad, structured instruction data with limited seed material. <a href="https://app.notion.com/p/343b02b825638079acabd1a8b186ec29">My notes</a>.</li>
+          </ul>
+
+          <h4>Workspace synthesis and open ideas</h4>
+          <ul>
+            <li><strong><a href="https://app.notion.com/p/32fb02b8256380c89d20eaa70f5c2a06">Ideas</a></strong> — open design questions and possible directions derived from the reading process.</li>
+            <li><strong><a href="https://app.notion.com/p/342b02b825638038aeb7c89fbabef4f3">Conversational AI Papers</a></strong> — a broader topic page connecting the user-simulation literature to dialogue-agent research.</li>
+            <li><strong><a href="https://app.notion.com/p/344b02b8256381e1b4c1f939828cfe7c">Paper Reading Report: 30-Minute and Detailed Versions</a></strong> — the main presentation-oriented synthesis, organized around simulation, persona consistency, learning, and evaluation.</li>
+            <li><strong><a href="https://app.notion.com/p/344b02b8256380fba63cf72f120f1653">Detailed Survey Summary</a></strong> — the long-form Chinese survey that maps challenges, technical layers, research trends, and implementation implications.</li>
+          </ul>
+        </section>
+
+        <section id="sim2real">
+          <h3>The simulator can create an easy mode</h3>
+          <p>
+            <a href="https://arxiv.org/abs/2603.11245"><em>Mind the Sim2Real Gap in User Simulation for Agentic Tasks</em></a> provides the clearest warning. The study runs the same interactive benchmark with real humans and 31 LLM simulators. Its result is not merely that synthetic users sound different. Their behavior changes the trajectories through which the agent is evaluated.
+          </p>
+          <p>
+            LLM simulators tend to be unusually cooperative. They provide relevant identifiers early, follow instructions carefully, tolerate repeated questions, and recover constructively when the agent makes a mistake. Real users are more likely to give incomplete information, express uncertainty, change direction, misunderstand a request, or become frustrated. When these frictions disappear, the simulated user quietly helps the agent succeed.
+          </p>
+
+          <div class="post-note">
+            <h4>The compounding problem</h4>
+            <p>A behavioral gap changes which conversation the agent experiences. An evaluative gap then misjudges the resulting conversation. If the simulated user is too helpful and the automatic judge is too lenient, the two errors reinforce each other and produce a convincing but misleading score.</p>
+          </div>
+
+          <p>
+            This distinction matters for both evaluation and training. In evaluation, the easy mode inflates confidence in deployment readiness. In training, it rewards policies that work with synthetic cooperation rather than policies that recover from ambiguity and disagreement. More capable foundation models do not automatically solve the problem: general intelligence and human fidelity are different objectives.
+          </p>
+        </section>
+
+        <section id="stack">
+          <h3>A five-layer stack for faithful simulation</h3>
+          <p>
+            The papers in this area suggest that a useful simulator should be treated as a system with five interacting layers. Each layer addresses a different source of behavioral collapse.
+          </p>
+
+          <div class="table-scroll" role="region" aria-label="Five layers of a faithful user simulator" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Layer</th>
+                  <th scope="col">Question</th>
+                  <th scope="col">Common failure</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Persona</th>
+                  <td>Who is this user, and what shapes their decisions?</td>
+                  <td>A list of adjectives with no behavioral consequences.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Knowledge</th>
+                  <td>What does the user know, believe, or misunderstand?</td>
+                  <td>The simulator leaks privileged task information.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Memory</th>
+                  <td>What state persists across turns?</td>
+                  <td>Goals, facts, or attitudes drift during the dialogue.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Policy</th>
+                  <td>How does the user react to the agent and environment?</td>
+                  <td>Every user remains polite, rational, and cooperative.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Evaluation</th>
+                  <td>How do we know the simulator is faithful?</td>
+                  <td>Fluency is mistaken for behavioral validity.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>1. Persona should constrain behavior</h4>
+          <p>
+            Persona prompts often describe age, occupation, personality, and preferences, then assume that the model will translate those attributes into stable choices. <a href="https://arxiv.org/abs/2402.10811"><em>Quantifying the Persona Effect in LLM Simulations</em></a> motivates a more careful question: which assigned attributes actually change model behavior, and how large is that effect relative to other sources of variation?
+          </p>
+          <p>
+            A useful persona therefore needs operational variables: goals, constraints, prior experience, risk tolerance, patience, and acceptable outcomes. These variables should predict observable actions. A “price-sensitive” shopper, for example, should not merely mention price more often; price should affect which trade-offs they accept, which questions they ask, and when they abandon a purchase.
+          </p>
+
+          <h4>2. Knowledge should be separated from the hidden task state</h4>
+          <p>
+            A simulator often receives the complete scenario so that it can play its role. This creates a temptation to reveal information that a real user would not know or would not volunteer. <a href="https://arxiv.org/abs/2401.16454">KAUCUS</a> shows how external knowledge can ground user simulation, but grounding must preserve an information boundary: the simulator should have access to user-visible facts, beliefs, and memories—not the evaluator's answer key.
+          </p>
+          <p>
+            Knowledge also includes uncertainty and error. Real users forget identifiers, hold outdated beliefs, confuse similar products, and learn during the conversation. Representing these epistemic states is as important as retrieving correct facts.
+          </p>
+
+          <h4>3. Memory should preserve state without freezing the user</h4>
+          <p>
+            Long conversations require continuity. The simulator should remember what it already disclosed, what the agent promised, and how the interaction changed its satisfaction or trust. Yet memory is not simply a transcript buffer. The system needs a compact, editable state that distinguishes stable traits from turn-level beliefs and emotions.
+          </p>
+          <p>
+            This separation prevents two opposite failures: persona drift, in which the simulator contradicts its earlier role, and persona rigidity, in which it repeats the original prompt even after the situation has changed.
+          </p>
+
+          <h4>4. The interaction policy should be learned across turns</h4>
+          <p>
+            Realism is a sequential property. <a href="https://arxiv.org/abs/2511.00222"><em>Consistently Simulating Human Personas with Multi-Turn Reinforcement Learning</em></a> and <a href="https://arxiv.org/abs/2510.07230">Customer-R1</a> explore reinforcement learning for persistent persona behavior and personalized online-shopping simulation. The important shift is from generating a locally plausible reply to optimizing a trajectory-level objective.
+          </p>
+          <p>
+            Reinforcement learning is not the only route. <a href="https://arxiv.org/abs/2503.17662">persona-aware contrastive learning</a> can teach a model to distinguish responses that fit or violate a role. In either case, the training signal should reward coherent behavioral consequences rather than surface-level imitation alone.
+          </p>
+
+          <h4>5. Evaluation must be calibrated to humans</h4>
+          <p>
+            The final layer anchors the others. A simulator cannot validate itself. LLM judges are useful for scale, and rule-based rewards are useful for checking environment state, but neither should be treated as a complete proxy for human experience. A small, carefully designed human dataset is needed to measure the direction and magnitude of the gap.
+          </p>
+        </section>
+
+        <section id="training">
+          <h3>Training without optimizing for the simulator</h3>
+          <p>
+            Once a simulator participates in learning, it becomes part of the training environment. The agent can overfit to its habits just as a policy can overfit to a game engine or benchmark. The risk is highest when one simulator both generates interactions and judges the resulting agent.
+          </p>
+          <p>
+            A safer design separates roles and sources of variation:
+          </p>
+          <ol>
+            <li><strong>Generate with a population, not one persona.</strong> Vary goals, knowledge, styles, patience, and failure reactions.</li>
+            <li><strong>Hold out simulator families.</strong> Test whether gains transfer to prompts, models, and policies that were absent from training.</li>
+            <li><strong>Adversarially vary cooperation.</strong> Include incomplete disclosure, correction, hesitation, and justified frustration rather than only fluent compliance.</li>
+            <li><strong>Separate outcome from experience.</strong> Check tool-state correctness independently from efficiency, clarity, trust, and willingness to continue.</li>
+            <li><strong>Recalibrate with people.</strong> Periodically compare simulated and human trajectories, then update the simulator and the metrics.</li>
+          </ol>
+          <p>
+            The goal is not to make every synthetic user difficult. It is to reproduce a realistic distribution of interaction patterns and preserve uncertainty about where that distribution remains wrong.
+          </p>
+        </section>
+
+        <section id="evaluation">
+          <h3>What should be measured?</h3>
+          <p>
+            A strong evaluation suite should distinguish four levels. Collapsing them into one score makes it difficult to see why a simulator succeeds or fails.
+          </p>
+
+          <div class="table-scroll" role="region" aria-label="Evaluation levels for user simulators" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Level</th>
+                  <th scope="col">Examples</th>
+                  <th scope="col">Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Utterance</th>
+                  <td>Length, politeness, uncertainty, emotion, information disclosure.</td>
+                  <td>Detect stylistic and communicative mismatch.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Trajectory</th>
+                  <td>Clarification, correction, goal persistence, reaction to mistakes.</td>
+                  <td>Measure multi-turn behavioral coherence.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Outcome</th>
+                  <td>Task success, policy compliance, abandonment, escalation.</td>
+                  <td>Check whether simulation changes agent-level conclusions.</td>
+                </tr>
+                <tr>
+                  <th scope="row">Calibration</th>
+                  <td>Difference between simulated and human rates by task difficulty or user group.</td>
+                  <td>Quantify the Sim2Real gap and its uncertainty.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            Domain benchmarks remain useful for the outcome layer. <a href="https://arxiv.org/abs/2507.05639">ECom-Bench</a>, for example, evaluates agents on realistic e-commerce support issues. But a domain benchmark and a faithful user model answer different questions: one specifies what the agent must accomplish; the other determines which interaction paths the evaluation explores.
+          </p>
+        </section>
+
+        <section id="blueprint">
+          <h3>A practical development blueprint</h3>
+          <p>
+            A credible simulator can be built incrementally. The first version does not need a complex learning system, but it does need an explicit validation loop.
+          </p>
+          <ol>
+            <li><strong>Define the target population.</strong> Specify whose behavior the simulator represents, in which domain, and under which task conditions.</li>
+            <li><strong>Collect matched human trajectories.</strong> Use a small but diverse set of people interacting with the same fixed agent and scenarios used in simulation.</li>
+            <li><strong>Build structured user state.</strong> Separate persona, knowledge, goal, memory, emotion, and stopping conditions.</li>
+            <li><strong>Measure the baseline gap.</strong> Compare humans and simulators at utterance, trajectory, outcome, and calibration levels.</li>
+            <li><strong>Target the largest mismatch.</strong> Add grounding, memory, contrastive learning, or reinforcement learning only where the evidence identifies a failure.</li>
+            <li><strong>Validate downstream rankings.</strong> Confirm that an agent judged better in simulation is also judged better by real users.</li>
+          </ol>
+          <p>
+            This last step is the decisive one. A simulator does not need to reproduce every human detail. It needs to preserve the conclusions that developers use to choose, train, and deploy agents—and reveal when it cannot.
+          </p>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <ul>
+            <li><strong>Plausible language is not faithful behavior.</strong> The relevant unit is the interaction trajectory and its effect on agent evaluation.</li>
+            <li><strong>Persona prompts are only one layer.</strong> Knowledge boundaries, memory, policy, and calibration determine whether the role survives contact with a multi-turn task.</li>
+            <li><strong>Simulation and evaluation errors compound.</strong> An overly helpful user paired with an overly positive judge can create a closed loop of false progress.</li>
+            <li><strong>Human data is a calibration set, not an optional final demo.</strong> Even a small matched sample can reveal which synthetic metrics are trustworthy.</li>
+            <li><strong>The goal is decision fidelity.</strong> A simulator is valuable when improvements under simulation transfer to real users and when uncertainty about that transfer is measured.</li>
+          </ul>
+          <p>
+            LLM user simulation remains a powerful idea. Its value comes from making interactive development faster, cheaper, and more reproducible—not from eliminating people from the evaluation loop. The most useful simulators will be the ones designed around their gap from reality, rather than those that merely hide it behind fluent conversation.
+          </p>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Selected sources</h3>
+          <ol>
+            <li>Xuhui Zhou et al. <a href="https://arxiv.org/abs/2603.11245"><em>Mind the Sim2Real Gap in User Simulation for Agentic Tasks</em></a>. 2026.</li>
+            <li><a href="https://arxiv.org/abs/2401.16454"><em>KAUCUS: Knowledge Augmented User Simulators for Training Language Model Assistants</em></a>. 2024.</li>
+            <li><a href="https://arxiv.org/abs/2402.10811"><em>Quantifying the Persona Effect in LLM Simulations</em></a>. 2024.</li>
+            <li><a href="https://arxiv.org/abs/2511.00222"><em>Consistently Simulating Human Personas with Multi-Turn Reinforcement Learning</em></a>. 2025.</li>
+            <li><a href="https://arxiv.org/abs/2510.07230"><em>Customer-R1: Personalized Simulation of Human Behaviors via RL-based LLM Agent in Online Shopping</em></a>. 2025.</li>
+            <li><a href="https://arxiv.org/abs/2503.17662"><em>Enhancing Persona Consistency for LLMs' Role-Playing using Persona-Aware Contrastive Learning</em></a>. 2025.</li>
+            <li><a href="https://arxiv.org/abs/2507.05639"><em>ECom-Bench: Can LLM Agent Resolve Real-World E-commerce Customer Support Issues?</em></a>. 2025.</li>
+          </ol>
+          <p class="figure-credit">This article is an English synthesis of my reading database on user simulation, persona consistency, multi-turn learning, and agent evaluation. Internal project-specific recommendations were intentionally omitted.</p>
+        </section>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">Back to all posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>

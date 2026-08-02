@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A guided reading of the Darwin Gödel Machine: self-modifying code, empirical validation, open-ended archive search, and transferable agent improvements.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents">
+  <meta property="og:description" content="How the DGM turns self-improvement into an executable loop of code modification, benchmark evaluation, and open-ended exploration.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/darwin-godel-machine/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/posts/darwin-godel-machine/images/dgm-main.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/darwin-godel-machine/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du <span lang="zh-CN">杜卓耘</span></h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Reading Notes</p>
+          <h2 class="post-title">Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents</h2>
+          <p class="post-deck">From a theoretical machine that rewrites itself only after proving an improvement, to a working system that modifies its own code, tests the result on real tasks, and preserves multiple evolutionary paths.</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> · 12 min read · Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">What happens when a coding agent can inspect its own failures, rewrite its tools and workflow, and use the next round of tasks to judge whether the change helped? It begins to act as both the programmer and the program being maintained. The Darwin Gödel Machine (DGM) matters not because it has achieved unrestricted recursive self-improvement, but because it turns part of that idea into an executable, measurable, and auditable loop.</p>
+
+        <figure class="post-figure">
+          <img src="images/dgm-animation.gif" alt="Animation of the Darwin Gödel Machine cycling through self-modification, benchmark evaluation, and archive updates" width="1080" height="608" loading="eager">
+          <figcaption>Figure 1. The DGM alternates between self-modification and downstream evaluation, adding functional descendants to a growing archive. Source: Zhang et al.</figcaption>
+        </figure>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#why">Why build a self-improving system?</a></li>
+            <li><a href="#godel-to-darwin">From the Gödel Machine to the DGM</a></li>
+            <li><a href="#loop">The DGM loop</a></li>
+            <li><a href="#open-ended">Why the open-ended archive matters</a></li>
+            <li><a href="#emergent">What the system discovered</a></li>
+            <li><a href="#results">Results, ablations, and transfer</a></li>
+            <li><a href="#limits">Limits, safety, and research implications</a></li>
+          </ol>
+        </aside>
+
+        <section id="why">
+          <h3>Why build a self-improving system?</h3>
+          <p>Most agents are effectively frozen at deployment. Their foundation model, tool definitions, context management, and workflow are designed by people. The agent may solve new tasks, but it does not redesign the machinery through which it solves them. Every improvement to code editing, error recovery, or context compression still depends on a human engineer recognizing the problem and implementing a fix.</p>
+          <p>The DGM places part of this engineering work inside a machine-searchable space. Its initial coding agent has only a Bash tool and a basic tool for viewing and editing files. Later versions can modify their own Python code to change those tools and the workflow around them. Because Python is Turing-complete, this program space can in principle express any computable procedure. That gives the system a broad language for change, although it says nothing about whether useful programs will be easy to find.</p>
+
+          <div class="post-note">
+            <h4>What exactly is being improved?</h4>
+            <p>The DGM modifies the <strong>coding agent's source code and harness</strong>: editing tools, context management, patch generation, candidate ranking, and review workflows. The foundation models remain frozen in these experiments. Rewriting a training pipeline, updating model weights, and expanding beyond coding are future directions discussed by the authors—not capabilities demonstrated by the current system.</p>
+          </div>
+        </section>
+
+        <section id="godel-to-darwin">
+          <h3>From the Gödel Machine to the DGM</h3>
+          <p>Schmidhuber's original Gödel Machine is a self-referential problem solver. It can represent its software, state, utility function, and proof-search procedure as objects inside a formal system. A proof searcher looks for a <em>switch program</em> that rewrites the machine. The switch is executed only when the system can prove that running it now has greater expected utility than continuing the search.</p>
+          <p>This design places self-modification inside a rigorous framework of utility and proof, but the same requirement makes the machine difficult to realize. Proving the long-term net benefit of a nontrivial software change is generally much harder than proposing the change and testing it. The DGM makes a pragmatic substitution: it replaces <strong>formal proof</strong> with <strong>empirical validation</strong>, judging descendants by their performance on coding benchmarks.</p>
+
+          <figure class="post-figure">
+            <img src="images/dgm-main.png" alt="Conceptual diagram combining Gödel-style self-rewriting with Darwinian open-ended exploration" width="2406" height="1144" loading="lazy">
+            <figcaption>Figure 2. The DGM combines self-referential code modification with Darwinian branching and exploration. Source: Zhang et al.</figcaption>
+          </figure>
+
+          <div class="table-scroll" role="region" aria-label="Comparison of the Gödel Machine and the Darwin Gödel Machine" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Dimension</th>
+                  <th scope="col">Gödel Machine</th>
+                  <th scope="col">Darwin Gödel Machine</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Evidence for change</th>
+                  <td>A formal proof that the rewrite improves expected utility</td>
+                  <td>Measured performance on coding benchmarks</td>
+                </tr>
+                <tr>
+                  <th scope="row">Search process</th>
+                  <td>A proof searcher looks for a beneficial switch program</td>
+                  <td>A foundation model proposes code changes while an archive preserves branches</td>
+                </tr>
+                <tr>
+                  <th scope="row">Status</th>
+                  <td>A theoretical framework</td>
+                  <td>An implemented experimental system for coding agents</td>
+                </tr>
+                <tr>
+                  <th scope="row">Guarantee</th>
+                  <td>A formal result relative to specified axioms, utility, and resource assumptions</td>
+                  <td>Observed gains on evaluated tasks, with no claim of global optimality</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>The word <em>Darwin</em> therefore describes more than a metaphor. The DGM does not require every child to outperform its parent, nor does it preserve only the current champion. It maintains a growing lineage in which an initially mediocre branch may later become a useful stepping stone.</p>
+        </section>
+
+        <section id="loop">
+          <h3>The DGM loop</h3>
+          <p>Each iteration performs four basic operations: select a parent from the archive, inspect its evaluation logs, let it modify its own source code, and evaluate the resulting agent on downstream tasks. A descendant enters the archive only if it retains the basic ability to edit a codebase. Broken variants are discarded.</p>
+
+          <figure class="post-figure">
+            <img src="images/dgm-conceptual.png" alt="DGM loop that selects a parent, self-modifies it, evaluates the child, and adds it to the archive" width="2048" height="562" loading="lazy">
+            <figcaption>Figure 3. A parent edits its own agent repository; the resulting child is then tested on separate task repositories. Source: Zhang et al.</figcaption>
+          </figure>
+
+          <ol>
+            <li><strong>Select a parent.</strong> The system balances benchmark quality with underexplored branches instead of always choosing the top-scoring agent.</li>
+            <li><strong>Analyze failures.</strong> The selected agent reads its own evaluation logs and identifies a weakness in its tools or workflow.</li>
+            <li><strong>Propose and implement a feature.</strong> It converts that proposed improvement into a problem statement and directly edits its own codebase.</li>
+            <li><strong>Evaluate in stages.</strong> A small set of tasks first checks basic functionality; promising candidates advance to larger subsets.</li>
+            <li><strong>Update the archive.</strong> Functional descendants and their parent-child relationships are retained as a traceable evolutionary tree.</li>
+          </ol>
+
+          <p>A useful schematic for parent selection is:</p>
+          <div class="equation">\[w_i=\operatorname{quality}(g_i)\times\operatorname{novelty}(g_i)\]</div>
+          <p>Quality increases with benchmark performance, while novelty gives underexplored agents—those with fewer functional descendants—another chance to branch. The aim is not simply to select the strongest agent, but to preserve tension between exploitation and exploration.</p>
+
+          <div class="post-note">
+            <h4>Evaluation uses a funnel</h4>
+            <p>In the SWE-bench experiment, each new agent first receives 10 tasks to test basic code-editing functionality, then 60 tasks for a broader estimate. Candidates scoring above 40% and ranking near the top of the archive are evaluated on 200 tasks. This funnel controls search cost, but it also means that intermediate scores are noisy estimates rather than definitive rankings.</p>
+          </div>
+        </section>
+
+        <section id="open-ended">
+          <h3>Why the open-ended archive matters</h3>
+          <p>If the system always modifies its current best version, the search reduces to a form of hill climbing: every step explores the neighborhood around the present high-scoring point. A change that temporarily lowers performance may terminate a direction that would have paid off after several additional edits. In the DGM, every functional agent in the archive retains a non-zero chance of being sampled again, allowing the search to cross short-term valleys.</p>
+
+          <figure class="post-figure">
+            <img src="images/dgm-archive-tree.png" alt="Archive tree of agents generated by the DGM on SWE-bench, with node color indicating performance" width="2096" height="1606" loading="lazy">
+            <figcaption>Figure 4. The SWE-bench archive. The lineage leading to the final best agent is not monotonically improving. Source: Zhang et al.</figcaption>
+          </figure>
+
+          <p>Node 24 is a useful example of a stepping stone. It is not the final answer, but it unlocks a large family of later variants. The lineage of the best final agent also passes through two performance dips. These are precisely the paths that a strictly greedy search is likely to prune.</p>
+          <p>Still, <em>open-ended</em> should not be mistaken for unconstrained. The archive policy, parent-selection logic, and outer search algorithm are fixed by the researchers and cannot be modified by the current DGM. The objective is also defined by SWE-bench and Polyglot. This is branching exploration over a broad code space, not limitless evolution without an externally specified objective.</p>
+        </section>
+
+        <section id="emergent">
+          <h3>What the system discovered</h3>
+          <p>The gains do not come from updating the foundation model. They come from discovering a better harness around it. Along the strongest SWE-bench lineage, the DGM introduced several practical changes:</p>
+          <ul>
+            <li><strong>More granular file viewing.</strong> Read selected lines instead of repeatedly placing an entire file in context.</li>
+            <li><strong>More precise editing.</strong> Use string replacement for localized changes rather than rewriting whole files.</li>
+            <li><strong>Patch validation.</strong> Detect empty patches and retry instead of submitting a result that changed nothing.</li>
+            <li><strong>Context management.</strong> Summarize history near the context limit while preserving information needed for later repair.</li>
+            <li><strong>Multiple candidates and review.</strong> Generate several patches, then ask another model call to compare and rank them.</li>
+            <li><strong>History-aware attempts.</strong> Condition new candidates on previous failures rather than repeating the same approach.</li>
+          </ul>
+
+          <figure class="post-figure">
+            <img src="images/dgm-progress.png" alt="DGM progress chart showing the best-agent score and features discovered along its lineage" width="2084" height="1670" loading="lazy">
+            <figcaption>Figure 5. Tool and workflow improvements along the final best lineage, including two temporary performance regressions. Source: Zhang et al.</figcaption>
+          </figure>
+
+          <p>None of these ideas is individually mysterious. Their significance is that the system discovered and implemented them through its own improvement loop. Code provides a more general optimization interface than a prompt alone: tools, context policy, control flow, validation, and model-calling strategy can all be expressed in one executable language. In effect, the DGM searches over ways of organizing a model's work.</p>
+        </section>
+
+        <section id="results">
+          <h3>Results, ablations, and transfer</h3>
+          <p>After 80 iterations, the reported SWE-bench success rate rises from 20.0% to 50.0%. On the full Polyglot benchmark, performance increases from 14.2% to 30.7%. The ablations are at least as informative as the headline numbers. When the meta-agent responsible for producing modifications remains fixed, progress appears early and then plateaus. When the archive is removed and only the latest agent is retained, a poor change can trap the search in a low-performing region.</p>
+
+          <figure class="post-figure">
+            <img src="images/dgm-self-improve.png" alt="Comparison between the full DGM and ablations without self-improvement or open-ended exploration" width="1740" height="600" loading="lazy">
+            <figcaption>Figure 6. The full DGM outperforms versions that remove either self-improvement or open-ended exploration. Source: Zhang et al.</figcaption>
+          </figure>
+
+          <p>The result suggests that the two loops serve different purposes. The inner loop improves the agent that generates and executes modifications. The outer loop preserves alternatives across a lineage. Mutation without an archive forgets useful stepping stones; an archive with a fixed modifier cannot improve the process that produces new variants.</p>
+
+          <h4>Do the improvements transfer?</h4>
+          <p>The authors reevaluate DGM-discovered agent code with foundation models that were not used during the original search. On SWE-bench, o3-mini improves from 23.0% with the base agent to 33.0% with the discovered agent. Claude 3.7 Sonnet improves from 19.0% to 59.5%. A DGM variant optimized only on Python tasks also transfers to previously unseen programming languages in Polyglot, substantially outperforming both the initial agent and Aider.</p>
+
+          <figure class="post-figure">
+            <img src="images/dgm-transfer.png" alt="Transfer results for DGM-discovered agent designs across foundation models and programming languages" width="2048" height="640" loading="lazy">
+            <figcaption>Figure 7. DGM-discovered tools and workflows transfer across foundation models and from Python to other programming languages. Source: Zhang et al.</figcaption>
+          </figure>
+
+          <p>These experiments do not eliminate the possibility of benchmark overfitting, but they provide evidence that the search found more than a model-specific prompt trick. Precise editing, context compression, and candidate review are broadly useful pieces of software-engineering infrastructure.</p>
+        </section>
+
+        <section id="limits">
+          <h3>Limits, safety, and research implications</h3>
+          <p>The DGM makes self-improvement operational, but it also makes evaluation design a central safety problem. If descendants are selected by benchmark score, the system may exploit weaknesses in the evaluator, introduce hidden vulnerabilities, or evolve behavior that becomes too complicated for reliable human review. Empirical validation is tractable in a way that formal proof is not, but it does not guarantee that the objective itself is correct.</p>
+          <p>The reported experiments run inside sandboxes, retain human oversight, strictly limit web access, and preserve a lineage of every accepted change. The researchers found modifications focused on coding performance. These measures are best understood as isolation and auditability for the present experiment, not as a complete safety solution for more capable self-modifying systems.</p>
+
+          <div class="post-note">
+            <h4>Three boundaries worth keeping explicit</h4>
+            <ol>
+              <li><strong>The DGM improves an agent harness, not model weights.</strong> Frozen foundation models propose and execute the code changes.</li>
+              <li><strong>Open-ended does not mean objective-free.</strong> Fixed benchmarks, parent-selection rules, and an immutable outer loop still define the search.</li>
+              <li><strong>A higher score is neither a safety proof nor a global optimum.</strong> Tested tasks cannot replace independent checks for vulnerabilities, permissions, distribution shift, and objective misalignment.</li>
+            </ol>
+          </div>
+
+          <p>The most interesting research idea is that the improver itself must be improved. The system is not only searching for a better solution; it is also searching for a better solver and for better tools, memory, and validation around that solver. This places the DGM on the same trajectory as recent work on harness engineering: even with a fixed foundation model, the executable system around it remains a large and consequential optimization space.</p>
+          <p>The approach is still expensive. The reported SWE-bench run takes roughly two weeks and incurs substantial API costs, while the quality of every proposed change remains bounded by the underlying foundation model. The next challenge is not merely to let the system edit more of itself. It is to make evaluation harder to game, preserve interpretable lineages, isolate editable surfaces behind firm permission boundaries, and demonstrate sustained generalization on held-out environments.</p>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <ul>
+            <li><strong>From proof to experiment.</strong> The DGM replaces impractical formal utility proofs with measurable benchmark feedback.</li>
+            <li><strong>Self-modification happens in code.</strong> Tools, context management, and workflow become a shared searchable object.</li>
+            <li><strong>The archive preserves stepping stones.</strong> Non-monotonic lineages let the search survive temporary regressions.</li>
+            <li><strong>Some improvements transfer.</strong> Discovered agent designs remain useful across models and programming languages.</li>
+            <li><strong>The evaluator shapes the evolution.</strong> Future capability and safety both depend on feedback that is reliable and difficult to exploit.</li>
+          </ul>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Sources</h3>
+          <ol>
+            <li>Jenny Zhang, Shengran Hu, Cong Lu, Robert Lange, and Jeff Clune. <a href="https://arxiv.org/abs/2505.22954"><em>Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents</em></a>, 2025; published at ICLR 2026.</li>
+            <li><a href="https://sakana.ai/dgm/">Sakana AI: The Darwin Gödel Machine</a>—project overview, figures, results, and safety discussion.</li>
+            <li><a href="https://github.com/jennyzzt/dgm">Official DGM code repository</a>.</li>
+            <li>Jürgen Schmidhuber. <a href="https://arxiv.org/abs/cs/0309048"><em>Gödel Machines: Self-Referential Universal Problem Solvers Making Provably Optimal Self-Improvements</em></a>, 2003.</li>
+            <li><a href="https://app.notion.com/p/219b02b8256380359e29c75176f014a9">My original reading notes in Notion</a>.</li>
+          </ol>
+          <p class="figure-credit">This article reorganizes my original reading notes and checks the experimental setup, reported results, and capability boundaries against the current paper. Figures are from the authors' paper and the Sakana AI project page, reproduced here for study and commentary.</p>
+        </section>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">← All posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>

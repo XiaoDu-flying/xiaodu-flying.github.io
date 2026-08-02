@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Why long-horizon agents need durable workspaces, explicit artifacts, provenance, and controlled revision rather than only larger context windows.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Long-Horizon Agents Need Long-Lived State, Not Just Long Context">
+  <meta property="og:description" content="What file-system research agents and multi-turn revision failures reveal about durable state, provenance, and local editing.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/long-horizon-agents-durable-state/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/images/og.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Long-Horizon Agents Need Long-Lived State | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/long-horizon-agents-durable-state/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du <span lang="zh-CN">杜卓耘</span></h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Research Synthesis</p>
+          <h2 class="post-title">Long-Horizon Agents Need Long-Lived State, Not Just Long Context</h2>
+          <p class="post-deck">A larger context window lets an agent read more at once. It does not automatically give the agent a durable workspace, a trustworthy evidence trail, or the ability to revise one part without damaging the rest.</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> | 11 min read | Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">
+          Long-horizon tasks are often framed as a context-length problem: collect more evidence, keep a longer history, and let the model reason over all of it. But a serious research task is not one enormous prompt. It is a changing body of evidence, plans, drafts, citations, open questions, and edits. The agent must preserve this state across many operations and revisit only the relevant part at each step. More tokens help, but the missing primitive is often a long-lived workspace.
+        </p>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#context-workspace">A context window is not a workspace</a></li>
+            <li><a href="#filesystem">The file system as external working state</a></li>
+            <li><a href="#separation">Separate evidence construction from synthesis</a></li>
+            <li><a href="#scaling">Test-time scaling through state growth</a></li>
+            <li><a href="#revision">Revision exposes the same missing primitive</a></li>
+            <li><a href="#design">Design principles for durable agents</a></li>
+            <li><a href="#takeaways">Takeaways</a></li>
+          </ol>
+        </aside>
+
+        <section id="context-workspace">
+          <h3>A context window is not a workspace</h3>
+          <p>
+            Context is what the model can attend to during one inference. A workspace is what the system can preserve, organize, inspect, and modify across inferences. The difference becomes decisive once the task exceeds a single generation.
+          </p>
+          <p>
+            Compressing old observations into summaries may free tokens, but compression is lossy and difficult to audit. Important caveats disappear, citations become detached from claims, and the model cannot recover a detail that the summarizer decided was unimportant. Repeatedly placing the entire history in context has the opposite problem: cost grows, relevant evidence becomes harder to locate, and every update asks the model to reinterpret everything.
+          </p>
+          <div class="post-note">
+            <h4>Long context answers "how much can I read now?"</h4>
+            <p>Long-lived state answers different questions: What have I established? Where did it come from? What remains unresolved? Which artifact should change next? What must remain unchanged?</p>
+          </div>
+        </section>
+
+        <section id="filesystem">
+          <h3>The file system as external working state</h3>
+          <p>
+            <a href="https://arxiv.org/abs/2602.01566"><em>FS-Researcher</em></a> makes this distinction concrete. It uses a persistent file-system workspace shared by two agents. A Context Builder searches the web, archives raw pages, writes cited notes into a hierarchical knowledge base, and maintains an index, checklist, and progress log. A Report Writer later reads the resulting workspace and writes the final report section by section.
+          </p>
+
+          <div class="table-scroll" role="region" aria-label="Roles of artifacts in a persistent research workspace" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Artifact</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Failure it prevents</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><code>index.md</code></th>
+                  <td>Research decomposition and map of the knowledge base</td>
+                  <td>Searching without a stable problem structure</td>
+                </tr>
+                <tr>
+                  <th scope="row">Structured notes</th>
+                  <td>Distilled claims organized by topic</td>
+                  <td>Re-reading every source for every section</td>
+                </tr>
+                <tr>
+                  <th scope="row">Archived sources</th>
+                  <td>Raw evidence behind the notes</td>
+                  <td>Unsupported claims and citation drift</td>
+                </tr>
+                <tr>
+                  <th scope="row">Checklists and logs</th>
+                  <td>Open gaps, conflicts, and completed work</td>
+                  <td>Losing task progress between sessions</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>report.md</code></th>
+                  <td>Deliverable assembled from the evidence base</td>
+                  <td>Mixing raw browsing with final synthesis</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            The file system is useful not because files are inherently intelligent, but because they make state explicit. The agent can inspect a directory, select one note, compare it with its source, update a checklist, and leave the rest untouched. Information is addressed by name and structure rather than reconstructed from conversational memory.
+          </p>
+        </section>
+
+        <section id="separation">
+          <h3>Separate evidence construction from synthesis</h3>
+          <p>
+            FS-Researcher removes web-browsing tools when the Report Writer begins. The writer must treat the curated knowledge base as its factual source. This constraint prevents a common failure mode in which the agent searches, forms a premature thesis, and selectively gathers only enough evidence to continue writing.
+          </p>
+          <p>
+            The separation creates two different optimization problems:
+          </p>
+          <ul>
+            <li><strong>Context construction:</strong> maximize coverage, provenance, conflict detection, and the usefulness of intermediate notes.</li>
+            <li><strong>Report construction:</strong> maximize argument quality, organization, instruction following, and faithful use of the prepared evidence.</li>
+          </ul>
+          <p>
+            In the paper's ablations, merging browsing and writing into one agent produced the largest degradation: the overall RACE score fell from 52.76 to 42.41, including drops of 16.89 points in Insight and 11.06 in Comprehensiveness. Removing the persistent workspace while retaining iterative work also hurt performance, reducing RACE from 52.76 to 48.69. These results suggest that the gains come from the structure of the work, not merely from calling the model more times.
+          </p>
+        </section>
+
+        <section id="scaling">
+          <h3>Test-time scaling through state growth</h3>
+          <p>
+            Test-time scaling is often associated with sampling more answers and selecting the best one. A workspace enables another form: allocate additional computation to improving the state on which the final answer will depend.
+          </p>
+          <p>
+            FS-Researcher varies the Context Builder budget across 3, 5, and 10 rounds. More rounds produce more sources, more cited material, and generally stronger reports. On the sampled DeepResearch Bench tasks, the average citation count grew from 18.5 to 26.8 to 37.1 across those budgets. The extra work is not hidden inside an increasingly long scratchpad; it accumulates as inspectable artifacts that later sessions can reuse.
+          </p>
+          <p>
+            This changes how scaling should be measured. The relevant quantity is not only inference tokens. We should also ask whether more compute leaves the workspace more complete, better sourced, easier to navigate, and more useful to the next agent. A durable intermediate state turns additional computation into cumulative progress.
+          </p>
+        </section>
+
+        <section id="revision">
+          <h3>Revision exposes the same missing primitive</h3>
+          <p>
+            Research does not end with the first report. A user may ask to add one missing argument, restructure a section, or correct a citation. <a href="https://arxiv.org/abs/2601.13217"><em>Beyond Single-shot Writing</em></a> evaluates this setting with Mr Dre, a suite for multi-turn report revision across comprehensiveness, factuality, and presentation.
+          </p>
+          <p>
+            The tested agents usually incorporated the requested feedback, yet they also regressed on 16-27% of content that had previously been covered. A local request could delete an unrelated argument, weaken a citation, or undo an earlier improvement. Prompting the agent to plan edits and assigning a dedicated reviser helped but did not eliminate the problem.
+          </p>
+          <p>
+            This is not simply a writing failure. It is a state-management failure. If the only representation of the document is a large sequence that the model regenerates, every revision risks becoming an uncontrolled global rewrite. Reliable revision requires a stronger contract:
+          </p>
+          <ul>
+            <li>identify the exact region affected by feedback;</li>
+            <li>represent unaffected claims as invariants;</li>
+            <li>apply a local patch rather than regenerate the document;</li>
+            <li>re-run citation and coverage checks after the patch;</li>
+            <li>retain a diff so regressions can be detected and reversed.</li>
+          </ul>
+          <div class="post-note">
+            <h4>Incorporation is not preservation</h4>
+            <p>An agent can satisfy the new instruction while making the artifact worse overall. Multi-turn reliability requires measuring what changed unintentionally, not only whether the latest request appears in the output.</p>
+          </div>
+        </section>
+
+        <section id="design">
+          <h3>Design principles for durable agents</h3>
+
+          <h4>1. Externalize state into typed artifacts</h4>
+          <p>
+            Plans, evidence, open questions, drafts, and evaluation results have different semantics. Store them separately instead of flattening everything into one conversation transcript. Types make it clearer which operations are valid and which checks should run after an update.
+          </p>
+
+          <h4>2. Preserve provenance at the smallest useful unit</h4>
+          <p>
+            A bibliography at the end of a report is not enough. Claims and notes should point back to the specific source that supports them. Fine-grained provenance lets a later agent update one fact without reopening the entire research process.
+          </p>
+
+          <h4>3. Prefer local transformations over global regeneration</h4>
+          <p>
+            The system should express an edit as a patch with a target and a bounded scope. This reduces collateral change and makes verification proportional to the edit. Whole-document rewriting should be an explicit operation, not the default behavior of every revision.
+          </p>
+
+          <h4>4. Make invariants executable</h4>
+          <p>
+            "Do not remove existing citations" is a useful instruction, but a post-edit citation check is stronger. Durable agents need validators for link integrity, coverage, schema, tests, or any other property that should survive repeated work.
+          </p>
+
+          <h4>5. Separate roles when their information needs conflict</h4>
+          <p>
+            An evidence collector benefits from broad exploration; a final writer benefits from a bounded, trustworthy corpus. A reviser needs the requested change and the document invariants; it may not need unrestricted browsing. Role separation should follow information boundaries, not a desire to add more agents.
+          </p>
+
+          <h4>6. Evaluate trajectories of artifacts</h4>
+          <p>
+            A final snapshot hides whether the system repeatedly broke and repaired the same section. Evaluation should track artifact quality over time: coverage gained, correct material lost, citations preserved, conflicts resolved, and cost per durable improvement.
+          </p>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <ul>
+            <li><strong>Context and state are different resources.</strong> Context supports immediate attention; state supports cumulative work.</li>
+            <li><strong>Artifacts turn computation into progress.</strong> More test-time work is valuable when it leaves behind a better evidence base, not only a longer hidden trace.</li>
+            <li><strong>Provenance is part of memory.</strong> Remembering a claim without remembering why it is trusted is insufficient for research.</li>
+            <li><strong>Revision requires invariance.</strong> A reliable agent must preserve correct, unrelated content while applying local feedback.</li>
+            <li><strong>Agent architecture is workflow design.</strong> Roles, tools, and permissions should reflect the different phases through which state becomes a deliverable.</li>
+          </ul>
+          <p>
+            Long-horizon agents will certainly benefit from larger models and longer contexts. But the systems that remain reliable across hours, sessions, and revisions will also need something more ordinary and more fundamental: a durable place to put their work.
+          </p>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Sources</h3>
+          <ol>
+            <li>Chiwei Zhu et al. <a href="https://arxiv.org/abs/2602.01566"><em>FS-Researcher: Test-Time Scaling for Long-Horizon Research Tasks with File-System-Based Agents</em></a>. 2026.</li>
+            <li>Bingsen Chen et al. <a href="https://arxiv.org/abs/2601.13217"><em>Beyond Single-shot Writing: Deep Research Agents are Unreliable at Multi-turn Report Revision</em></a>. 2026.</li>
+            <li>Prateek Chhikara et al. <a href="https://arxiv.org/abs/2504.19413"><em>Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory</em></a>. 2025.</li>
+            <li><a href="https://app.notion.com/p/301b02b8256381d098efd55bd4d19cb8">My notes on FS-Researcher</a>.</li>
+            <li><a href="https://app.notion.com/p/301b02b82563817f806dde871675ff50">My notes on multi-turn report revision</a>.</li>
+          </ol>
+          <p class="figure-credit">This article synthesizes the two papers around a shared systems question: how an agent can preserve and improve work across a long sequence of actions.</p>
+        </section>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">Back to all posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>

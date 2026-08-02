@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A practical synthesis of multi-turn LLM post-training: long-horizon credit assignment, Iterative PPO, trajectory-level preference learning, and tool feedback.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Optimizing Outcomes, Not Replies: Multi-Turn Post-Training for LLM Agents">
+  <meta property="og:description" content="How Q-functions and trajectory preferences turn delayed conversational outcomes into trainable signals for LLM agents.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/multi-turn-llm-post-training/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/images/og.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Multi-Turn Post-Training for LLM Agents | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/multi-turn-llm-post-training/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du <span lang="zh-CN">杜卓耘</span></h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Research Synthesis</p>
+          <h2 class="post-title">Optimizing Outcomes, Not Replies: Multi-Turn Post-Training for LLM Agents</h2>
+          <p class="post-deck">A response can sound helpful while quietly making the eventual task harder. Multi-turn post-training asks a different question: which action moves the whole interaction toward a successful outcome?</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> | 12 min read | Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">
+          Most post-training recipes evaluate one completion at a time. That abstraction works when a prompt has a self-contained answer, but an agent lives inside a trajectory. A support agent must ask for missing information before calling a tool. A tutoring agent may need to preserve productive uncertainty instead of revealing the answer. A shopping assistant can produce a locally polished message that ends the conversation without resolving the user's goal. In these settings, the value of the current response is partly determined by what becomes possible several turns later.
+        </p>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#outcomes">The objective lives at the end of the trajectory</a></li>
+            <li><a href="#two-scales">One agent, two action scales</a></li>
+            <li><a href="#q-bridge">Route one: use a Q-function as the bridge</a></li>
+            <li><a href="#trajectory-preference">Route two: optimize trajectory preferences</a></li>
+            <li><a href="#comparison">The methods make different assumptions</a></li>
+            <li><a href="#practice">A practical training checklist</a></li>
+            <li><a href="#takeaways">Takeaways</a></li>
+          </ol>
+        </aside>
+
+        <section id="outcomes">
+          <h3>The objective lives at the end of the trajectory</h3>
+          <p>
+            Single-turn RLHF usually treats a prompt and its completion as one decision. A reward model scores the completed response, and PPO, GRPO, DPO, or another optimizer changes the token policy accordingly. Multi-turn agents add a second temporal scale: tokens form a response, and responses form a trajectory.
+          </p>
+          <p>
+            The learning problem becomes difficult when useful rewards are delayed. A conversation may receive a single success indicator only after the customer completes a purchase, the student solves a problem, or the environment accepts a final action. An early response has no obvious label of its own, even though it may determine whether the later outcome is reachable.
+          </p>
+          <div class="post-note">
+            <h4>Local quality is not long-term value</h4>
+            <p>A response can be fluent, safe, and relevant yet still be strategically weak. Long-horizon training must distinguish "this reply looks good" from "this reply improves the expected final outcome."</p>
+          </div>
+          <p>
+            This is the credit-assignment problem in conversational form. The trainer must propagate evidence from an eventual outcome back to the intermediate decisions that helped or hurt it, without encouraging the model to exploit a brittle simulator or reward proxy.
+          </p>
+        </section>
+
+        <section id="two-scales">
+          <h3>One agent, two action scales</h3>
+          <p>
+            At the response level, an action is an entire message: ask a clarifying question, offer a plan, invoke a tool, or stop. At the token level, the same action is generated autoregressively. Classical multi-turn RL reasons naturally over response-level actions, while mature LLM post-training software is optimized for token-level updates.
+          </p>
+          <p>
+            This mismatch explains why simply attaching the final trajectory reward to every generated token is unsatisfying. It gives all decisions the same coarse label and ignores how the value of a response depends on the state in which it was produced. Two recent approaches address the mismatch from different directions: learn a value for each state-response pair, or compare complete trajectories directly.
+          </p>
+        </section>
+
+        <section id="q-bridge">
+          <h3>Route one: use a Q-function as the bridge</h3>
+          <p>
+            <a href="https://arxiv.org/abs/2511.21638"><em>Aligning LLMs Toward Multi-Turn Conversational Outcomes Using Iterative PPO</em></a> reduces multi-turn policy improvement to a sequence of familiar single-turn RLHF problems. The central object is a response-level Q-function, <code>Q(s, a)</code>: the expected future return after producing response <code>a</code> in conversational state <code>s</code> and then continuing under the current policy.
+          </p>
+          <p>
+            If the Q-function is accurate, it compresses the future into a score for the current response. The token-level optimizer no longer needs to unroll every future turn during each update. It can treat <code>Q(s, a)</code> as the reward model for a standard single-turn completion problem.
+          </p>
+
+          <h4>The Iterative PPO loop</h4>
+          <ol>
+            <li><strong>Deploy the current policy.</strong> Collect a batch of complete multi-turn trajectories and their eventual outcomes.</li>
+            <li><strong>Evaluate the policy.</strong> Compute Monte Carlo returns for intermediate state-response pairs and fit a Q-function with supervised regression.</li>
+            <li><strong>Improve the policy.</strong> Freeze the learned Q-function and use it as the reward model for token-level PPO.</li>
+            <li><strong>Collect fresh data.</strong> Deploy the improved policy, because its new response distribution may move beyond the coverage of the old Q-function.</li>
+          </ol>
+          <p>
+            This is policy iteration expressed through existing LLM tooling: response-level policy evaluation followed by token-level policy improvement. The paper proves that if the new policy improves the expected Q-value at each state, it improves the multi-turn return globally. It implements the update with PPO, while noting that other effective single-turn optimizers, including GRPO, can in principle serve as the improvement step.
+          </p>
+          <p>
+            The distinction matters. The original method is <strong>Iterative PPO</strong>, not an experimentally established "Iterative GRPO" algorithm. Replacing PPO with GRPO is a plausible implementation choice supported by the reduction, but it should be evaluated rather than treated as a reported result.
+          </p>
+
+          <h4>What can go wrong?</h4>
+          <p>
+            The Q-function only learns from actions represented in the logged data. A nearly deterministic policy may produce narrow trajectories, leaving the critic unreliable on alternative replies proposed during policy optimization. Exploration, off-policy evaluation, and periodic data refresh are therefore central parts of the method rather than secondary engineering details.
+          </p>
+        </section>
+
+        <section id="trajectory-preference">
+          <h3>Route two: optimize trajectory preferences</h3>
+          <p>
+            <a href="https://arxiv.org/abs/2409.02392"><em>Building Math Agents with Multi-Turn Iterative Preference Learning</em></a> begins from a different supervision format. A tool-using math agent alternates between model actions and code-interpreter observations. Instead of fitting a scalar Q-value for each response, the method compares successful and unsuccessful trajectories and extends DPO and KTO to the multi-turn setting.
+          </p>
+          <p>
+            The key implementation detail is easy to overlook: interpreter outputs are part of the history, but they are not actions generated by the model. Their tokens must be masked out when computing policy log-probabilities. Otherwise the optimizer rewards or penalizes the model for text produced by the environment.
+          </p>
+          <p>
+            The framework iteratively samples new solutions, separates preferred and dispreferred trajectories using final-answer feedback, and updates the policy with multi-turn DPO or KTO. In the reported Gemma-1.1-it-7B experiment, iterative M-DPO improved accuracy from 77.5% to 83.9% on GSM8K and from 46.1% to 51.2% on MATH over three iterations. The result illustrates the value of online data refresh: each new policy exposes trajectories that were unavailable to its predecessor.
+          </p>
+          <div class="post-note">
+            <h4>The environment is not the policy</h4>
+            <p>Multi-turn training data interleaves model decisions with observations from users, tools, and other agents. Correct objectives must say which tokens the policy owns. Masking is not merely a batching trick; it encodes the causal boundary of the learner.</p>
+          </div>
+        </section>
+
+        <section id="comparison">
+          <h3>The methods make different assumptions</h3>
+          <p>
+            Q-based policy iteration and trajectory-level preference learning are complementary rather than interchangeable. Their supervision, environmental assumptions, and failure modes differ.
+          </p>
+
+          <div class="table-scroll" role="region" aria-label="Comparison of two multi-turn post-training routes" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Dimension</th>
+                  <th scope="col">Q-function bridge</th>
+                  <th scope="col">Trajectory preference learning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Primary signal</th>
+                  <td>Scalar returns from logged trajectories</td>
+                  <td>Preferred versus dispreferred trajectories</td>
+                </tr>
+                <tr>
+                  <th scope="row">Intermediate credit</th>
+                  <td>Explicitly estimated by <code>Q(s, a)</code></td>
+                  <td>Implicitly assigned through the trajectory objective</td>
+                </tr>
+                <tr>
+                  <th scope="row">Reusable optimizer</th>
+                  <td>Single-turn PPO; other RL optimizers are possible</td>
+                  <td>Multi-turn variants of DPO or KTO</td>
+                </tr>
+                <tr>
+                  <th scope="row">Environment assumption</th>
+                  <td>Can learn from stochastic conversational transitions, subject to evaluation coverage</td>
+                  <td>The simple M-DPO derivation is exact for deterministic observations such as code execution</td>
+                </tr>
+                <tr>
+                  <th scope="row">Main risk</th>
+                  <td>Critic error and out-of-distribution actions</td>
+                  <td>Biased preference objective when external transitions are stochastic</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            This last distinction is important for general agents. Code execution is deterministic given the submitted program, but a human user or another LLM can respond stochastically. The M-DPO paper shows that its simplified loss is exact under deterministic transitions and points toward value estimation or an adaptive correction when observations are stochastic. Moving from tool-use math to open-ended conversation is therefore not a change of dataset alone; it changes the learning assumptions.
+          </p>
+        </section>
+
+        <section id="practice">
+          <h3>A practical training checklist</h3>
+          <p>Before choosing an optimizer, I would make the trajectory semantics explicit:</p>
+          <ol>
+            <li><strong>Define the outcome.</strong> Is success a terminal binary event, a graded task score, a human preference, or a vector of safety and quality objectives?</li>
+            <li><strong>Mark policy-owned tokens.</strong> Separate model actions from user messages, tool outputs, retrieved documents, and system-generated state.</li>
+            <li><strong>Choose the credit mechanism.</strong> Decide whether intermediate actions need an explicit Q-value or whether trajectory comparisons are sufficient.</li>
+            <li><strong>Measure coverage.</strong> Track whether training trajectories cover the response styles and states that the optimizer will explore.</li>
+            <li><strong>Refresh on-policy data.</strong> A policy that improves changes its own state distribution; stale data eventually describes the wrong agent.</li>
+            <li><strong>Audit the simulator.</strong> If another model supplies user reactions or rewards, check whether the policy is learning the intended task or the simulator's quirks.</li>
+            <li><strong>Evaluate whole trajectories.</strong> Report task success, cost, length, safety, and recovery behavior, not only average response-level reward.</li>
+          </ol>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <ul>
+            <li><strong>Multi-turn post-training changes the unit of optimization.</strong> The object of interest is a trajectory, even when the implementation updates token probabilities.</li>
+            <li><strong>Value functions connect long-term outcomes to current responses.</strong> They make mature single-turn RLHF infrastructure usable for response-level policy iteration.</li>
+            <li><strong>Preference objectives must respect the environment boundary.</strong> Tool and user observations belong in the state, not in the policy likelihood.</li>
+            <li><strong>Online iteration is also distribution management.</strong> Fresh rollouts are needed because an improved policy visits new states and produces new actions.</li>
+            <li><strong>Algorithm names are less important than assumptions.</strong> Before choosing PPO, GRPO, DPO, or KTO, specify where rewards come from, which transitions are stochastic, and how credit reaches earlier turns.</li>
+          </ul>
+          <p>
+            The broader lesson is that training an agent is not just training a better response generator. It is learning a policy whose local decisions remain useful after the environment, the user, and the agent itself have had time to react.
+          </p>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Sources</h3>
+          <ol>
+            <li>Daniel R. Jiang et al. <a href="https://arxiv.org/abs/2511.21638"><em>Aligning LLMs Toward Multi-Turn Conversational Outcomes Using Iterative PPO</em></a>. 2025.</li>
+            <li>Wei Xiong et al. <a href="https://arxiv.org/abs/2409.02392"><em>Building Math Agents with Multi-Turn Iterative Preference Learning</em></a>. 2024.</li>
+            <li><a href="https://app.notion.com/p/344b02b8256380efa2a9f083dd7f2933">My notes on outcome-oriented multi-turn RL</a>.</li>
+            <li><a href="https://app.notion.com/p/342b02b8256380d7b31ff86fb05ddfa6">My notes on multi-turn iterative preference learning</a>.</li>
+          </ol>
+          <p class="figure-credit">The paper title and algorithm name are preserved from the primary source: the proposed method is Iterative PPO. GRPO is discussed as a possible policy-improvement optimizer, not as the paper's reported implementation.</p>
+        </section>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">Back to all posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>

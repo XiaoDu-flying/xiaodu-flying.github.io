@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A guided reading of Coconut, continuous latent-space reasoning, staged training, and implicit chain-of-thought distillation.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Training Large Language Models to Reason in a Continuous Latent Space">
+  <meta property="og:description" content="How continuous thoughts replace reasoning tokens, how Coconut is trained, and why latent states may preserve multiple reasoning paths.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/continuous-latent-reasoning/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/posts/continuous-latent-reasoning/images/figure-01.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Training LLMs to Reason in a Continuous Latent Space | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/continuous-latent-reasoning/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du</h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Paper Reading Notes</p>
+          <h2 class="post-title">Training Large Language Models to Reason in a Continuous Latent Space</h2>
+          <p class="post-deck">A guided reading of Coconut: how continuous thoughts replace discrete reasoning tokens, how the staged curriculum works, and why latent states may preserve multiple reasoning paths.</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> · 18 min read · Zhuoyun Du</p>
+          <p class="post-source">Primary paper: <a href="https://arxiv.org/abs/2412.06769">Hao et al., “Training Large Language Models to Reason in a Continuous Latent Space”</a>.</p>
+        </header>
+
+        <p class="post-lead">Language is an interface for communication, but it may not be the most natural substrate for every step of reasoning. Coconut—short for <em>Chain of Continuous Thought</em>—tests what happens when a language model stops decoding every intermediate state into a word and instead feeds its hidden state directly back into the model.</p>
+
+        <div class="post-note">
+          <h4>TL;DR</h4>
+          <ul>
+            <li>Many tokens in a textual chain of thought mainly maintain linguistic coherence, while a smaller number of decisions carry most of the planning burden.</li>
+            <li>Coconut treats the final hidden state at a reasoning position as a <strong>continuous thought</strong> and reuses that vector as the next input embedding.</li>
+            <li>The paper reports that a continuous thought can retain several plausible next steps at once. On search-heavy tasks, this produces behavior resembling breadth-first exploration rather than an immediate commitment to one textual path.</li>
+            <li>A staged curriculum gradually replaces explicit language reasoning steps with continuous thoughts so that the model learns to operate in latent mode.</li>
+          </ul>
+        </div>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#motivation">Motivation</a></li>
+            <li><a href="#transformer-primer">Transformer and cross-entropy primer</a></li>
+            <li><a href="#coconut">How Coconut works</a></li>
+            <li><a href="#training">Staged training</a></li>
+            <li><a href="#latent-search">Latent search behavior</a></li>
+            <li><a href="#implicit-cot">Related method: implicit CoT distillation</a></li>
+          </ol>
+        </aside>
+
+        <section id="motivation">
+          <h3>Motivation: reasoning does not have to be verbalized</h3>
+          <p>Autoregressive language models normally reason in the same space in which they communicate: a sequence of discrete word tokens. Every intermediate step must pass through the language-model head, become a token, and then return through the embedding layer before the model can continue.</p>
+          <p>Coconut removes this round trip during selected reasoning steps. The model's last hidden state already summarizes the current computation. Instead of turning it into a token, Coconut uses the vector itself as the next input. The reasoning trace can therefore evolve in a continuous space without being forced through a fixed vocabulary at every step.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-01.png" alt="Comparison between standard chain-of-thought token generation and Coconut continuous thoughts" loading="eager">
+            <figcaption>Figure 1. In standard CoT, each hidden state is decoded into a token. Coconut feeds the hidden state back as the next embedding.</figcaption>
+          </figure>
+
+          <p>The important claim is not merely that latent vectors are compact. A single vector may encode support for several possible continuations at the same time. A decoded token must commit to one branch; a continuous state can, in principle, carry information about multiple branches into later computation.</p>
+        </section>
+
+        <section id="transformer-primer">
+          <h3>Transformer and cross-entropy primer</h3>
+          <p>Before looking at Coconut, it helps to separate three objects that are easy to conflate:</p>
+          <ul>
+            <li><strong>Token embeddings</strong> are the vectors supplied to the Transformer as inputs.</li>
+            <li><strong>Hidden states</strong> are the contextual vectors produced by Transformer layers.</li>
+            <li><strong>Logits</strong> are obtained by projecting a hidden state into vocabulary space; softmax turns them into next-token probabilities.</li>
+          </ul>
+
+          <figure class="post-figure">
+            <img src="images/figure-02.png" alt="Annotated encoder-decoder Transformer architecture" loading="lazy">
+            <figcaption>Figure 2. An annotated view of the original encoder-decoder Transformer.</figcaption>
+          </figure>
+
+          <figure class="post-figure">
+            <img src="images/figure-03.png" alt="Detailed diagram of masked multi-head attention, including Q, K, V projections and the causal mask" loading="lazy">
+            <figcaption>Figure 3. Queries, keys, values, attention heads, and the causal mask.</figcaption>
+          </figure>
+
+          <p>During supervised language-model training, all target positions can be evaluated in one forward pass because a causal mask prevents each position from attending to future tokens. During generation, by contrast, the model emits one new token at a time and appends it to the context.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-04.png" alt="Transformer training diagram showing teacher-forced targets and cross-entropy loss" loading="lazy">
+            <figcaption>Figure 4. Teacher-forced training computes token losses across the shifted target sequence in parallel.</figcaption>
+          </figure>
+
+          <figure class="post-figure">
+            <img src="images/figure-05-en.png" alt="First autoregressive Transformer inference step with English annotations" loading="lazy">
+            <figcaption>Figure 5. At the first inference step, the model selects a token from the final-position distribution.</figcaption>
+          </figure>
+
+          <figure class="post-figure">
+            <img src="images/figure-06.png" alt="Second autoregressive Transformer inference step, reusing encoder outputs and appending the previous token" loading="lazy">
+            <figcaption>Figure 6. At the second step, the previous output token becomes part of the decoder input.</figcaption>
+          </figure>
+
+          <div class="post-example">
+            <h4>A small cross-entropy example</h4>
+            <p>Suppose the vocabulary contains only three words: <code>[cat, dog, fish]</code>. Given the prefix <code>I have a</code>, the correct next word is <code>cat</code>. Assume the model produces the logits</p>
+            <pre><code>[2.0, 1.0, -1.0]</code></pre>
+            <p>Softmax converts these scores into a probability distribution:</p>
+            <div class="equation">
+              \[
+              p(y_i)=\frac{\exp(z_i)}{\sum_{j=1}^{V}\exp(z_j)}.
+              \]
+            </div>
+            <p>The resulting probabilities are approximately <code>[0.70, 0.26, 0.04]</code>. For the one-hot target <code>[1, 0, 0]</code>, the cross-entropy is</p>
+            <div class="equation">
+              \[
+              H(q,p)=-\sum_{i=1}^{V}q(y_i)\log p(y_i)=-\log(0.70)\approx 0.36.
+              \]
+            </div>
+            <p>For a batch with losses <code>[0.36, 0.52, 0.10]</code>, the mean loss is</p>
+            <div class="equation">
+              \[
+              \mathcal{L}=\frac{0.36+0.52+0.10}{3}\approx 0.33.
+              \]
+            </div>
+            <p>Backpropagation then adjusts the parameters to increase the probability of the correct target. Coconut retains this familiar token-level objective for the textual portion of the output; the difference is what happens before those supervised tokens.</p>
+          </div>
+
+          <h4>From explicit to internalized reasoning</h4>
+          <p>One route toward implicit reasoning is to begin with a fully explicit solution and gradually remove intermediate reasoning tokens during training. The model is forced to absorb more of the computation into its internal states as the visible scaffold disappears.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-07.png" alt="Stepwise internalization objective that progressively removes explicit chain-of-thought tokens" loading="lazy">
+            <figcaption>Figure 7. Stepwise internalization gradually removes explicit intermediate tokens according to a schedule.</figcaption>
+          </figure>
+        </section>
+
+        <section id="coconut">
+          <h3>How Coconut works</h3>
+          <p>For a token sequence \(x=(x_1,\ldots,x_T)\), let \(e(\cdot)\) be the embedding function and define</p>
+          <div class="equation">
+            \[
+            E_t=[e(x_1),e(x_2),\ldots,e(x_t)],
+            \]
+            \[
+            H_t=\operatorname{Transformer}(E_t), \qquad h_t=H_t[t,:],
+            \]
+            \[
+            p(x_{t+1}\mid x_{\le t})=\operatorname{softmax}(Wh_t),
+            \]
+          </div>
+          <p>where \(W\) is the language-model head. A standard model uses \(Wh_t\) to choose a token and then obtains the next input through the embedding lookup. Coconut can still compute this distribution for analysis, but it does not need to sample a token while it is in latent mode.</p>
+
+          <figure class="post-figure post-figure-compact">
+            <img src="images/figure-08.png" alt="Equations for a standard Transformer language model and its next-token distribution" loading="lazy">
+            <figcaption>Figure 8. Standard next-token prediction from embeddings to hidden states and vocabulary probabilities.</figcaption>
+          </figure>
+
+          <p>Assume that latent reasoning starts after position \(i\). At a later latent step \(t\), the input sequence is</p>
+          <div class="equation">
+            \[
+            E_t=[e(x_1),\ldots,e(x_i),h_i,h_{i+1},\ldots,h_{t-1}].
+            \]
+          </div>
+          <p>Each newly produced hidden state becomes the next input embedding. There is no discrete token between \(h_i\) and \(h_{i+1}\).</p>
+
+          <figure class="post-figure post-figure-compact">
+            <img src="images/figure-09.png" alt="Coconut latent-mode input sequence containing token embeddings followed by hidden states" loading="lazy">
+            <figcaption>Figure 9. The latent-mode input sequence.</figcaption>
+          </figure>
+
+          <p>If latent mode ends before token \(x_j\), normal embeddings resume:</p>
+          <div class="equation">
+            \[
+            E_t=[e(x_1),\ldots,e(x_i),h_i,\ldots,h_{j-1},e(x_j),\ldots,e(x_t)].
+            \]
+          </div>
+
+          <figure class="post-figure post-figure-compact">
+            <img src="images/figure-10.png" alt="Coconut input sequence after returning from hidden states to token embeddings" loading="lazy">
+            <figcaption>Figure 10. Token embeddings resume after the latent segment.</figcaption>
+          </figure>
+
+          <p>Special tokens mark the boundaries: <code>&lt;bot&gt;</code> begins latent reasoning and <code>&lt;eot&gt;</code> ends it. The paper discusses either predicting when to stop or using a fixed number of latent thoughts; its experiments generally use the fixed-length option for simplicity.</p>
+        </section>
+
+        <section id="training">
+          <h3>Staged training: replacing language steps with continuous thoughts</h3>
+          <p>The central training problem is distribution shift. A pretrained model expects token embeddings, not its own final hidden states, as inputs. Coconut therefore uses a curriculum rather than replacing the full reasoning chain at once.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-11.png" alt="Coconut training stages that gradually replace language reasoning steps with continuous thoughts" loading="lazy">
+            <figcaption>Figure 11. Each stage introduces additional continuous thoughts and removes another explicit reasoning step.</figcaption>
+          </figure>
+
+          <ol>
+            <li><strong>Stage 0:</strong> train on the complete language chain of thought, with latent-mode boundary tokens inserted but no continuous thought yet.</li>
+            <li><strong>Stage 1:</strong> replace the first textual reasoning step with one or more continuous thoughts and compute loss on the remaining text.</li>
+            <li><strong>Later stages:</strong> continue replacing early language steps until only the answer remains after the latent segment.</li>
+          </ol>
+
+          <p>If the current stage schedules \(n\) continuous thoughts, training requires \(n+1\) forward passes: one pass for each new latent state and a final pass that produces the supervised textual continuation. Because the hidden states are passed directly between differentiable computations, gradients can flow through the continuous reasoning segment.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-12-en.png" alt="English mathematical example of training with two continuous thoughts followed by a textual calculation and answer" loading="lazy">
+            <figcaption>Figure 12. A minimal example: latent states carry the early computation, while cross-entropy supervises the remaining text and answer.</figcaption>
+          </figure>
+        </section>
+
+        <section id="latent-search">
+          <h3>Why continuous states can resemble latent tree search</h3>
+          <p>A language chain must select a concrete next token. If that token commits the model to a poor branch, subsequent text may continue along the dead end or invent a connection. A continuous representation can postpone that commitment by preserving evidence for several possible next nodes.</p>
+          <p>The paper illustrates this behavior on ProsQA, a logical-reasoning task represented by a directed acyclic graph. In the example below, textual CoT follows a dead end and hallucinates an edge. One continuous thought still reaches the wrong target, while two continuous thoughts preserve enough search state to recover the correct path.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-13.png" alt="ProsQA graph example comparing a hallucinated CoT path with Coconut using one and two continuous thoughts" loading="lazy">
+            <figcaption>Figure 13. A ProsQA case study from the Coconut paper. More latent steps allow the model to revise which path is most promising.</figcaption>
+          </figure>
+
+          <p>This is best read as an empirical interpretation, not as evidence that Coconut literally executes a symbolic BFS algorithm. The authors probe candidate probabilities after successive latent thoughts and observe a transition from broad support over several candidates toward a more concentrated choice. That pattern is analogous to breadth-first exploration followed by pruning.</p>
+        </section>
+
+        <section id="implicit-cot">
+          <h3>Related method: implicit chain of thought through knowledge distillation</h3>
+          <p>A related paper, <a href="https://arxiv.org/abs/2311.01460">“Implicit Chain of Thought Reasoning via Knowledge Distillation”</a>, also moves reasoning away from explicit tokens, but its mechanism is different. Coconut recurrently feeds a model's own hidden state back as an input. The distillation approach transfers hidden reasoning states from an explicit-CoT teacher into a separate student/emulator system.</p>
+
+          <figure class="post-figure post-figure-compact">
+            <img src="images/figure-14.png" alt="Three-stage implicit chain-of-thought distillation pipeline: mind-reading, thought emulation, and joint optimization" loading="lazy">
+            <figcaption>Figure 14. The three-stage implicit-CoT distillation strategy.</figcaption>
+          </figure>
+
+          <h4>Mind-reading the teacher</h4>
+          <p>First, a student is trained to predict the final answer while receiving hidden states from a fixed teacher. Those teacher states contain information about the explicit intermediate calculations. The student learns to use the states without generating the corresponding words.</p>
+
+          <h4>Thought emulation</h4>
+          <p>Next, an emulator learns to predict the teacher's hidden states directly from the input. The teacher reasons “horizontally” by generating intermediate tokens; the emulator tries to reproduce the relevant computation “vertically” across its layers.</p>
+
+          <h4>Couple and optimize</h4>
+          <p>Finally, the emulator replaces the fixed teacher. Its predicted states are inserted into the student, and the combined system is fine-tuned end to end. At this point, the internal trajectory no longer has to match the teacher exactly as long as it supports the correct output.</p>
+
+          <h4>The multiple-path problem</h4>
+          <p>Hidden-state regression becomes difficult when a problem admits several valid reasoning paths. Suppose two correct derivations produce teacher states \(z_l^{(1)}\) and \(z_l^{(2)}\). A simple mean-squared objective,</p>
+          <div class="equation">
+            \[
+            \min_{\hat z_{1:L}}\sum_{l=1}^{L}\lVert z_l-\hat z_l\rVert_2^2,
+            \]
+          </div>
+          <p>encourages the emulator to predict their conditional mean:</p>
+          <div class="equation">
+            \[
+            \hat z_l=\frac{z_l^{(1)}+z_l^{(2)}}{2}.
+            \]
+          </div>
+          <p>That average need not correspond to either valid reasoning trajectory. It is analogous to fitting a single Gaussian to data generated by several well-separated modes.</p>
+
+          <h4>Using a mixture model</h4>
+          <p>A mixture model preserves multiple modes explicitly:</p>
+          <div class="equation">
+            \[
+            p(\hat z_l\mid h_l)=\sum_{c_l}p(\hat z_l\mid h_l,c_l)\,p(c_l\mid h_l).
+            \]
+          </div>
+          <p>Here, \(c_l\) indexes a possible reasoning component. Each component can predict a different hidden state, while \(p(c_l\mid h_l)\) provides its weight. With Gaussian components centered at \(f(h_l,c_l)\), training combines state reconstruction with supervision for the component identity:</p>
+          <div class="equation">
+            \[
+            \mathcal{L}=\sum_{l=1}^{L}
+            \frac{\lVert z_l-f(h_l,c_l)\rVert_2^2}{2}
+            -\log p(c_l=z_{t_l}\mid h_l).
+            \]
+          </div>
+          <p>The broader lesson is shared with Coconut: forcing a rich internal computation into a single discrete or averaged representation can discard alternatives too early. Continuous and multimodal states offer ways to delay that collapse.</p>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <ul>
+            <li><strong>Coconut changes the recurrent interface:</strong> hidden states become inputs during latent mode instead of being decoded and re-embedded.</li>
+            <li><strong>The curriculum is essential:</strong> the model progressively adapts to its own hidden states as inputs.</li>
+            <li><strong>Latent reasoning can preserve alternatives:</strong> the paper's probes suggest parallel exploration before later concentration, especially on planning-heavy graph problems.</li>
+            <li><strong>Continuous reasoning is not automatically better:</strong> results depend on the task, the number of latent thoughts, and the training setup. On GSM8K, the paper reports an efficiency–accuracy trade-off rather than universal superiority over explicit CoT.</li>
+            <li><strong>Different latent-CoT methods should not be conflated:</strong> recurrent hidden-state feedback, stepwise internalization, and teacher-state distillation move computation into latent space through distinct mechanisms.</li>
+          </ul>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Sources and figure credits</h3>
+          <ol>
+            <li>Shibo Hao et al. <a href="https://arxiv.org/abs/2412.06769">Training Large Language Models to Reason in a Continuous Latent Space</a>.</li>
+            <li>Yuntian Deng, Yejin Choi, and Stuart Shieber. <a href="https://arxiv.org/abs/2405.14838">From Explicit CoT to Implicit CoT: Learning to Internalize CoT Step by Step</a>.</li>
+            <li>Yuntian Deng et al. <a href="https://arxiv.org/abs/2311.01460">Implicit Chain of Thought Reasoning via Knowledge Distillation</a>.</li>
+          </ol>
+          <p class="figure-credit">Figures were preserved from my original reading notes. Figures 1, 8–11, and 13 originate from or reproduce material in the Coconut paper; Figure 7 comes from the stepwise-internalization paper; Figure 14 comes from the implicit-CoT distillation paper. The Transformer walkthrough figures were retained as explanatory context. Chinese annotations in the original notes were translated into English for this post.</p>
+        </section>
+
+        <p class="post-back"><a href="../index.html">← Back to Posts</a></p>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>

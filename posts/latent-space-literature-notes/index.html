@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A guided synthesis of continuous latent reasoning, implicit chains of thought, representation analysis, pause tokens, and multi-agent aggregation.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Latent Space: From Continuous Reasoning to Representation Analysis">
+  <meta property="og:description" content="Seven papers that connect latent-space reasoning, additional test-time computation, and methods for inspecting hidden representations.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/latent-space-literature-notes/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/posts/latent-space-literature-notes/images/figure-06.png">
+  <meta property="article:published_time" content="2026-08-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Latent Space: From Continuous Reasoning to Representation Analysis | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/latent-space-literature-notes/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du</h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Reading Notes</p>
+          <h2 class="post-title">Latent Space: From Continuous Reasoning to Representation Analysis</h2>
+          <p class="post-deck">A guided reading of how language models can move computation beyond explicit tokens—and how we can inspect, train, and evaluate what happens there.</p>
+          <p class="post-meta"><time datetime="2026-08-02">August 2, 2026</time> · 10 min read · Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">What would reasoning look like if a model did not have to translate every intermediate step into human language? The seven papers below do not offer a single answer. Instead, they map a design space: where hidden computation can occur, how it can be learned, and what evidence is needed before we call it reasoning.</p>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#preliminaries">Preliminaries: how a model produces the next token</a></li>
+            <li><a href="#coconut">Coconut: reasoning directly in continuous space</a></li>
+            <li><a href="#internalization">From explicit to implicit chains of thought</a></li>
+            <li><a href="#distillation">Knowledge distillation and multiple reasoning paths</a></li>
+            <li><a href="#multihop">Do models perform multi-hop reasoning latently?</a></li>
+            <li><a href="#patchscopes">Patchscopes: reading hidden representations</a></li>
+            <li><a href="#extensions">Pause tokens and Mixture-of-Agents</a></li>
+          </ol>
+        </aside>
+
+        <section id="preliminaries">
+          <h3>Preliminaries: how a model produces the next token</h3>
+          <p>To understand latent-space reasoning, it helps to separate three objects: the embedding of an input token, the hidden state computed inside the Transformer, and the next-token distribution produced by a linear layer and softmax. In standard autoregressive generation, the model predicts a token and embeds it again as the next input. Latent-reasoning methods intervene in this loop, allowing some computation to continue before it is forced back through the vocabulary.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-01.png" alt="Annotated diagram of the Transformer encoder-decoder architecture" loading="eager">
+            <figcaption>Figure 1. A general encoder–decoder Transformer. The later papers mainly study autoregressive language models, but the same distinction between embeddings, hidden states, and token probabilities remains central.</figcaption>
+          </figure>
+
+          <div class="post-note">
+            <h4>A minimal cross-entropy example</h4>
+            <p>Suppose the vocabulary is <code>[cat, dog, fish]</code>, the correct next word is <code>cat</code>, and the logits are <code>[2.0, 1.0, -1.0]</code>. Softmax converts them into approximately <code>[0.70, 0.26, 0.04]</code>:</p>
+            <div class="equation">\[P(y_i)=\frac{\exp(z_i)}{\sum_{j=1}^{V}\exp(z_j)}\]</div>
+            <p>Because the target is one-hot, cross-entropy reduces to the negative log probability of the correct word:</p>
+            <div class="equation">\[H(Q,P)=-\log P(y_{\mathrm{cat}})=-\log(0.70)\approx0.36\]</div>
+            <p>The methods below change what happens between input and output, but their latent computation is still trained through a downstream differentiable objective such as token prediction.</p>
+          </div>
+        </section>
+
+        <section id="coconut">
+          <p class="paper-number">Paper 1</p>
+          <h3><a href="https://arxiv.org/abs/2412.06769">Training Large Language Models to Reason in a Continuous Latent Space</a></h3>
+          <p class="post-tldr"><strong>TL;DR.</strong> Coconut avoids compressing every intermediate reasoning step into a natural-language token. During latent mode, it feeds the previous step's final hidden state directly back as the next input embedding.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-06.png" alt="Comparison between a discrete chain of thought and Coconut's chain of continuous thought" loading="lazy">
+            <figcaption>Figure 2. A discrete chain of thought samples a token at every step; Coconut passes continuous states between <code>&lt;bot&gt;</code> and <code>&lt;eot&gt;</code>.</figcaption>
+          </figure>
+
+          <p>Human language is optimized for communication, but it may not be the best interface for a model's internal computation. A standard language model repeatedly projects a hidden state into vocabulary space, produces a token, and maps that token back into an embedding. Coconut changes this loop during latent mode by feeding the final hidden state back directly.</p>
+          <div class="equation">\[h_t=\mathcal{M}(E_t),\qquad E_t=[e(x_1),\ldots,e(x_i),h_i,\ldots,h_{t-1}]\]</div>
+          <p>A continuous state does not have to correspond to a readable word, so it can represent several potential next steps at once. The authors argue that this produces a form of breadth-first exploration: rather than committing immediately to one verbalized path, the model can preserve multiple possibilities in a single representation.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-11.png" alt="Curriculum used to train Coconut with increasing numbers of continuous thoughts" loading="lazy">
+            <figcaption>Figure 3. Training gradually replaces language reasoning steps with continuous thoughts while preserving end-to-end differentiability.</figcaption>
+          </figure>
+
+          <p>If a training stage schedules \(n\) latent thoughts, it requires \(n+1\) forward passes: the first \(n\) compute successive continuous states, and the final pass evaluates the remaining text. Coconut therefore trades additional sequential computation for a reasoning channel that is not restricted to vocabulary items.</p>
+        </section>
+
+        <section id="internalization">
+          <p class="paper-number">Paper 2</p>
+          <h3><a href="https://arxiv.org/abs/2405.14838">From Explicit CoT to Implicit CoT: Learning to Internalize CoT Step by Step</a></h3>
+          <p class="post-tldr"><strong>TL;DR.</strong> During training, explicit reasoning tokens are removed in stages, encouraging the model to internalize the computation that was previously written out.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-13.png" alt="Equations describing the gradual removal of chain-of-thought tokens during training" loading="lazy">
+            <figcaption>Figure 4. Explicit chains of thought serve as training scaffolding and are shortened according to a schedule.</figcaption>
+          </figure>
+
+          <p>This approach shares Coconut's goal of reducing dependence on visible language reasoning, but its mechanism is different. Coconut creates an explicit recurrent loop over continuous states. Stepwise internalization uses a curriculum that gradually withdraws the language scaffold already present in the training data. The network is asked to absorb the computation formerly carried by the removed steps.</p>
+          <p>Success therefore means more than making chain-of-thought text disappear. The shorter computation must retain task performance and generalize beyond the training regime. Any efficiency gain also comes with a clear cost: once the intermediate steps are internalized, they become harder to inspect and supervise.</p>
+        </section>
+
+        <section id="distillation">
+          <p class="paper-number">Paper 3</p>
+          <h3><a href="https://arxiv.org/abs/2311.01460">Implicit Chain of Thought Reasoning via Knowledge Distillation</a></h3>
+          <p class="post-tldr"><strong>TL;DR.</strong> The method first trains a student to consume the hidden states produced by a reasoning teacher. It then trains an emulator to predict those states directly from the input and couples the emulator to the student.</p>
+
+          <figure class="post-figure">
+            <img src="images/figure-14.png" alt="Three stages of mind-reading the teacher, thought emulation, and joint optimization" loading="lazy">
+            <figcaption>Figure 5. The method reads the teacher's intermediate states, emulates them, and couples the emulator to the student.</figcaption>
+          </figure>
+
+          <ol>
+            <li><strong>Mind-Reading the Teacher:</strong> the student learns to use the teacher's intermediate hidden states to predict the answer.</li>
+            <li><strong>Thought Emulation:</strong> an emulator sees only the problem and learns to predict those teacher states.</li>
+            <li><strong>Couple and Optimize:</strong> predicted states replace the teacher states, and the combined student system is fine-tuned end to end.</li>
+          </ol>
+
+          <p>The intended shift is from <em>horizontal</em> reasoning across an explicit token sequence to <em>vertical</em> computation across model layers. The teacher supplies an interpretable training scaffold, but the deployed student no longer needs to generate the scaffold itself.</p>
+
+          <h4>Why mean squared error may be insufficient</h4>
+          <p>A problem can have several valid reasoning paths. For example, \(30+25\) and \(25+30\) produce the same answer but may correspond to different intermediate representations. If a single target is fitted with mean squared error, the emulator tends toward their average:</p>
+          <div class="equation">\[\hat z_l=\frac{z_l^{(1)}+z_l^{(2)}}{2}\]</div>
+          <p>That average may not lie on any valid reasoning trajectory. A mixture distribution is more appropriate because different components can represent different paths:</p>
+          <div class="equation">\[P(\hat z_l)=\sum_{c_l}P(\hat z_l^{c_l}\mid c_l)P(c_l)\]</div>
+          <p>The broader lesson is that a multimodal reasoning target cannot be represented faithfully by a single mean. Preserving several plausible trajectories is therefore both a motivation for Coconut and a statistical challenge for distilling hidden reasoning.</p>
+        </section>
+
+        <section id="multihop">
+          <p class="paper-number">Paper 4</p>
+          <h3><a href="https://arxiv.org/abs/2402.16837">Do Large Language Models Latently Perform Multi-Hop Reasoning?</a></h3>
+          <p class="post-tldr"><strong>TL;DR.</strong> The paper combines internal entity recall with output-distribution consistency to test whether a model completes two-hop factual reasoning without being given the bridge entity explicitly.</p>
+
+          <div class="post-example">
+            <p><strong>Two-hop prompt:</strong> Who is the mother of the performer of “Superstition”?</p>
+            <p><strong>Bridge entity:</strong> Stevie Wonder</p>
+            <p><strong>One-hop control:</strong> Who is Stevie Wonder's mother?</p>
+          </div>
+
+          <p>The first hop is measured with an internal entity-recall score, <strong>EntRec</strong>. Hidden states at selected layers are projected into vocabulary space, and the probability of the bridge entity's first token is measured. Entity and relation replacements serve as interventions: if replacing the song or the performer relation reduces recall of “Stevie Wonder,” the internal signal is linked to the first-hop relation in the prompt.</p>
+          <p>The second hop uses a consistency score, <strong>CnstScore</strong>, to compare the output distributions of the two-hop and one-hop questions. If increasing recall of the bridge entity makes those distributions more consistent, it provides causal evidence that the model uses the entity in later computation. This distinction is essential: decoding an entity from a hidden state does not, by itself, show that the model relies on it.</p>
+        </section>
+
+        <section id="patchscopes">
+          <p class="paper-number">Paper 5</p>
+          <h3><a href="https://arxiv.org/abs/2401.06102">Patchscopes: A Unifying Framework for Inspecting Hidden Representations of Language Models</a></h3>
+          <p class="post-tldr"><strong>TL;DR.</strong> Patch a hidden state from a source prompt into a carefully designed target prompt, then use the model's continuation to expose information carried by that representation.</p>
+
+          <p>Let \(h_i^\ell\) be the representation at position \(i\) and layer \(\ell\) in a source model \(M\). A patching operation replaces the target model's state at position \(i^*\) and layer \(\ell^*\):</p>
+          <div class="equation">\[\bar h_{i^*}^{\ell^*}\leftarrow f(h_i^\ell)\]</div>
+          <p>The mapping \(f\) may be the identity, or it may be a learned linear or nonlinear transformation between representation spaces. After the replacement, computation resumes from the target layer. The resulting continuation reveals what information the patched state can make available under that target prompt.</p>
+
+          <div class="post-example">
+            <h4>What is encoded in a “CEO” representation?</h4>
+            <p>Suppose the source prompt is <code>The CEO of the company is</code>. A target prompt supplies repetition demonstrations such as <code>tok1 → tok1; tok2 → tok2; ?</code>. If patching the source representation for “CEO” at the question-mark position leads to <code>CEO → Chief Executive Officer</code>, then the state contains semantic information that this target prompt can read out.</p>
+          </div>
+
+          <p>Patchscopes can also inspect multi-hop reasoning. We can test where “Visual Basic → Microsoft” and “Microsoft → Satya Nadella” emerge across layers and whether later computation uses them. The framework combines probing, intervention, and natural-language readout in one procedure. Its explanations are still prompt-dependent, however: a successful readout is evidence that information is accessible, not that the representation has one uniquely correct verbal interpretation.</p>
+        </section>
+
+        <section id="extensions">
+          <h3>Two extensions: allocating more computation and aggregating more models</h3>
+          <p>The final two papers sit at different levels of abstraction. Pause tokens add computation inside a single model before it answers. Mixture-of-Agents adds computation at the system level by combining outputs from multiple models. Neither is identical to continuous latent reasoning, but both broaden the question from <em>what the model says</em> to <em>where additional computation should happen</em>.</p>
+
+          <div class="paper-brief">
+            <p class="paper-number">Paper 6</p>
+            <h4><a href="https://arxiv.org/abs/2310.02226">Think before you speak: Training Language Models With Pause Tokens</a></h4>
+            <p>This method appends a sequence of learnable pause tokens to the input during both training and inference. The model gains additional sequential computation before it must produce an answer. Unlike Coconut, a pause token remains an explicit discrete placeholder: it does not express human-readable reasoning, but it creates additional computational depth.</p>
+            <figure class="post-figure">
+              <img src="images/figure-15.png" alt="Comparison of standard inference with inference that inserts pause tokens" loading="lazy">
+              <figcaption>Figure 6. Pause tokens create additional computational paths before the first answer token is produced.</figcaption>
+            </figure>
+          </div>
+
+          <div class="paper-brief">
+            <p class="paper-number">Paper 7</p>
+            <h4><a href="https://arxiv.org/abs/2406.04692">Mixture-of-Agents Enhances Large Language Model Capabilities</a></h4>
+            <p>Mixture-of-Agents organizes several language models into layers. Models at each layer read candidate responses from the previous layer and pass new syntheses forward. Across AlpacaEval 2.0, Arena-Hard, MT-Bench, and FLASK, the study highlights the value of model diversity: aggregation can improve the final response even when the participating models have unequal capabilities.</p>
+          </div>
+        </section>
+
+        <section id="takeaways">
+          <h3>A unifying view</h3>
+          <p>Together, these papers organize the area around three connected questions:</p>
+          <ol>
+            <li><strong>Where does computation happen?</strong> It may unfold in explicit reasoning tokens, extra pause positions, recurrent hidden states, or a multi-model aggregation pipeline.</li>
+            <li><strong>How is it learned?</strong> The main strategies include curriculum-based internalization, end-to-end backpropagation through continuous states, and distillation from a teacher's hidden trajectory.</li>
+            <li><strong>What counts as evidence?</strong> Final accuracy is not enough. Internal recall, causal interventions, and representation patching probe whether the proposed intermediate mechanism is present and behaviorally relevant.</li>
+          </ol>
+          <p>The appeal of latent-space reasoning is therefore not merely that it can generate fewer chain-of-thought tokens. It offers a machine-native channel whose states need not collapse into one word at every step. Yet that freedom creates a corresponding obligation: the less reasoning is expressed in language, the stronger our methods for supervising, intervening on, and evaluating hidden computation must become.</p>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Sources</h3>
+          <ol>
+            <li><a href="https://arxiv.org/abs/2412.06769">Training Large Language Models to Reason in a Continuous Latent Space</a>.</li>
+            <li><a href="https://arxiv.org/abs/2405.14838">From Explicit CoT to Implicit CoT</a>.</li>
+            <li><a href="https://arxiv.org/abs/2311.01460">Implicit Chain of Thought Reasoning via Knowledge Distillation</a>.</li>
+            <li><a href="https://arxiv.org/abs/2402.16837">Do Large Language Models Latently Perform Multi-Hop Reasoning?</a>.</li>
+            <li><a href="https://arxiv.org/abs/2401.06102">Patchscopes</a>; <a href="https://arxiv.org/abs/2310.02226">Pause Tokens</a>; <a href="https://arxiv.org/abs/2406.04692">Mixture-of-Agents</a>.</li>
+            <li><a href="https://app.notion.com/p/1a0b02b82563816194bef5fa06d1e360">Original reading notes in Notion</a>.</li>
+          </ol>
+          <p class="figure-credit">This article consolidates repeated passages from the original notes while preserving their main examples, equations, and conclusions. Figures reproduced in the notes come from the cited papers and are included here for study and commentary.</p>
+        </section>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">← All posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+</body>
+</html>
