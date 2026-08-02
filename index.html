@@ -62,7 +62,7 @@
       </p>
 
       <p>
-        I hope to build machine-native AI agents, with interests in multi-agent collaboration, recursive self-improving,
+        I hope to build <span class="definition-term"><button class="definition-trigger wavy-emphasis" id="machine-native-trigger" type="button" aria-expanded="false" aria-controls="machine-native-definition">machine-native</button><span class="definition-popover" id="machine-native-definition" role="tooltip" hidden>I use the term machine-native AI agents to describe agents that develop or learn their own representations, communication protocols, coordination structures, and self-improvement mechanisms, rather than inheriting them from human language and organizational workflows.</span></span> AI agents, with interests in multi-agent collaboration, recursive self-improving,
         latent-space communication and reasoning, autonomous evaluation, and post-training. Recent work includes
         <a href="https://arxiv.org/abs/2511.09149">Interlat</a>,
         <a href="https://arxiv.org/abs/2412.11716">EvoPatient</a>, and
@@ -98,6 +98,78 @@
     </div>
   </div>
 
+  <script>
+    (() => {
+      const trigger = document.getElementById("machine-native-trigger");
+      const popover = document.getElementById("machine-native-definition");
+
+      const positionPopover = () => {
+        const margin = 12;
+        const gap = 10;
+        const triggerRect = trigger.getBoundingClientRect();
+        const popoverRect = popover.getBoundingClientRect();
+        const triggerCenter = triggerRect.left + triggerRect.width / 2;
+        const left = Math.min(
+          Math.max(margin, triggerCenter - popoverRect.width / 2),
+          window.innerWidth - popoverRect.width - margin
+        );
+        let top = triggerRect.top - popoverRect.height - gap;
+        let placement = "above";
+
+        if (top < margin) {
+          top = triggerRect.bottom + gap;
+          placement = "below";
+        }
+
+        popover.style.left = `${left}px`;
+        popover.style.top = `${top}px`;
+        popover.style.setProperty(
+          "--popover-arrow-left",
+          `${Math.min(Math.max(triggerCenter - left, 16), popoverRect.width - 16)}px`
+        );
+        popover.dataset.placement = placement;
+      };
+
+      const closePopover = () => {
+        popover.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+      };
+
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const willOpen = popover.hidden;
+
+        if (willOpen) {
+          popover.hidden = false;
+          trigger.setAttribute("aria-expanded", "true");
+          positionPopover();
+        } else {
+          closePopover();
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!popover.hidden && !popover.contains(event.target)) {
+          closePopover();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !popover.hidden) {
+          closePopover();
+          trigger.focus();
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        if (!popover.hidden) positionPopover();
+      });
+
+      window.addEventListener("scroll", () => {
+        if (!popover.hidden) positionPopover();
+      }, { passive: true });
+    })();
+  </script>
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   <footer>

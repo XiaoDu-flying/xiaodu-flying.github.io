@@ -148,6 +148,74 @@ main > p {
   margin: 0 0 1em;
 }
 
+.wavy-emphasis {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-skip-ink: none;
+}
+
+.definition-trigger {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.definition-trigger:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--muted);
+  outline-offset: 3px;
+}
+
+.definition-popover[hidden] {
+  display: none;
+}
+
+.definition-popover {
+  position: fixed;
+  z-index: 100;
+  box-sizing: border-box;
+  width: min(30em, calc(100vw - 1.5em));
+  padding: 0.8em 1em;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 14%);
+  color: var(--text);
+  font-size: 0.88em;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.definition-popover::after {
+  position: absolute;
+  left: var(--popover-arrow-left, 50%);
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.definition-popover[data-placement="above"]::after {
+  top: 100%;
+  border-top-color: #fff;
+  border-bottom: 0;
+}
+
+.definition-popover[data-placement="below"]::after {
+  bottom: 100%;
+  border-top: 0;
+  border-bottom-color: #fff;
+}
+
 .phd-callout {
   margin: 0 0 1em;
 }
