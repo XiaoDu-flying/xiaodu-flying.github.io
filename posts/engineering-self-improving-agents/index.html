@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A reading synthesis on how context, workflows, evaluation, and harness evolution shape self-improving AI agents beyond model-weight scaling alone.">
+  <meta name="description" content="A reading synthesis connecting harness evolution, context engineering, reward hacking, and scaling laws in the development of self-improving AI agents.">
   <meta name="author" content="Zhuoyun Du">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:type" content="article">
   <meta property="og:title" content="Engineering Self-Improving Agents: From Context to Harness Evolution">
-  <meta property="og:description" content="Why the path from capable models to reliable self-improving agents runs through context, workflows, evaluators, and protected system boundaries.">
+  <meta property="og:description" content="How harness evolution, reward hacking, and scaling laws jointly shape the path from capable models to reliable self-improving agents.">
   <meta property="og:url" content="https://xiaodu-flying.github.io/posts/engineering-self-improving-agents/">
   <meta property="og:image" content="https://xiaodu-flying.github.io/images/og.png">
   <meta property="article:published_time" content="2026-08-03">
@@ -44,8 +44,8 @@
         <header class="post-header">
           <p class="post-kicker">Reading Synthesis</p>
           <h2 class="post-title">Engineering Self-Improving Agents: From Context to Harness Evolution</h2>
-          <p class="post-deck">A stronger model is not automatically a better agent. Reliable improvement also depends on what the model sees, how it acts, how success is measured, and which parts of the surrounding system it is allowed to change.</p>
-          <p class="post-meta"><time datetime="2026-08-03">August 3, 2026</time> &middot; 15 min read &middot; Zhuoyun Du</p>
+          <p class="post-deck">A stronger model is not automatically a better agent. Reliable improvement depends on how capacity scales, what the model sees, how it acts, how success is measured, and whether the optimization loop learns the task or merely hacks its reward.</p>
+          <p class="post-meta"><time datetime="2026-08-03">August 3, 2026</time> &middot; 20 min read &middot; Zhuoyun Du</p>
         </header>
 
         <p class="post-lead">
@@ -64,8 +64,8 @@
             <li><a href="#context">Context is managed working memory</a></li>
             <li><a href="#workflow">Workflows turn capability into repeatable behavior</a></li>
             <li><a href="#self-improvement">From hand-built harnesses to harness evolution</a></li>
-            <li><a href="#evaluation">Evaluation is both the engine and the attack surface</a></li>
-            <li><a href="#scaling">Harness progress does not replace model scaling</a></li>
+            <li><a href="#reward-hacking">Reward hacking: when the proxy becomes the target</a></li>
+            <li><a href="#scaling">Scaling laws: what actually scales?</a></li>
             <li><a href="#principles">A practical design framework</a></li>
             <li><a href="#takeaways">Takeaways</a></li>
           </ol>
@@ -220,45 +220,155 @@
           </div>
         </section>
 
-        <section id="evaluation">
-          <h3>Evaluation is both the engine and the attack surface</h3>
-          <p>Every improvement loop needs a selection signal. That signal is also the point at which the loop can go wrong. Reward hacking occurs when an agent increases the measured reward without achieving the intended objective. In harness evolution, the simplest failures are concrete: modify the tests, disable the verifier, increase the compute budget, hide failed trajectories, or replace the model with a stronger one.</p>
+        <section id="reward-hacking">
+          <h3>Reward hacking: when the proxy becomes the target</h3>
+          <p>Every learning or self-improvement loop needs a signal that separates better candidates from worse ones. Reward hacking begins when the system becomes better at maximizing that signal without becoming better at the intended task. The measured objective rises, while the outcome the designer actually cares about stays flat or becomes worse.</p>
 
-          <p>The safety boundary follows directly:</p>
+          <p>This family of failures appears under several names—reward corruption, reward tampering, specification gaming, goal misgeneralization, and objective misspecification. The terminology varies because the failure can enter at different points in the loop. A useful first distinction is between exploiting an imperfect objective and interfering with the mechanism that reports the objective.</p>
+
+          <div class="table-scroll" role="region" aria-label="Two main forms of reward hacking" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Failure mode</th>
+                  <th scope="col">What the agent does</th>
+                  <th scope="col">Agent example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Proxy or environment exploitation</th>
+                  <td>Optimizes a misspecified reward while obeying the literal interface</td>
+                  <td>Produces verbose answers because the judge associates length with quality, or exploits benchmark artifacts that do not transfer</td>
+                </tr>
+                <tr>
+                  <th scope="row">Reward tampering</th>
+                  <td>Interferes with the channel used to calculate or report success</td>
+                  <td>Edits unit tests, disables the verifier, hides failed trajectories, or changes the reward-calculation code</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Why proxies break under optimization pressure</h4>
+          <p>Real objectives are usually multidimensional, partially observed, and difficult to specify. We therefore train against a proxy: a benchmark score, human preference label, reward model, LLM judge, or task-completion flag. The proxy may correlate well with the true objective on ordinary behavior, yet fail precisely in the unusual regions that a strong optimizer discovers.</p>
+
+          <div class="equation">\[
+            \text{optimized proxy reward}\;\not\Rightarrow\;\text{improved intended outcome}
+          \]</div>
+
+          <p>This is the practical meaning of Goodhart's law. A metric can be informative when it is used to observe a process, but optimization changes the distribution of behavior. Once the metric becomes the target, the agent searches for cases in which the correlation between measurement and intent breaks down. More optimization pressure can therefore make a previously adequate evaluator less trustworthy.</p>
+
+          <h4>LLM judges create a second learned proxy</h4>
+          <p>LLM-as-a-judge replaces expensive human evaluation with a scalable learned evaluator, but it does not create an oracle. Studies have found <a href="https://arxiv.org/abs/2311.09766">self-preference across model families</a> and <a href="https://arxiv.org/abs/2305.17926">position bias</a> when candidate order changes. Judges may also overvalue style, confidence, or familiar phrasing while missing unsupported evidence.</p>
+
+          <p>It helps to keep three layers separate:</p>
+          <ol>
+            <li><strong>Gold or intended reward:</strong> the outcome we ultimately care about, which may not be fully observable.</li>
+            <li><strong>Human evidence:</strong> preference labels, expert review, or task-specific judgments that approximate that outcome.</li>
+            <li><strong>Proxy reward:</strong> the scalable model or metric used during training and automated evaluation.</li>
+          </ol>
+
+          <p>If these layers are collapsed, agreement with the proxy can be mistaken for correctness. A stronger evaluation protocol uses order swaps, multiple judge prompts or models, evidence-grounded rubrics, calibration against human decisions, and targeted human review of high-disagreement or high-impact examples.</p>
+
+          <h4>The evaluator must remain outside the editable loop</h4>
+          <p>Reward hacking becomes especially important when an agent can modify its own harness. The agent may change how it attempts the task, but it should not control the authority that certifies improvement:</p>
 
           <div class="equation">\[
             \text{editable harness}\;\cap\;\text{evaluation authority}=\varnothing
           \]</div>
 
-          <p>The agent may change how it attempts the task, but it should not control the system that decides whether the attempt succeeded. Evaluators, protected tests, permission controls, budgets, and audit logs must live outside the self-modification loop. This is not a complete safety solution, but it preserves the meaning of measured progress.</p>
+          <p>Protected tests, evaluator code, permissions, budgets, model configuration, and audit logs should remain read-only from the improvement loop. This blocks straightforward tampering, but it does not solve proxy overfitting. A candidate can still learn the evaluator's blind spots without changing the evaluator itself.</p>
 
-          <p>Even with protected infrastructure, the proxy can still be wrong. An LLM judge may prefer a familiar style, reward verbosity, exhibit position bias, or miss a subtle factual error. A benchmark may reward narrow tactics that do not transfer. A system can therefore overfit without tampering with any file: it simply learns what the evaluator notices.</p>
-
-          <p>A credible harness update needs more evidence than a higher aggregate score:</p>
+          <p>A credible update therefore needs more than a higher aggregate score:</p>
           <ul>
             <li><strong>Held-in tests</strong> show whether the diagnosed failure was actually fixed.</li>
-            <li><strong>Held-out tests</strong> check whether the change generalizes beyond the examples that motivated it.</li>
+            <li><strong>Held-out and adversarial tests</strong> probe behavior beyond the examples that motivated the edit.</li>
             <li><strong>Regression suites</strong> protect previously successful behavior.</li>
-            <li><strong>Cross-model or cross-task transfer</strong> distinguishes reusable system improvements from model-specific tricks.</li>
-            <li><strong>Auditable trajectories</strong> make it possible to inspect why the score changed.</li>
+            <li><strong>Cross-model or cross-task transfer</strong> separates reusable improvements from judge-specific tricks.</li>
+            <li><strong>Auditable trajectories</strong> reveal how the score was obtained, not only what score appeared.</li>
           </ul>
 
-          <p>Evaluation quality sets the ceiling for self-improvement. Coding agents can use unit tests and benchmark outcomes, although even those are imperfect. Research agents face harder questions: whether an idea is novel, whether an experiment isolates the right cause, and whether a negative result reflects a bad hypothesis or a weak execution. When the evaluator is ambiguous, autonomous optimization becomes correspondingly fragile.</p>
+          <p>Evaluation quality sets the ceiling for self-improvement. Coding agents at least have executable tests, although those can be incomplete. Research agents face less reducible questions: whether an idea is novel, whether an experiment isolates the right cause, or whether a negative result reflects a bad hypothesis rather than weak execution. The less objective the evaluator, the more cautious the improvement loop must be.</p>
         </section>
 
         <section id="scaling">
-          <h3>Harness progress does not replace model scaling</h3>
-          <p>Harness engineering and model scaling act on different parts of the system. Scaling laws describe empirical relationships among model size, data, compute, and loss. In a common approximation for transformer training, compute grows roughly with parameters and training tokens:</p>
+          <h3>Scaling laws: what actually scales?</h3>
+          <p>Harness engineering explains how a system uses a model, but it does not explain where the model's underlying capability comes from. Scaling laws study a different layer: how loss changes as model size, training data, and compute grow. Their central purpose is resource allocation, not the slogan that larger models are always better.</p>
+
+          <h4>Power laws make loss partly predictable</h4>
+          <p>Across a useful empirical region, loss often decreases approximately as a power law:</p>
+
+          <div class="equation">\[
+            L(x)\approx ax^{-\alpha}+E
+          \]</div>
+
+          <p>Here, \(x\) may be model size \(N\), dataset size \(D\), or compute \(C\); \(\alpha\) controls the rate of improvement; and \(E\) is an irreducible floor. A power law looks roughly linear on a log-log plot, which allows researchers to fit smaller experiments and extrapolate toward larger runs.</p>
+
+          <p>A learning curve is not uniform across all scales. With too little data, the model may remain near chance. In the middle region, error follows a relatively stable power law. Eventually, a fixed-capacity model can flatten toward a floor. Reading a scaling plot therefore requires more than comparing heights: the log axes, slope, fitted region, and point at which individual model curves flatten all matter.</p>
+
+          <h4>Model capacity and data enter the loss together</h4>
+          <p>A common joint model separates capacity-limited error, data-limited error, and irreducible loss:</p>
+
+          <div class="equation">\[
+            \hat{L}(N,D)=\frac{A}{N^{\alpha}}+\frac{B}{D^{\beta}}+E
+          \]</div>
+
+          <p>The equation makes the trade-off explicit. At fixed data, a larger model reduces the capacity term. At fixed model size, more data reduces the data term. Increasing only one side eventually produces diminishing value because the other term becomes the bottleneck.</p>
+
+          <p>For a standard dense Transformer, training compute is often approximated as:</p>
 
           <div class="equation">\[
             C\approx 6ND
           \]</div>
 
-          <p>The important lesson from the scaling-law literature is not simply “bigger is better.” It is that compute must be allocated across model capacity and sufficiently diverse training data, and that fitted relationships are sensitive to the experimental region, noise, parameter-counting conventions, and repeated data. A local power law is an empirical planning tool, not a universal constant.</p>
+          <p>The intuition is about \(2ND\) FLOPs for the forward pass and roughly \(4ND\) for backpropagation. It is a planning approximation, not a literal accounting identity: attention, embeddings, context length, optimizer operations, hardware utilization, and other implementation choices add costs.</p>
 
-          <p>These results also should not be imported directly into agent evaluation. Lower pretraining loss does not imply a proportional gain in tool use, long-horizon planning, post-training robustness, or recovery from failure. Agent performance depends on task distributions, environment feedback, reward quality, and the harness through which the model acts.</p>
+          <h4>Kaplan versus Chinchilla: how should fixed compute be spent?</h4>
+          <p>Kaplan et al. argued that compute-optimal training should allocate growth aggressively toward model parameters. Their fitted relationship suggested roughly \(N_{\mathrm{opt}}\propto C^{0.73}\), favoring very large models trained for comparatively fewer tokens. Hoffmann et al.'s Chinchilla analysis reached a different practical conclusion: parameters and tokens should grow at approximately equal rates.</p>
 
-          <p>The relationship is therefore complementary rather than competitive:</p>
+          <div class="table-scroll" role="region" aria-label="Comparison of Kaplan and Chinchilla compute allocation" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Study</th>
+                  <th scope="col">Approximate allocation</th>
+                  <th scope="col">Practical implication</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Kaplan et al.</th>
+                  <td>\(N_{\mathrm{opt}}\propto C^{0.73}\)</td>
+                  <td>Increase parameters much faster than training tokens</td>
+                </tr>
+                <tr>
+                  <th scope="row">Chinchilla</th>
+                  <td>\(N_{\mathrm{opt}}\propto C^{0.5}\), \(D_{\mathrm{opt}}\propto C^{0.5}\)</td>
+                  <td>Scale model size and training tokens together</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>The disagreement does not mean one paper found power laws and the other rejected them. Both agree that \(N\), \(D\), and \(C\) must grow together; they differ in the fitted allocation. Experimental range and parameter-counting conventions explain part of the gap. Kaplan's experiments emphasized smaller models and excluded embedding parameters, while Chinchilla covered a broader scale and counted parameters differently. The fitted exponent is better understood as a local empirical estimate than a universal constant.</p>
+
+          <h4>The bottleneck is increasingly effective data, not raw tokens</h4>
+          <p>Classical compute-optimal laws often treat fresh, clean data as effectively unlimited. Real training pipelines face deduplication, quality filtering, domain imbalance, benchmark contamination, safety filtering, and a finite supply of high-value text. Two datasets with the same token count may contain very different amounts of useful information.</p>
+
+          <p>Repeated data still teaches the model, but each additional pass usually contributes less. Under strict data constraints, extra epochs can be more useful than allocating all new compute to more parameters; excessive repetition eventually creates diminishing returns and overfitting. Larger models are particularly sensitive because their capacity makes memorization of a limited dataset easier.</p>
+
+          <p>This shifts the question from raw dataset size to <em>effective data</em>: how much diverse, non-redundant learning signal the tokens contain. Quality, uniqueness, mixture, and repetition all affect the value of \(D\), even when the token counter remains unchanged.</p>
+
+          <h4>The word “carefully” matters</h4>
+          <p>Scaling laws are fitted on affordable runs and used to predict systems orders of magnitude larger. Small procedural choices can therefore create large extrapolation errors. Results may depend on whether embeddings are counted, which model-size range is fitted, numerical precision in recorded losses, measurement noise, optimizer convergence, learning-rate schedules, tokenizers, and whether every configuration was tuned equally well.</p>
+
+          <p>The Chinchilla replication work illustrates the point. Reanalysis found sensitivity to how the fitting loss was aggregated, early numerical termination, rounding of exponents, and implausibly narrow confidence intervals. Revised estimates remained close to the qualitative Chinchilla conclusion, but the exact coefficients were less certain than the clean headline formula suggested.</p>
+
+          <h4>Pretraining scaling laws are not agentic-RL scaling laws</h4>
+          <p>Most of these relationships predict pretraining cross-entropy loss. Lower loss does not automatically produce a proportional improvement in reasoning, instruction following, tool use, long-horizon recovery, reinforcement learning, or robustness after post-training. Those capabilities also depend on task distributions, exploration, reward quality, environment diversity, verification, and the harness through which the model acts.</p>
+
+          <p>Harness and model progress are therefore complementary rather than interchangeable:</p>
 
           <div class="table-scroll" role="region" aria-label="Comparison of model and harness improvement" tabindex="0">
             <table class="post-table">
