@@ -10,7 +10,7 @@
   <meta property="og:title" content="Engineering Self-Improving Agents: From Context to Harness Evolution">
   <meta property="og:description" content="How harness evolution, reward hacking, and scaling laws jointly shape the path from capable models to reliable self-improving agents.">
   <meta property="og:url" content="https://xiaodu-flying.github.io/posts/engineering-self-improving-agents/">
-  <meta property="og:image" content="https://xiaodu-flying.github.io/images/og.png">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/posts/engineering-self-improving-agents/images/harness-loop.png">
   <meta property="article:published_time" content="2026-08-03">
   <meta name="twitter:card" content="summary_large_image">
   <title>Engineering Self-Improving Agents | Zhuoyun Du</title>
@@ -88,6 +88,11 @@
             <li><strong>Context isolation.</strong> Independent investigations can run in separate processes or subagents, returning concise conclusions and evidence instead of mixing every intermediate step into one context window.</li>
           </ol>
 
+          <figure class="post-figure">
+            <img src="images/harness-loop.png" alt="Coding-agent harness loop connecting an LLM to planning, context management, tools, execution, and evaluation" width="3248" height="1080" loading="lazy">
+            <figcaption>Figure 1. A coding-agent harness closes the loop between model reasoning, tool use, execution feedback, and evaluation. Source: <a href="https://lilianweng.github.io/posts/2026-07-04-harness/">Lilian Weng, <em>Harness Engineering for Self-Improvement</em></a>.</figcaption>
+          </figure>
+
           <p>These patterns resemble operating-system design more than prompt decoration. The harness presents a stable interface to a complicated environment, controls access to resources, and keeps the model's working state coherent. Good design hides incidental complexity without hiding the evidence needed for diagnosis.</p>
 
           <div class="post-note">
@@ -101,6 +106,11 @@
           <p>Long-running agents continuously generate model outputs, tool results, logs, retrieved documents, and intermediate files. Appending everything to the next prompt feels safe because no information is deliberately discarded. In practice, it replaces one failure mode—missing evidence—with another: important evidence is buried under stale or repetitive material.</p>
 
           <p>Context engineering asks a broader question than prompt engineering: <em>which information should enter the model's finite attention budget now, which information should remain available elsewhere, and how should the system retrieve it later?</em> The goal is not the shortest possible prompt. It is the smallest context that is sufficient for the current decision.</p>
+
+          <figure class="post-figure">
+            <img src="images/context-engineering.png" alt="Diagram contrasting a one-time prompt engineering process with iterative context curation during agent execution" width="2292" height="1290" loading="lazy">
+            <figcaption>Figure 2. Prompt engineering primarily shapes instructions, while context engineering repeatedly curates the model's full information state as an agent runs. Source: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic, <em>Effective Context Engineering for AI Agents</em></a>.</figcaption>
+          </figure>
 
           <h4>Preload the essentials; retrieve the rest just in time</h4>
           <p>Stable instructions, the current objective, and non-negotiable constraints usually belong in the initial context. Large repositories, raw trajectories, and changing external evidence are better represented by lightweight references—paths, indexes, identifiers, or search tools. The agent can then inspect names, search for relevant terms, open matching sections, and deepen the investigation only when needed.</p>
@@ -153,6 +163,11 @@
           <p>Context engineering decides what the model can see. Workflow design decides what sequence of actions it is encouraged—or required—to take. Anthropic's distinction is useful here: a <em>workflow</em> follows predefined code paths, while an <em>agent</em> dynamically chooses its own process and tool use.</p>
 
           <p>The difference is not a ranking. A fixed workflow is often better when the task is stable, the steps are known, and consistency matters. Prompt chaining, routing, parallel workers, and evaluator-optimizer loops can make each model call simpler and easier to verify. An autonomous agent becomes valuable when the path cannot be specified in advance and the model must adapt its investigation to intermediate evidence. Autonomy buys flexibility by spending more latency, tokens, and control complexity.</p>
+
+          <figure class="post-figure">
+            <img src="images/evaluator-optimizer.png" alt="Evaluator-optimizer workflow in which one model generates a response and another provides feedback until the result passes" width="2401" height="1000" loading="lazy">
+            <figcaption>Figure 3. An evaluator-optimizer workflow makes feedback an explicit part of the control loop instead of relying on a single generation. Source: <a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic, <em>Building Effective Agents</em></a>.</figcaption>
+          </figure>
 
           <div class="table-scroll" role="region" aria-label="When to use workflows and autonomous agents" tabindex="0">
             <table class="post-table">
@@ -307,6 +322,11 @@
 
           <p>A learning curve is not uniform across all scales. With too little data, the model may remain near chance. In the middle region, error follows a relatively stable power law. Eventually, a fixed-capacity model can flatten toward a floor. Reading a scaling plot therefore requires more than comparing heights: the log axes, slope, fitted region, and point at which individual model curves flatten all matter.</p>
 
+          <figure class="post-figure">
+            <img src="images/scaling-phases.png" alt="Conceptual learning curves showing a small-data region, power-law region, and irreducible-error region" width="1098" height="764" loading="lazy">
+            <figcaption>Figure 4. The useful power-law region lies between the small-data regime and the eventual error floor; smaller fixed-capacity models flatten earlier. Source: <a href="https://arxiv.org/abs/1712.00409">Hestness et al. (2017)</a>, via <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/">Weng's review</a>.</figcaption>
+          </figure>
+
           <h4>Model capacity and data enter the loss together</h4>
           <p>A common joint model separates capacity-limited error, data-limited error, and irreducible loss:</p>
 
@@ -326,6 +346,11 @@
 
           <h4>Kaplan versus Chinchilla: how should fixed compute be spent?</h4>
           <p>Kaplan et al. argued that compute-optimal training should allocate growth aggressively toward model parameters. Their fitted relationship suggested roughly \(N_{\mathrm{opt}}\propto C^{0.73}\), favoring very large models trained for comparatively fewer tokens. Hoffmann et al.'s Chinchilla analysis reached a different practical conclusion: parameters and tokens should grow at approximately equal rates.</p>
+
+          <figure class="post-figure">
+            <img src="images/kaplan-scaling.png" alt="Kaplan scaling-law plots relating language-model loss to compute, dataset size, and parameter count on logarithmic axes" width="1750" height="556" loading="lazy">
+            <figcaption>Figure 5. Kaplan et al. found approximately straight trends across several orders of magnitude on log-log axes, motivating power-law extrapolation. Source: <a href="https://arxiv.org/abs/2001.08361">Kaplan et al. (2020)</a>, via <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/">Weng's review</a>.</figcaption>
+          </figure>
 
           <div class="table-scroll" role="region" aria-label="Comparison of Kaplan and Chinchilla compute allocation" tabindex="0">
             <table class="post-table">
@@ -351,12 +376,32 @@
             </table>
           </div>
 
+          <figure class="post-figure">
+            <img src="images/chinchilla-isoflop.png" alt="IsoFLOP curves whose minima identify the compute-optimal model size for several fixed compute budgets" width="1781" height="534" loading="lazy">
+            <figcaption>Figure 6. In the Chinchilla IsoFLOP method, each curve fixes a compute budget; its minimum identifies the model size that achieves the lowest loss at that budget. Source: <a href="https://arxiv.org/abs/2203.15556">Hoffmann et al. (2022)</a>, via <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/">Weng's review</a>.</figcaption>
+          </figure>
+
+          <figure class="post-figure">
+            <img src="images/chinchilla-comparison.png" alt="Comparison of three Chinchilla compute-optimal predictions with Kaplan and several large language models" width="978" height="528" loading="lazy">
+            <figcaption>Figure 7. Three Chinchilla estimation methods agree that several prominent models were trained on fewer tokens than the compute-optimal prediction. Source: <a href="https://arxiv.org/abs/2203.15556">Hoffmann et al. (2022)</a>, via <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/">Weng's review</a>.</figcaption>
+          </figure>
+
           <p>The disagreement does not mean one paper found power laws and the other rejected them. Both agree that \(N\), \(D\), and \(C\) must grow together; they differ in the fitted allocation. Experimental range and parameter-counting conventions explain part of the gap. Kaplan's experiments emphasized smaller models and excluded embedding parameters, while Chinchilla covered a broader scale and counted parameters differently. The fitted exponent is better understood as a local empirical estimate than a universal constant.</p>
 
           <h4>The bottleneck is increasingly effective data, not raw tokens</h4>
           <p>Classical compute-optimal laws often treat fresh, clean data as effectively unlimited. Real training pipelines face deduplication, quality filtering, domain imbalance, benchmark contamination, safety filtering, and a finite supply of high-value text. Two datasets with the same token count may contain very different amounts of useful information.</p>
 
           <p>Repeated data still teaches the model, but each additional pass usually contributes less. Under strict data constraints, extra epochs can be more useful than allocating all new compute to more parameters; excessive repetition eventually creates diminishing returns and overfitting. Larger models are particularly sensitive because their capacity makes memorization of a limited dataset easier.</p>
+
+          <figure class="post-figure">
+            <img src="images/repeated-data.png" alt="Test-loss curves showing non-monotonic behavior as a repeated subset occupies more of the training data" width="1516" height="444" loading="lazy">
+            <figcaption>Figure 8. Repeating part of a dataset can produce non-monotonic test loss, making a simple data power law less accurate. Source: <a href="https://arxiv.org/abs/2205.10487">Hernandez et al. (2022)</a>, via <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/">Weng's review</a>.</figcaption>
+          </figure>
+
+          <figure class="post-figure">
+            <img src="images/data-overfitting.png" alt="Residual plots showing that repeated-data overfitting increases with both epoch count and model size" width="1336" height="386" loading="lazy">
+            <figcaption>Figure 9. Residuals from an effective-data fit show that repetition damage grows with both the number of epochs and model capacity. Source: <a href="https://arxiv.org/abs/2605.01640">Lovelace et al. (2026)</a>, via <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/">Weng's review</a>.</figcaption>
+          </figure>
 
           <p>This shifts the question from raw dataset size to <em>effective data</em>: how much diverse, non-redundant learning signal the tokens contain. Quality, uniqueness, mixture, and repetition all affect the value of \(D\), even when the token counter remains unchanged.</p>
 
