@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A reading synthesis on how context, workflows, evaluation, and harness evolution shape self-improving AI agents beyond model-weight scaling alone.">
+  <meta name="author" content="Zhuoyun Du">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Engineering Self-Improving Agents: From Context to Harness Evolution">
+  <meta property="og:description" content="Why the path from capable models to reliable self-improving agents runs through context, workflows, evaluators, and protected system boundaries.">
+  <meta property="og:url" content="https://xiaodu-flying.github.io/posts/engineering-self-improving-agents/">
+  <meta property="og:image" content="https://xiaodu-flying.github.io/images/og.png">
+  <meta property="article:published_time" content="2026-08-03">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Engineering Self-Improving Agents | Zhuoyun Du</title>
+  <link rel="canonical" href="https://xiaodu-flying.github.io/posts/engineering-self-improving-agents/">
+  <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../style.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div id="content" class="post-shell">
+    <header>
+      <h1>Zhuoyun Du <span lang="zh-CN">杜卓耘</span></h1>
+      <nav aria-label="Primary navigation">
+        <ul class="navbar">
+          <li><a href="../../index.html">About</a></li>
+          <li><a href="../../research.html">Research</a></li>
+          <li><a href="../../assets/cv_dzy.pdf">CV</a></li>
+          <li><a class="active" href="../index.html">Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <article class="post-article">
+        <header class="post-header">
+          <p class="post-kicker">Reading Synthesis</p>
+          <h2 class="post-title">Engineering Self-Improving Agents: From Context to Harness Evolution</h2>
+          <p class="post-deck">A stronger model is not automatically a better agent. Reliable improvement also depends on what the model sees, how it acts, how success is measured, and which parts of the surrounding system it is allowed to change.</p>
+          <p class="post-meta"><time datetime="2026-08-03">August 3, 2026</time> &middot; 15 min read &middot; Zhuoyun Du</p>
+        </header>
+
+        <p class="post-lead">
+          Discussions of self-improving AI often jump directly to a model rewriting its own weights. The systems we can build and study today suggest a more practical path. A model first becomes more effective by improving the machinery around it: its context, memory, tools, workflow, evaluator, and permission boundaries. Once that machinery is executable and measurable, the agent can begin to diagnose failures and propose changes to its own runtime. This is less cinematic than unconstrained recursive self-improvement, but it is concrete enough to test—and difficult enough to expose the real bottlenecks.
+        </p>
+
+        <div class="post-note">
+          <h4>Source note</h4>
+          <p>This is an independent reading synthesis, not a translation. It is based primarily on Lilian Weng's <a href="https://lilianweng.github.io/posts/2026-07-04-harness/"><em>Harness Engineering for Self-Improvement</em></a>, <a href="https://lilianweng.github.io/posts/2024-11-28-reward-hacking/"><em>Reward Hacking in Reinforcement Learning</em></a>, and <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/"><em>Scaling Laws, Carefully</em></a>, together with Anthropic's <a href="https://www.anthropic.com/engineering/building-effective-agents"><em>Building Effective Agents</em></a> and <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"><em>Effective Context Engineering for AI Agents</em></a>. The organization and conclusions below are my own synthesis of those readings.</p>
+        </div>
+
+        <aside class="post-toc" aria-labelledby="toc-title">
+          <h3 id="toc-title">Contents</h3>
+          <ol>
+            <li><a href="#agent-system">The agent is a system, not a model call</a></li>
+            <li><a href="#context">Context is managed working memory</a></li>
+            <li><a href="#workflow">Workflows turn capability into repeatable behavior</a></li>
+            <li><a href="#self-improvement">From hand-built harnesses to harness evolution</a></li>
+            <li><a href="#evaluation">Evaluation is both the engine and the attack surface</a></li>
+            <li><a href="#scaling">Harness progress does not replace model scaling</a></li>
+            <li><a href="#principles">A practical design framework</a></li>
+            <li><a href="#takeaways">Takeaways</a></li>
+          </ol>
+        </aside>
+
+        <section id="agent-system">
+          <h3>The agent is a system, not a model call</h3>
+          <p>A language model produces the next tokens from the context it receives. An agent must do more: maintain state across steps, decide when to call tools, interpret their results, recover from errors, and determine when the task is complete. The useful unit of analysis is therefore not the base model alone but the complete system in which it operates.</p>
+
+          <div class="equation">\[
+            \text{Agent behavior}=f(\text{model},\text{context},\text{tools},\text{workflow},\text{evaluator},\text{permissions})
+          \]</div>
+
+          <p>I use <em>harness</em> for this surrounding runtime. It includes the instructions and examples given to the model, but it also includes file access, memory, control flow, subagent configuration, evaluation, and security boundaries. This is why two products built on the same model can behave very differently: they expose different action spaces, preserve different evidence, and close the loop between action and feedback in different ways.</p>
+
+          <p>A useful harness usually contains three recurring patterns:</p>
+          <ol>
+            <li><strong>An execution loop.</strong> The agent plans, acts, observes the result, tests its progress, and revises the plan until it reaches a verifiable stopping condition.</li>
+            <li><strong>Durable state.</strong> Important decisions, artifacts, failures, and pending work survive outside the transient conversation, often in ordinary files that can be inspected and revised.</li>
+            <li><strong>Context isolation.</strong> Independent investigations can run in separate processes or subagents, returning concise conclusions and evidence instead of mixing every intermediate step into one context window.</li>
+          </ol>
+
+          <p>These patterns resemble operating-system design more than prompt decoration. The harness presents a stable interface to a complicated environment, controls access to resources, and keeps the model's working state coherent. Good design hides incidental complexity without hiding the evidence needed for diagnosis.</p>
+
+          <div class="post-note">
+            <h4>Capability versus reliability</h4>
+            <p>The model determines what kinds of reasoning are possible. The harness determines how consistently that reasoning is connected to tools, evidence, and feedback. A harness cannot manufacture intelligence from a weak model, but it can waste—or recover—a large fraction of the capability already present.</p>
+          </div>
+        </section>
+
+        <section id="context">
+          <h3>Context is managed working memory</h3>
+          <p>Long-running agents continuously generate model outputs, tool results, logs, retrieved documents, and intermediate files. Appending everything to the next prompt feels safe because no information is deliberately discarded. In practice, it replaces one failure mode—missing evidence—with another: important evidence is buried under stale or repetitive material.</p>
+
+          <p>Context engineering asks a broader question than prompt engineering: <em>which information should enter the model's finite attention budget now, which information should remain available elsewhere, and how should the system retrieve it later?</em> The goal is not the shortest possible prompt. It is the smallest context that is sufficient for the current decision.</p>
+
+          <h4>Preload the essentials; retrieve the rest just in time</h4>
+          <p>Stable instructions, the current objective, and non-negotiable constraints usually belong in the initial context. Large repositories, raw trajectories, and changing external evidence are better represented by lightweight references—paths, indexes, identifiers, or search tools. The agent can then inspect names, search for relevant terms, open matching sections, and deepen the investigation only when needed.</p>
+
+          <p>This hybrid approach is more robust than either extreme. Preloading everything spends attention before the model understands the problem. Retrieving everything on demand adds latency and creates search failures. The design question is where to place the boundary between essential shared state and navigable external state.</p>
+
+          <h4>Compaction, memory, and isolation solve different problems</h4>
+          <div class="table-scroll" role="region" aria-label="Comparison of long-context techniques" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Technique</th>
+                  <th scope="col">Primary job</th>
+                  <th scope="col">Main risk</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Compaction</th>
+                  <td>Compress a long interaction while preserving the state needed to continue</td>
+                  <td>Quietly dropping a constraint, failed attempt, or unresolved dependency</td>
+                </tr>
+                <tr>
+                  <th scope="row">External memory</th>
+                  <td>Keep selected facts, decisions, and artifacts across phases or sessions</td>
+                  <td>Allowing stale or incorrect experience to become permanent guidance</td>
+                </tr>
+                <tr>
+                  <th scope="row">Subagent isolation</th>
+                  <td>Give independent investigations separate attention budgets</td>
+                  <td>Losing evidence or assumptions during handoff and synthesis</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Recent research turns context from a static input into an object that can improve. <a href="https://arxiv.org/abs/2510.04618">Agentic Context Engineering (ACE)</a> maintains an evolving playbook through generation, reflection, and curation. Instead of repeatedly rewriting one prompt, it adds and refines structured entries so useful details are less likely to disappear. <a href="https://arxiv.org/abs/2601.21557">Meta Context Engineering (MCE)</a> moves up one level: it searches not only over the content of the playbook but also over the mechanisms used to search, filter, format, and update it.</p>
+
+          <p><a href="https://arxiv.org/abs/2603.28052">Meta-Harness</a> makes the next transition. The optimization target becomes executable context-management code. Previous candidates, scores, and trajectories remain in the filesystem, while a coding agent decides what evidence to read and proposes a new harness. The progression is revealing:</p>
+
+          <div class="equation">\[
+            \text{prompt}\rightarrow\text{structured context}\rightarrow\text{context policy}\rightarrow\text{harness code}
+          \]</div>
+
+          <p>Each step moves from changing the answer toward changing the machinery that produces future answers.</p>
+        </section>
+
+        <section id="workflow">
+          <h3>Workflows turn capability into repeatable behavior</h3>
+          <p>Context engineering decides what the model can see. Workflow design decides what sequence of actions it is encouraged—or required—to take. Anthropic's distinction is useful here: a <em>workflow</em> follows predefined code paths, while an <em>agent</em> dynamically chooses its own process and tool use.</p>
+
+          <p>The difference is not a ranking. A fixed workflow is often better when the task is stable, the steps are known, and consistency matters. Prompt chaining, routing, parallel workers, and evaluator-optimizer loops can make each model call simpler and easier to verify. An autonomous agent becomes valuable when the path cannot be specified in advance and the model must adapt its investigation to intermediate evidence. Autonomy buys flexibility by spending more latency, tokens, and control complexity.</p>
+
+          <div class="table-scroll" role="region" aria-label="When to use workflows and autonomous agents" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Task property</th>
+                  <th scope="col">Prefer a workflow</th>
+                  <th scope="col">Prefer an agent</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Path to completion</th>
+                  <td>Known and repeatable</td>
+                  <td>Must be discovered during execution</td>
+                </tr>
+                <tr>
+                  <th scope="row">Verification</th>
+                  <td>Clear checks can gate each stage</td>
+                  <td>Evidence must guide the next action dynamically</td>
+                </tr>
+                <tr>
+                  <th scope="row">Cost tolerance</th>
+                  <td>Low latency and predictable spend matter</td>
+                  <td>Additional exploration is worth the cost</td>
+                </tr>
+                <tr>
+                  <th scope="row">Failure recovery</th>
+                  <td>Known exceptions can be handled explicitly</td>
+                  <td>Unexpected states require diagnosis and replanning</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>The most reliable systems often combine both: deterministic code protects invariants and checkpoints, while the model chooses how to work inside those boundaries. The important question is not “How autonomous can this system be?” but “Which decisions benefit from model judgment, and which decisions should remain explicit and testable?”</p>
+
+          <p>This perspective also changes how tools should be designed. A tool definition is part of the model's context and action space. Clear parameter names, bounded outputs, explicit error states, and interfaces that make invalid actions difficult can improve agent behavior more reliably than another paragraph of instructions.</p>
+        </section>
+
+        <section id="self-improvement">
+          <h3>From hand-built harnesses to harness evolution</h3>
+          <p>Once the harness is represented as code and the task produces measurable feedback, harness design becomes a search problem. The system can inspect failures, choose an editable component, propose a change, run evaluations, and keep the change only if the evidence supports it.</p>
+
+          <p>The tempting story is unrestricted self-rewriting. The more useful pattern is narrower:</p>
+
+          <div class="equation">\[
+            \text{failure evidence}\rightarrow\text{root cause}\rightarrow\text{bounded edit}\rightarrow\text{held-out test}\rightarrow\text{accept or reject}
+          \]</div>
+
+          <p><a href="https://arxiv.org/abs/2606.09498">Self-Harness</a> follows this pattern by mining recurrent weaknesses from execution trajectories, proposing targeted harness changes, and checking both whether the target weakness improves and whether unrelated behavior regresses. Surface-level failures are not enough: two timeouts may come from very different causal chains, so a useful diagnosis must connect the final verifier result to the sequence that produced it.</p>
+
+          <p><a href="https://arxiv.org/abs/2604.25850">Agentic Harness Engineering (AHE)</a> emphasizes observability. Editable components—such as system prompts, tool descriptions, tool implementations, middleware, skills, subagent configuration, and long-term memory—are represented explicitly. Raw trajectories are compressed into a hierarchy of per-task diagnoses and cross-task patterns, but remain available for inspection. Every proposed edit is paired with a predicted benefit and a list of possible regressions, turning the edit into a falsifiable claim rather than an aesthetic preference.</p>
+
+          <h4>Why preserve multiple candidates?</h4>
+          <p>A greedy improvement loop can become trapped near the current best design. A change that temporarily lowers benchmark performance may still create a useful stepping stone. Evolutionary systems preserve a population or archive so that weaker but distinct branches can be revisited.</p>
+
+          <p>The <a href="https://arxiv.org/abs/2505.22954">Darwin G&ouml;del Machine (DGM)</a> applies this idea to an agent's own editable harness repository. A parent agent reads its evaluation logs, modifies its code, and produces a child that is evaluated before entering the archive. The base model remains fixed; the gains come from changes to tools, context management, patch validation, and review workflows. This makes DGM an example of harness evolution, not model-weight self-improvement.</p>
+
+          <p>The archive matters because search is rarely monotonic. Preserving branches creates room for exploration, but it also raises the cost of evaluation and the risk of overfitting to a benchmark. Diversity is useful only when the evaluator can distinguish genuine capability from a novel way of exploiting the test.</p>
+
+          <div class="post-note">
+            <h4>Recursive structure is not recursive intelligence</h4>
+            <p>A loop that edits its own code does not guarantee improvement. The model must be capable of diagnosing failures, proposing useful changes, and interpreting noisy evaluations. A weak improver can recursively produce worse improvers just as easily as better ones.</p>
+          </div>
+        </section>
+
+        <section id="evaluation">
+          <h3>Evaluation is both the engine and the attack surface</h3>
+          <p>Every improvement loop needs a selection signal. That signal is also the point at which the loop can go wrong. Reward hacking occurs when an agent increases the measured reward without achieving the intended objective. In harness evolution, the simplest failures are concrete: modify the tests, disable the verifier, increase the compute budget, hide failed trajectories, or replace the model with a stronger one.</p>
+
+          <p>The safety boundary follows directly:</p>
+
+          <div class="equation">\[
+            \text{editable harness}\;\cap\;\text{evaluation authority}=\varnothing
+          \]</div>
+
+          <p>The agent may change how it attempts the task, but it should not control the system that decides whether the attempt succeeded. Evaluators, protected tests, permission controls, budgets, and audit logs must live outside the self-modification loop. This is not a complete safety solution, but it preserves the meaning of measured progress.</p>
+
+          <p>Even with protected infrastructure, the proxy can still be wrong. An LLM judge may prefer a familiar style, reward verbosity, exhibit position bias, or miss a subtle factual error. A benchmark may reward narrow tactics that do not transfer. A system can therefore overfit without tampering with any file: it simply learns what the evaluator notices.</p>
+
+          <p>A credible harness update needs more evidence than a higher aggregate score:</p>
+          <ul>
+            <li><strong>Held-in tests</strong> show whether the diagnosed failure was actually fixed.</li>
+            <li><strong>Held-out tests</strong> check whether the change generalizes beyond the examples that motivated it.</li>
+            <li><strong>Regression suites</strong> protect previously successful behavior.</li>
+            <li><strong>Cross-model or cross-task transfer</strong> distinguishes reusable system improvements from model-specific tricks.</li>
+            <li><strong>Auditable trajectories</strong> make it possible to inspect why the score changed.</li>
+          </ul>
+
+          <p>Evaluation quality sets the ceiling for self-improvement. Coding agents can use unit tests and benchmark outcomes, although even those are imperfect. Research agents face harder questions: whether an idea is novel, whether an experiment isolates the right cause, and whether a negative result reflects a bad hypothesis or a weak execution. When the evaluator is ambiguous, autonomous optimization becomes correspondingly fragile.</p>
+        </section>
+
+        <section id="scaling">
+          <h3>Harness progress does not replace model scaling</h3>
+          <p>Harness engineering and model scaling act on different parts of the system. Scaling laws describe empirical relationships among model size, data, compute, and loss. In a common approximation for transformer training, compute grows roughly with parameters and training tokens:</p>
+
+          <div class="equation">\[
+            C\approx 6ND
+          \]</div>
+
+          <p>The important lesson from the scaling-law literature is not simply “bigger is better.” It is that compute must be allocated across model capacity and sufficiently diverse training data, and that fitted relationships are sensitive to the experimental region, noise, parameter-counting conventions, and repeated data. A local power law is an empirical planning tool, not a universal constant.</p>
+
+          <p>These results also should not be imported directly into agent evaluation. Lower pretraining loss does not imply a proportional gain in tool use, long-horizon planning, post-training robustness, or recovery from failure. Agent performance depends on task distributions, environment feedback, reward quality, and the harness through which the model acts.</p>
+
+          <p>The relationship is therefore complementary rather than competitive:</p>
+
+          <div class="table-scroll" role="region" aria-label="Comparison of model and harness improvement" tabindex="0">
+            <table class="post-table">
+              <thead>
+                <tr>
+                  <th scope="col">Improvement target</th>
+                  <th scope="col">What changes</th>
+                  <th scope="col">What it can unlock</th>
+                  <th scope="col">What it cannot guarantee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Model</th>
+                  <td>Weights, training data, or training algorithm</td>
+                  <td>New reasoning and representation capabilities</td>
+                  <td>Reliable tool use or correct long-horizon execution</td>
+                </tr>
+                <tr>
+                  <th scope="row">Harness</th>
+                  <td>Context, tools, workflow, memory, and control code</td>
+                  <td>Better use, verification, and persistence of existing capability</td>
+                  <td>Capabilities the model fundamentally lacks</td>
+                </tr>
+                <tr>
+                  <th scope="row">Joint loop</th>
+                  <td>Both runtime system and model</td>
+                  <td>Better trajectories improve the model; a better model improves the harness</td>
+                  <td>Safety when the evaluator or update authority is flawed</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>A mature harness can generate cleaner trajectories, more informative failures, and higher-quality training data. A more capable model can in turn make better diagnoses and propose more general harness changes. The long-term direction is likely joint optimization, but separating the two sources of progress remains essential for scientific attribution and safety.</p>
+        </section>
+
+        <section id="principles">
+          <h3>A practical design framework</h3>
+          <p>When evaluating or building a self-improving agent system, I would ask seven questions in order:</p>
+          <ol>
+            <li><strong>Objective:</strong> What real outcome should improve, and what proxy is used to measure it?</li>
+            <li><strong>Context:</strong> What must be visible now, what can be retrieved later, and what should be forgotten?</li>
+            <li><strong>Workflow:</strong> Which steps should be deterministic, and which decisions genuinely benefit from model autonomy?</li>
+            <li><strong>State:</strong> Which artifacts, decisions, and failures must persist across context resets or sessions?</li>
+            <li><strong>Editable surface:</strong> Which components may the agent change, and which components must remain protected?</li>
+            <li><strong>Evidence:</strong> Can each change be traced from a failure through a root-cause hypothesis to a falsifiable prediction?</li>
+            <li><strong>Generalization:</strong> Does the gain survive held-out tasks, regressions, changed models, and changed environments?</li>
+          </ol>
+
+          <p>This sequence deliberately starts with the objective and ends with generalization. Optimizing the wrong metric faster is not progress. Nor is a change credible simply because the agent can explain it. The explanation must predict an observable improvement, and the evaluation must be independent enough to challenge that prediction.</p>
+
+          <p>The same framework suggests a conservative deployment pattern:</p>
+
+          <ol>
+            <li>Record failures and successful behavior in inspectable artifacts.</li>
+            <li>Cluster recurrent failures, but retain links to raw trajectories.</li>
+            <li>Propose narrow edits to explicit harness components.</li>
+            <li>Run targeted tests, held-out tests, and regression checks.</li>
+            <li>Accept only evidence-backed changes; preserve rejected attempts for future diagnosis.</li>
+            <li>Keep evaluators, permissions, budgets, and audit logs outside the editable workspace.</li>
+          </ol>
+
+          <p>This is a slower picture of self-improvement than unrestricted self-rewriting. It is also a more useful one, because every step can be observed, challenged, and rolled back.</p>
+        </section>
+
+        <section id="takeaways">
+          <h3>Takeaways</h3>
+          <ul>
+            <li><strong>An agent is a coupled system.</strong> Model capability, context, tools, workflow, evaluation, and permissions jointly determine behavior.</li>
+            <li><strong>Context is an attention allocation problem.</strong> Longer windows help, but they do not decide what is relevant, current, or trustworthy.</li>
+            <li><strong>Autonomy should be earned by task uncertainty.</strong> Fixed workflows remain preferable when the path and checks are known.</li>
+            <li><strong>Self-improvement should be evidence driven.</strong> Failure diagnosis, bounded edits, held-out evaluation, and regression protection matter more than the fact that code is self-modifiable.</li>
+            <li><strong>The evaluator is part of the safety boundary.</strong> An agent must not control the authority that certifies its own improvement.</li>
+            <li><strong>Harness evolution and model learning are complementary.</strong> Better systems expose more of a model's capability; better models can improve those systems more effectively.</li>
+          </ul>
+
+          <p>The deepest shift is from optimizing outputs to optimizing the process that repeatedly produces outputs. Prompts become contexts, contexts become managed state, workflows become editable programs, and programs become candidates in an improvement loop. The closer the loop moves toward modifying itself, the more important observability, independent evaluation, and protected boundaries become.</p>
+        </section>
+
+        <section class="post-sources" aria-labelledby="sources-title">
+          <h3 id="sources-title">Primary readings and references</h3>
+          <ol>
+            <li>Weng, Lilian. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/"><em>Harness Engineering for Self-Improvement</em></a>. Lil'Log, July 2026.</li>
+            <li>Weng, Lilian. <a href="https://lilianweng.github.io/posts/2024-11-28-reward-hacking/"><em>Reward Hacking in Reinforcement Learning</em></a>. Lil'Log, November 2024.</li>
+            <li>Weng, Lilian. <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/"><em>Scaling Laws, Carefully</em></a>. Lil'Log, June 2026.</li>
+            <li>Anthropic. <a href="https://www.anthropic.com/engineering/building-effective-agents"><em>Building Effective Agents</em></a>. December 19, 2024.</li>
+            <li>Anthropic. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"><em>Effective Context Engineering for AI Agents</em></a>. September 29, 2025.</li>
+            <li>Zhang et al. <a href="https://arxiv.org/abs/2510.04618"><em>Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models</em></a>. ICLR 2026.</li>
+            <li>Ye et al. <a href="https://arxiv.org/abs/2601.21557"><em>Meta Context Engineering via Agentic Skill Evolution</em></a>. 2026.</li>
+            <li>Lee et al. <a href="https://arxiv.org/abs/2603.28052"><em>Meta-Harness: End-to-End Optimization of Model Harnesses</em></a>. 2026.</li>
+            <li>Zhang et al. <a href="https://arxiv.org/abs/2606.09498"><em>Self-Harness: Harnesses That Improve Themselves</em></a>. 2026.</li>
+            <li>Lin et al. <a href="https://arxiv.org/abs/2604.25850"><em>Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses</em></a>. 2026.</li>
+            <li>Zhang et al. <a href="https://arxiv.org/abs/2505.22954"><em>Darwin G&ouml;del Machine: Open-Ended Evolution of Self-Improving Agents</em></a>. 2025.</li>
+            <li>Amodei et al. <a href="https://arxiv.org/abs/1606.06565"><em>Concrete Problems in AI Safety</em></a>. 2016.</li>
+            <li>Hoffmann et al. <a href="https://arxiv.org/abs/2203.15556"><em>Training Compute-Optimal Large Language Models</em></a>. NeurIPS 2022.</li>
+          </ol>
+          <p class="figure-credit">The first three entries follow the citation information provided in Lilian Weng's posts. Direct links to the originals also appear in the source note at the top of this article.</p>
+        </section>
+
+        <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
+
+        <nav class="post-back" aria-label="Post navigation">
+          <a href="../index.html">Back to all posts</a>
+        </nav>
+      </article>
+    </main>
+  </div>
+
+  <footer>
+    This site is handcrafted.
+  </footer>
+  <script data-goatcounter="https://xiaodu-flying.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <script src="../../js/post-views.js"></script>
+</body>
+</html>
