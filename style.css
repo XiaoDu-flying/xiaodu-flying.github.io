@@ -144,6 +144,36 @@ body.home-page {
   background-size: auto 54rem;
 }
 
+body.posts-index-page {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.74) 0,
+      rgba(255, 255, 255, 0.82) 54%,
+      #ffffff 100%
+    ),
+    url("images/posts-watercolor-background.jpg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: auto 58rem;
+}
+
+body.research-index-page {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.72) 0,
+      rgba(255, 255, 255, 0.8) 54%,
+      #ffffff 100%
+    ),
+    url("images/research-watercolor-background.jpg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: auto 58rem;
+}
+
 h2,
 h3,
 h4,
@@ -917,6 +947,16 @@ footer {
   body.home-page {
     background-position: 58% top;
     background-size: auto 44rem;
+  }
+
+  body.posts-index-page {
+    background-position: 60% top;
+    background-size: auto 46rem;
+  }
+
+  body.research-index-page {
+    background-position: 70% top;
+    background-size: auto 46rem;
   }
 
   #content {
