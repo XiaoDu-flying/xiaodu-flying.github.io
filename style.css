@@ -15,6 +15,15 @@
 }
 
 @font-face {
+  font-family: "Noto Serif SC";
+  src: url("fonts/NotoSerifSC-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+5353, U+675C, U+8018;
+}
+
+@font-face {
   font-family: "Source Sans 3";
   src: url("fonts/SourceSans3-Regular.woff2") format("woff2");
   font-weight: 400;
@@ -254,10 +263,10 @@ h1 {
 h1 span {
   margin-left: 0.2em;
   color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 0.62em;
-  font-weight: 400;
-  letter-spacing: 0;
+  font-family: "Noto Serif SC", "Songti SC", STSong, serif;
+  font-size: 0.64em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 nav {
