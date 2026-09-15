@@ -59,6 +59,8 @@ layout: null
         <p><span class="epigraph-quote">“The limits of my language mean the limits of my world.”</span><span class="epigraph-source">— Ludwig Wittgenstein, <cite>Tractatus Logico-Philosophicus</cite>, § 5.6.</span></p>
       </blockquote>
 
+      <p class="bio-heading">Bio <button class="bio-toggle" id="bio-toggle" type="button" aria-expanded="false" aria-controls="bio-long" hidden><span aria-hidden="true">▶</span> longer version</button></p>
+
       <p>
         I am an M.Eng. student at <a href="https://www.zju.edu.cn/">Zhejiang University</a>, advised by
         <a href="http://www.cad.zju.edu.cn/home/chenwei/index.html">Prof. Wei Chen</a> at ZJUVAI.
@@ -75,6 +77,25 @@ layout: null
         <a href="https://arxiv.org/abs/2406.08979">Croto</a>
         <a class="github-stars" href="https://github.com/OpenBMB/ChatDev/tree/macnet" aria-label="OpenBMB ChatDev repository on GitHub"><img src="https://img.shields.io/github/stars/OpenBMB/ChatDev?style=social" alt="GitHub stars for OpenBMB/ChatDev"></a>.
       </p>
+
+      <div id="bio-long">
+        <p>
+          My research has progressed from multi-agent collaboration to agent self-improvement and latent-space communication.
+          At <a href="research.html#thunlp">THUNLP</a>, I studied how agents organize and coordinate their work,
+          leading <a href="https://arxiv.org/abs/2406.08979">Croto</a> on cross-team orchestration for multi-agent software development.
+          At Zhejiang University, I led <a href="https://arxiv.org/abs/2412.11716">EvoPatient</a>, exploring doctor-patient
+          coevolution for virtual standardized patients. At <a href="research.html#alibaba">Alibaba</a>, I proposed
+          <a href="https://arxiv.org/abs/2511.09149">Interlat</a>, which replaces natural-language messages between agents
+          with temporally aligned hidden-state exchange.
+        </p>
+        <p>
+          More recently, in the <a href="research.html#bytedance">ByteDance Talent Program</a>, I worked on multi-turn
+          dialogue rollout systems, persona-conditioned user simulation, autonomous evaluation, and LLM post-training.
+          These experiences motivate my interest in agents that learn from interaction and develop their own ways of
+          representing information, communicating, and improving. I hope to connect these directions in building
+          machine-native AI agents.
+        </p>
+      </div>
 
       <aside class="phd-callout" aria-labelledby="phd-callout-title">
         <p class="phd-callout-title" id="phd-callout-title">Prospective Ph.D. Applicant · Fall 2027</p>
@@ -109,6 +130,22 @@ layout: null
   </div>
 
   <script>
+    (() => {
+      const toggle = document.getElementById("bio-toggle");
+      const longBio = document.getElementById("bio-long");
+      longBio.hidden = true;
+      toggle.hidden = false;
+
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") !== "true";
+        longBio.hidden = !expanded;
+        toggle.setAttribute("aria-expanded", String(expanded));
+        toggle.innerHTML = expanded
+          ? '<span aria-hidden="true">▼</span> shorter version'
+          : '<span aria-hidden="true">▶</span> longer version';
+      });
+    })();
+
     (() => {
       const trigger = document.getElementById("machine-native-trigger");
       const popover = document.getElementById("machine-native-definition");

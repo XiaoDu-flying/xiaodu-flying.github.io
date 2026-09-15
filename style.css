@@ -412,6 +412,34 @@ main > p {
   font-weight: 600;
 }
 
+.bio-heading {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.bio-toggle {
+  padding: 0;
+  margin-left: 0.3em;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  font-size: 0.9em;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.bio-toggle:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.bio-toggle:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .epigraph {
   margin: 0 0 1.25em;
   color: var(--muted);
