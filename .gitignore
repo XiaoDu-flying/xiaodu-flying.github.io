@@ -17,7 +17,6 @@ npm-debug.log*
 /.jekyll-metadata
 
 # Ignore Jekyll settings
-/_config.yml
 Gemfile
 Gemfile.lock
 .jekyll-cache/
