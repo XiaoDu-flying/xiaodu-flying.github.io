@@ -363,7 +363,8 @@ main > p {
   margin-top: 0.35em;
 }
 
-.phd-callout-title {
+.phd-callout-title,
+.scholarship-highlight {
   color: #b43b46;
   font-weight: 600;
 }
