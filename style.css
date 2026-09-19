@@ -108,7 +108,7 @@
   --font-sans: "Source Sans 3", "Segoe UI", Arial, sans-serif;
   --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
-  --text: #111111;
+  --text: #292724;
   --muted: #666666;
   --rule: #aaaaaa;
   --link: #038cfc;
@@ -439,6 +439,16 @@ main > p {
   outline: 2px solid var(--link);
   outline-offset: 4px;
   border-radius: 2px;
+}
+
+.bio-reading {
+  margin: 1.25em 0;
+}
+
+.bio-reading h2 {
+  margin: 0 0 1.15em;
+  font-size: 1.17em;
+  font-weight: 700;
 }
 
 .epigraph {
