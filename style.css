@@ -283,13 +283,6 @@ main > p {
   margin: 0 0 1em;
 }
 
-.home-page main {
-  --font-sans: -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
-  font-family: var(--font-sans);
-  letter-spacing: 0;
-  font-synthesis: weight style;
-}
-
 .wavy-emphasis {
   text-decoration-line: underline;
   text-decoration-style: wavy;
