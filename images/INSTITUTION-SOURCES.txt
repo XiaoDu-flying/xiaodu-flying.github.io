@@ -1,0 +1,5 @@
+Zhejiang University seal: https://www.zju.edu.cn/572/main.htm
+Downloaded image: https://www.zju.edu.cn/_upload/article/images/c3/98/1fb1d281492eb477a098ef7a2901/05966b26-ab45-470d-94c1-99b1e02d12f4.png
+Tsinghua University seal: https://commons.wikimedia.org/wiki/File:Tsinghua_University_Logo.svg
+Downloaded SVG: https://upload.wikimedia.org/wikipedia/commons/e/ec/Tsinghua_University_Logo.svg
+ByteDance and Alibaba reuse the existing local logo assets.
