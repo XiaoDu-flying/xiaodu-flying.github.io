@@ -29,6 +29,7 @@ figcaption, .figure-credit { color: #888; font-size: 13px; margin-top: 9px; }
 .table-scroll, .equation { max-width: 100%; overflow-x: auto; margin: 20px 0; }
 .post-article p, .post-article li, code { overflow-wrap: anywhere; }
 .experience { margin-bottom: 22px; }
+.experience li strong { font-weight: 700; }
 .institution-icon { display: inline-block; width: 1em; height: 1em; object-fit: contain; vertical-align: -.12em; margin: 0 .15em; }
 .institution-icon.brand-icon { object-fit: cover; object-position: left center; }
 .institution-icon.alibaba-icon { width: 2em; }
