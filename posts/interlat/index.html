@@ -16,7 +16,11 @@
   <title>Interlat: Enabling Agents to Communicate Entirely in Latent Space | Zhuoyun Du</title>
   <link rel="canonical" href="https://xiaodu-flying.github.io/posts/interlat/">
   <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../assets/minimal-light/style.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/publications.css">
   <link rel="stylesheet" href="../../minimal-light.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/icons/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
   </script>
@@ -28,24 +32,24 @@
 
   <div class="wrapper">
     <header class="profile">
-  <img class="avatar" src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150">
+  <a class="image avatar"><img src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150"></a>
   <h1>Zhuoyun Du</h1>
   <p class="chinese-name" lang="zh-CN">杜卓耘</p>
-  <p class="position">Incoming Ph.D. Student</p>
-  <p><a class="affiliation" href="https://hkust.edu.hk/">HKUST</a></p>
-  <p class="email"><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></p>
-  <nav class="social-links" aria-label="Profile links">
-    <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en">Scholar</a>
-    <a href="../../assets/cv_dzy.pdf">CV</a>
-    <a href="https://github.com/XiaoDu-flying">GitHub</a>
-    <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
-  </nav>
+  <position style="font-size:1.10rem;">Incoming Ph.D. Student</position><br>
+  <a class="affiliation" href="https://hkust.edu.hk/"><autocolor>HKUST</autocolor></a><br>
+  <email><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></email><br><br>
+  <div class="social-icons">
+<a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" style="font-size:1.2rem" aria-hidden="true"></i></a>
+<a href="../../assets/cv_dzy.pdf" aria-label="CV" title="CV"><i class="ai ai-cv" style="font-size:1.3rem" aria-hidden="true"></i></a>
+<a href="https://github.com/XiaoDu-flying" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+</div><br>
   <nav class="page-links" aria-label="Primary navigation">
     <a href="../../index.html#about">About</a><a href="../../index.html#publications">Publications</a><a href="../../research.html#experience">Experience</a><a href="../../posts/index.html">Posts</a><a href="../../research.html">Full research details</a>
   </nav>
 </header>
 
-    <main id="main">
+    <section id="main" class="main-content">
       <article class="post-article">
         <header class="post-header">
           <p class="post-kicker">Research</p>
@@ -80,7 +84,7 @@
           </ol>
         </aside>
 
-        <section id="language-bottleneck">
+        <div class="content-section" id="language-bottleneck">
           <h3>Language is useful, but lossy</h3>
           <p>Natural language gives agents a modular, inspectable, and model-agnostic protocol. Those are real advantages. But text also imposes a narrow bottleneck between two high-dimensional computations. A sender must project its internal state through a vocabulary head, commit to one token at a time, obey grammatical conventions, and serialize information that may have been represented in parallel. The receiver then reconstructs an internal representation from those tokens.</p>
           <p>Consider a model with a 32,768-word vocabulary and a 2,560-dimensional hidden state stored at 16-bit precision (the reported experiments use bfloat16). A token identity carries roughly</p>
@@ -101,9 +105,9 @@
             <li><strong>Expressivity:</strong> what representation should one agent expose to another?</li>
             <li><strong>Efficiency:</strong> how much of that representation must be generated and transmitted?</li>
           </ul>
-        </section>
+        </div>
 
-        <section id="architecture">
+        <div class="content-section" id="architecture">
           <h3>The Interlat communication interface</h3>
           <p>Interlat begins with two roles. A <em>reasoning model</em> processes the task and produces a sequence of last-layer hidden states. An <em>actor model</em> receives the resulting latent message and generates the final action or answer.</p>
           <p>Let the sender's completion contain \(L\) positions and let \(h_\ell\in\mathbb{R}^{d_s}\) denote the final hidden state at position \(\ell\). The latent message is</p>
@@ -124,9 +128,9 @@
             <h4>The adapter is not merely a connector</h4>
             <p>Raw hidden states are organized for the sender's own next-token prediction. The adapter learns which parts should be exposed, how they should be combined, and how to express them in the receiver's coordinate system. In the ablation study, removing this module reduces ALFWorld success to roughly 4%, showing that direct compatibility cannot be assumed.</p>
           </div>
-        </section>
+        </div>
 
-        <section id="objectives">
+        <div class="content-section" id="objectives">
           <h3>Teaching the actor to use the message</h3>
           <p>A working channel needs more than end-task supervision. If we optimize only the actor's answer loss, it may learn to ignore the latent message and solve easy examples from the prompt alone. Worse, a high-dimensional sender and receiver may discover shortcuts that fit the training objective without preserving a useful notion of a plan.</p>
           <p>The actor objective combines task supervision, conditional separation, and plan alignment:</p>
@@ -192,9 +196,9 @@
             <img src="images/training-transition.png" alt="Training curves where the separation loss remains near log two before dropping sharply as the actor starts distinguishing matched from mismatched latent messages" width="1920" height="1080" loading="lazy">
             <figcaption>Figure 2. The separation diagnostic stays near \(0.69\approx\ln 2\), where matched and mismatched conditions are indistinguishable, then drops sharply after roughly 2.2k steps. We interpret this transition as the point at which the actor begins to use task-relevant latent information.</figcaption>
           </figure>
-        </section>
+        </div>
 
-        <section id="compression">
+        <div class="content-section" id="compression">
           <h3>Compressing communication in latent space</h3>
           <p>Full-length hidden states remove token sampling from the communication interface, but they do not automatically reduce the number of autoregressive sender steps. If the reasoning model still produces one state for every position in a long textual plan, generation latency remains.</p>
           <p>The second stage therefore trains a reasoning model to generate a shorter latent sequence directly. During latent autoregression, the model bypasses the language head and feeds its last hidden state back as the next input embedding. The goal is not to truncate a completed sequence after the fact, but to learn a compact trajectory whose states retain the information the actor needs.</p>
@@ -255,9 +259,9 @@
             \]
           </div>
           <p>The distinction between learned compression and naive truncation is crucial. Truncation assumes useful information is concentrated in an arbitrary prefix or suffix. Learned latent reasoning can reorganize the trajectory so that a small number of recurrent states become an information-preserving bottleneck.</p>
-        </section>
+        </div>
 
-        <section id="experiments">
+        <div class="content-section" id="experiments">
           <h3>What the experiments show</h3>
           <p>We evaluate Interlat on ALFWorld, where an agent must execute multi-step actions in text-based household environments, and on MATH, where the final answer depends on mathematical reasoning. The main comparison separates latent communication from textual communication, no communication, and single-agent chain-of-thought baselines.</p>
 
@@ -348,9 +352,9 @@
             </table>
           </div>
           <p>The actor-side result is especially revealing: removing the adapter still produces fluent text, but almost never solves the task. Fluency is not evidence that a receiver has interpreted a latent message. On the compression side, geometry alignment is the most important of the three terms in this setting, followed by uncertainty-weighted agreement. Removing task cross-entropy slightly improves the unseen mean while hurting seen performance, suggesting a possible in-distribution/generalization trade-off rather than a monotonic ranking of losses.</p>
-        </section>
+        </div>
 
-        <section id="semantics">
+        <div class="content-section" id="semantics">
           <h3>Do the latent messages contain structure?</h3>
           <p>Continuous communication is difficult to inspect directly. We therefore use behavioral perturbations and representation analysis rather than treating a two-dimensional plot as proof of “understanding.” The raw sender states form task-dependent clusters, and the transformed representations retain much of that organization after passing through the adapter.</p>
 
@@ -361,9 +365,9 @@
 
           <p>The actor's output distributions offer another view. The analysis normalizes over the top-10 tokens, plots cumulative mass for the top six, and summarizes head concentration with \(P_{50}(S_{10})\), the median cumulative probability mass of the top-10 set. Under naive compression, probability mass rapidly concentrates toward the top prediction. After compression training, successive top-\(k\) bands remain separated and \(P_{50}(S_{10})\) is lower across the analyzed steps. That pattern is consistent with broader support over plausible continuations before the actor must commit to a discrete action.</p>
           <p>This connection to exploration is suggestive rather than definitive. A broad output distribution is not itself a search algorithm, and a cluster is not a human-readable concept. What the experiments establish more directly is that the latent message is task-dependent, perturbation-sensitive, and behaviorally useful.</p>
-        </section>
+        </div>
 
-        <section id="scaling">
+        <div class="content-section" id="scaling">
           <h3>From a pair of agents to communication topologies</h3>
           <p>A two-agent channel is a building block, not a full multi-agent architecture. We also test whether the interface can compose across three-agent topologies. In a sequential chain, a strategist passes a latent message to a compiler, which refines it for an actor. In a parallel tree, an explorer and a critic produce messages independently, and an augmented adapter merges them for the actor.</p>
 
@@ -373,9 +377,9 @@
           </figure>
 
           <p>The result is small-scale but informative. Adding agents is useful only when the communication structure gives them distinct computational roles. The parallel tree performs best because it can generate complementary representations and let the adapter fuse them, rather than forcing every contribution through a single serialized chain.</p>
-        </section>
+        </div>
 
-        <section id="boundaries">
+        <div class="content-section" id="boundaries">
           <h3>What this result does—and does not—establish</h3>
           <p>Interlat is best viewed as a feasibility study for an alternative agent interface. It shows that entirely latent inter-agent communication can be trained, used across heterogeneous models, compressed, and composed into simple multi-agent topologies. It does not show that text should disappear from agent systems.</p>
           <ul>
@@ -388,9 +392,9 @@
             <li><strong>Safety monitoring becomes harder.</strong> An opaque latent channel could theoretically bypass language-level filters. The reported experiments contain no harmful instructions or actions, but controllable and auditable latent protocols remain an open requirement.</li>
           </ul>
           <p>The broader opportunity is a hybrid design space. Agents may use text when humans need to inspect, edit, or approve a message, and latent channels when models need a high-capacity internal interface. Communication can become an architectural choice rather than an unquestioned consequence of using language models.</p>
-        </section>
+        </div>
 
-        <section id="takeaways">
+        <div class="content-section" id="takeaways">
           <h3>Takeaways</h3>
           <ul>
             <li><strong>Tokens are not the only possible agent interface.</strong> Last-layer hidden states can be transmitted through a learned adapter and consumed directly as receiver embeddings.</li>
@@ -399,9 +403,9 @@
             <li><strong>The strongest evidence is causal and behavioral.</strong> Perturbations hurt, cross-model transfer works, and ablations identify the adapter and curriculum as essential.</li>
             <li><strong>This is a starting point.</strong> Larger teams, richer topologies, interpretability, controllability, and secure latent protocols remain open problems.</li>
           </ul>
-        </section>
+        </div>
 
-        <section class="post-sources" aria-labelledby="sources-title">
+        <div class="content-section" class="post-sources" aria-labelledby="sources-title">
           <h3 id="sources-title">Sources and figure credits</h3>
           <ol>
             <li>Zhuoyun Du, Runze Wang, Huiyu Bai, Zouying Cao, Xiaoyong Zhu, Yu Cheng, Bo Zheng, Wei Chen, and Haochao Ying. <a href="https://aclanthology.org/2026.acl-long.1248/">Enabling Agents to Communicate Entirely in Latent Space</a>. ACL 2026.</li>
@@ -409,14 +413,14 @@
             <li><a href="https://github.com/XiaoDu-flying/Interlat">Interlat implementation</a>.</li>
           </ol>
           <p class="figure-credit">Figure 1 is the Interlat overview used on my research page. Figures 2–6 were rendered from my ACL 2026 presentation and edited only through selection and captioning. The equations follow the manuscript's notation; refer to the paper and appendix for complete normalization, sampling, and implementation details.</p>
-        </section>
+        </div>
 
         <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
 
         <p class="post-back"><a href="../index.html">&larr; Back to Posts</a></p>
       </article>
-    <footer><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></footer>
-    </main>
+    <div class="site-footnote"><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></div>
+    </section>
   </div>
 
 

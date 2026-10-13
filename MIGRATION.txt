@@ -14,3 +14,5 @@ To restore: copy the original files listed in archive/2026-10-13-before-minimal-
 No commit or push was performed.
 
 Follow-up edits: identity updated to Incoming Ph.D. Student at HKUST as requested; seeking research internships; interests split into collaboration, evolution and evaluation; longer bio and Selected writing removed.
+
+Upstream source migration: adopted official Minimal Light HTML structure and unchanged compiled style.css/publications.css at revision 1ea07f39518ac44644406380c83da6f89037c4fc. Original Crimson Pro and Ubuntu Mono fonts now come from upstream Google Fonts imports. The previous imitation stylesheet was replaced by site-specific extensions only. See assets/minimal-light/UPSTREAM.txt and LICENSE.

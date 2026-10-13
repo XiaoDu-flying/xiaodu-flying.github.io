@@ -16,7 +16,11 @@
   <title>Long-Horizon Agents Need Long-Lived State | Zhuoyun Du</title>
   <link rel="canonical" href="https://xiaodu-flying.github.io/posts/long-horizon-agents-durable-state/">
   <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../assets/minimal-light/style.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/publications.css">
   <link rel="stylesheet" href="../../minimal-light.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/icons/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
@@ -24,24 +28,24 @@
 
   <div class="wrapper">
     <header class="profile">
-  <img class="avatar" src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150">
+  <a class="image avatar"><img src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150"></a>
   <h1>Zhuoyun Du</h1>
   <p class="chinese-name" lang="zh-CN">杜卓耘</p>
-  <p class="position">Incoming Ph.D. Student</p>
-  <p><a class="affiliation" href="https://hkust.edu.hk/">HKUST</a></p>
-  <p class="email"><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></p>
-  <nav class="social-links" aria-label="Profile links">
-    <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en">Scholar</a>
-    <a href="../../assets/cv_dzy.pdf">CV</a>
-    <a href="https://github.com/XiaoDu-flying">GitHub</a>
-    <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
-  </nav>
+  <position style="font-size:1.10rem;">Incoming Ph.D. Student</position><br>
+  <a class="affiliation" href="https://hkust.edu.hk/"><autocolor>HKUST</autocolor></a><br>
+  <email><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></email><br><br>
+  <div class="social-icons">
+<a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" style="font-size:1.2rem" aria-hidden="true"></i></a>
+<a href="../../assets/cv_dzy.pdf" aria-label="CV" title="CV"><i class="ai ai-cv" style="font-size:1.3rem" aria-hidden="true"></i></a>
+<a href="https://github.com/XiaoDu-flying" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+</div><br>
   <nav class="page-links" aria-label="Primary navigation">
     <a href="../../index.html#about">About</a><a href="../../index.html#publications">Publications</a><a href="../../research.html#experience">Experience</a><a href="../../posts/index.html">Posts</a><a href="../../research.html">Full research details</a>
   </nav>
 </header>
 
-    <main id="main">
+    <section id="main" class="main-content">
       <article class="post-article">
         <header class="post-header">
           <p class="post-kicker">Research Synthesis</p>
@@ -67,7 +71,7 @@
           </ol>
         </aside>
 
-        <section id="context-workspace">
+        <div class="content-section" id="context-workspace">
           <h3>A context window is not a workspace</h3>
           <p>
             Context is what the model can attend to during one inference. A workspace is what the system can preserve, organize, inspect, and modify across inferences. The difference becomes decisive once the task exceeds a single generation.
@@ -79,9 +83,9 @@
             <h4>Long context answers "how much can I read now?"</h4>
             <p>Long-lived state answers different questions: What have I established? Where did it come from? What remains unresolved? Which artifact should change next? What must remain unchanged?</p>
           </div>
-        </section>
+        </div>
 
-        <section id="filesystem">
+        <div class="content-section" id="filesystem">
           <h3>The file system as external working state</h3>
           <p>
             <a href="https://arxiv.org/abs/2602.01566"><em>FS-Researcher</em></a> makes this distinction concrete. It uses a persistent file-system workspace shared by two agents. A Context Builder searches the web, archives raw pages, writes cited notes into a hierarchical knowledge base, and maintains an index, checklist, and progress log. A Report Writer later reads the resulting workspace and writes the final report section by section.
@@ -129,9 +133,9 @@
           <p>
             The file system is useful not because files are inherently intelligent, but because they make state explicit. The agent can inspect a directory, select one note, compare it with its source, update a checklist, and leave the rest untouched. Information is addressed by name and structure rather than reconstructed from conversational memory.
           </p>
-        </section>
+        </div>
 
-        <section id="separation">
+        <div class="content-section" id="separation">
           <h3>Separate evidence construction from synthesis</h3>
           <p>
             FS-Researcher removes web-browsing tools when the Report Writer begins. The writer must treat the curated knowledge base as its factual source. This constraint prevents a common failure mode in which the agent searches, forms a premature thesis, and selectively gathers only enough evidence to continue writing.
@@ -146,9 +150,9 @@
           <p>
             In the paper's ablations, merging browsing and writing into one agent produced the largest degradation: the overall RACE score fell from 52.76 to 42.41, including drops of 16.89 points in Insight and 11.06 in Comprehensiveness. Removing the persistent workspace while retaining iterative work also hurt performance, reducing RACE from 52.76 to 48.69. These results suggest that the gains come from the structure of the work, not merely from calling the model more times.
           </p>
-        </section>
+        </div>
 
-        <section id="scaling">
+        <div class="content-section" id="scaling">
           <h3>Test-time scaling through state growth</h3>
           <p>
             Test-time scaling is often associated with sampling more answers and selecting the best one. A workspace enables another form: allocate additional computation to improving the state on which the final answer will depend.
@@ -159,9 +163,9 @@
           <p>
             This changes how scaling should be measured. The relevant quantity is not only inference tokens. We should also ask whether more compute leaves the workspace more complete, better sourced, easier to navigate, and more useful to the next agent. A durable intermediate state turns additional computation into cumulative progress.
           </p>
-        </section>
+        </div>
 
-        <section id="revision">
+        <div class="content-section" id="revision">
           <h3>Revision exposes the same missing primitive</h3>
           <p>
             Research does not end with the first report. A user may ask to add one missing argument, restructure a section, or correct a citation. <a href="https://arxiv.org/abs/2601.13217"><em>Beyond Single-shot Writing</em></a> evaluates this setting with Mr Dre, a suite for multi-turn report revision across comprehensiveness, factuality, and presentation.
@@ -183,9 +187,9 @@
             <h4>Incorporation is not preservation</h4>
             <p>An agent can satisfy the new instruction while making the artifact worse overall. Multi-turn reliability requires measuring what changed unintentionally, not only whether the latest request appears in the output.</p>
           </div>
-        </section>
+        </div>
 
-        <section id="design">
+        <div class="content-section" id="design">
           <h3>Design principles for durable agents</h3>
 
           <h4>1. Externalize state into typed artifacts</h4>
@@ -217,9 +221,9 @@
           <p>
             A final snapshot hides whether the system repeatedly broke and repaired the same section. Evaluation should track artifact quality over time: coverage gained, correct material lost, citations preserved, conflicts resolved, and cost per durable improvement.
           </p>
-        </section>
+        </div>
 
-        <section id="takeaways">
+        <div class="content-section" id="takeaways">
           <h3>Takeaways</h3>
           <ul>
             <li><strong>Context and state are different resources.</strong> Context supports immediate attention; state supports cumulative work.</li>
@@ -231,9 +235,9 @@
           <p>
             Long-horizon agents will certainly benefit from larger models and longer contexts. But the systems that remain reliable across hours, sessions, and revisions will also need something more ordinary and more fundamental: a durable place to put their work.
           </p>
-        </section>
+        </div>
 
-        <section class="post-sources" aria-labelledby="sources-title">
+        <div class="content-section" class="post-sources" aria-labelledby="sources-title">
           <h3 id="sources-title">Sources</h3>
           <ol>
             <li>Chiwei Zhu et al. <a href="https://arxiv.org/abs/2602.01566"><em>FS-Researcher: Test-Time Scaling for Long-Horizon Research Tasks with File-System-Based Agents</em></a>. 2026.</li>
@@ -243,7 +247,7 @@
             <li><a href="https://app.notion.com/p/301b02b82563817f806dde871675ff50">My notes on multi-turn report revision</a>.</li>
           </ol>
           <p class="figure-credit">This article synthesizes the two papers around a shared systems question: how an agent can preserve and improve work across a long sequence of actions.</p>
-        </section>
+        </div>
 
         <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
 
@@ -251,8 +255,8 @@
           <a href="../index.html">Back to all posts</a>
         </nav>
       </article>
-    <footer><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></footer>
-    </main>
+    <div class="site-footnote"><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></div>
+    </section>
   </div>
 
 

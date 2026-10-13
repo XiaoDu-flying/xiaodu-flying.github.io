@@ -16,7 +16,11 @@
   <title>Multi-Turn Post-Training for LLM Agents | Zhuoyun Du</title>
   <link rel="canonical" href="https://xiaodu-flying.github.io/posts/multi-turn-llm-post-training/">
   <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../assets/minimal-light/style.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/publications.css">
   <link rel="stylesheet" href="../../minimal-light.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/icons/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
@@ -24,24 +28,24 @@
 
   <div class="wrapper">
     <header class="profile">
-  <img class="avatar" src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150">
+  <a class="image avatar"><img src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150"></a>
   <h1>Zhuoyun Du</h1>
   <p class="chinese-name" lang="zh-CN">杜卓耘</p>
-  <p class="position">Incoming Ph.D. Student</p>
-  <p><a class="affiliation" href="https://hkust.edu.hk/">HKUST</a></p>
-  <p class="email"><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></p>
-  <nav class="social-links" aria-label="Profile links">
-    <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en">Scholar</a>
-    <a href="../../assets/cv_dzy.pdf">CV</a>
-    <a href="https://github.com/XiaoDu-flying">GitHub</a>
-    <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
-  </nav>
+  <position style="font-size:1.10rem;">Incoming Ph.D. Student</position><br>
+  <a class="affiliation" href="https://hkust.edu.hk/"><autocolor>HKUST</autocolor></a><br>
+  <email><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></email><br><br>
+  <div class="social-icons">
+<a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" style="font-size:1.2rem" aria-hidden="true"></i></a>
+<a href="../../assets/cv_dzy.pdf" aria-label="CV" title="CV"><i class="ai ai-cv" style="font-size:1.3rem" aria-hidden="true"></i></a>
+<a href="https://github.com/XiaoDu-flying" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+</div><br>
   <nav class="page-links" aria-label="Primary navigation">
     <a href="../../index.html#about">About</a><a href="../../index.html#publications">Publications</a><a href="../../research.html#experience">Experience</a><a href="../../posts/index.html">Posts</a><a href="../../research.html">Full research details</a>
   </nav>
 </header>
 
-    <main id="main">
+    <section id="main" class="main-content">
       <article class="post-article">
         <header class="post-header">
           <p class="post-kicker">Research Synthesis</p>
@@ -67,7 +71,7 @@
           </ol>
         </aside>
 
-        <section id="outcomes">
+        <div class="content-section" id="outcomes">
           <h3>The objective lives at the end of the trajectory</h3>
           <p>
             Single-turn RLHF usually treats a prompt and its completion as one decision. A reward model scores the completed response, and PPO, GRPO, DPO, or another optimizer changes the token policy accordingly. Multi-turn agents add a second temporal scale: tokens form a response, and responses form a trajectory.
@@ -82,9 +86,9 @@
           <p>
             This is the credit-assignment problem in conversational form. The trainer must propagate evidence from an eventual outcome back to the intermediate decisions that helped or hurt it, without encouraging the model to exploit a brittle simulator or reward proxy.
           </p>
-        </section>
+        </div>
 
-        <section id="two-scales">
+        <div class="content-section" id="two-scales">
           <h3>One agent, two action scales</h3>
           <p>
             At the response level, an action is an entire message: ask a clarifying question, offer a plan, invoke a tool, or stop. At the token level, the same action is generated autoregressively. Classical multi-turn RL reasons naturally over response-level actions, while mature LLM post-training software is optimized for token-level updates.
@@ -92,9 +96,9 @@
           <p>
             This mismatch explains why simply attaching the final trajectory reward to every generated token is unsatisfying. It gives all decisions the same coarse label and ignores how the value of a response depends on the state in which it was produced. Two recent approaches address the mismatch from different directions: learn a value for each state-response pair, or compare complete trajectories directly.
           </p>
-        </section>
+        </div>
 
-        <section id="q-bridge">
+        <div class="content-section" id="q-bridge">
           <h3>Route one: use a Q-function as the bridge</h3>
           <p>
             <a href="https://arxiv.org/abs/2511.21638"><em>Aligning LLMs Toward Multi-Turn Conversational Outcomes Using Iterative PPO</em></a> reduces multi-turn policy improvement to a sequence of familiar single-turn RLHF problems. The central object is a response-level Q-function, <code>Q(s, a)</code>: the expected future return after producing response <code>a</code> in conversational state <code>s</code> and then continuing under the current policy.
@@ -121,9 +125,9 @@
           <p>
             The Q-function only learns from actions represented in the logged data. A nearly deterministic policy may produce narrow trajectories, leaving the critic unreliable on alternative replies proposed during policy optimization. Exploration, off-policy evaluation, and periodic data refresh are therefore central parts of the method rather than secondary engineering details.
           </p>
-        </section>
+        </div>
 
-        <section id="trajectory-preference">
+        <div class="content-section" id="trajectory-preference">
           <h3>Route two: optimize trajectory preferences</h3>
           <p>
             <a href="https://arxiv.org/abs/2409.02392"><em>Building Math Agents with Multi-Turn Iterative Preference Learning</em></a> begins from a different supervision format. A tool-using math agent alternates between model actions and code-interpreter observations. Instead of fitting a scalar Q-value for each response, the method compares successful and unsuccessful trajectories and extends DPO and KTO to the multi-turn setting.
@@ -138,9 +142,9 @@
             <h4>The environment is not the policy</h4>
             <p>Multi-turn training data interleaves model decisions with observations from users, tools, and other agents. Correct objectives must say which tokens the policy owns. Masking is not merely a batching trick; it encodes the causal boundary of the learner.</p>
           </div>
-        </section>
+        </div>
 
-        <section id="comparison">
+        <div class="content-section" id="comparison">
           <h3>The methods make different assumptions</h3>
           <p>
             Q-based policy iteration and trajectory-level preference learning are complementary rather than interchangeable. Their supervision, environmental assumptions, and failure modes differ.
@@ -188,9 +192,9 @@
           <p>
             This last distinction is important for general agents. Code execution is deterministic given the submitted program, but a human user or another LLM can respond stochastically. The M-DPO paper shows that its simplified loss is exact under deterministic transitions and points toward value estimation or an adaptive correction when observations are stochastic. Moving from tool-use math to open-ended conversation is therefore not a change of dataset alone; it changes the learning assumptions.
           </p>
-        </section>
+        </div>
 
-        <section id="practice">
+        <div class="content-section" id="practice">
           <h3>A practical training checklist</h3>
           <p>Before choosing an optimizer, I would make the trajectory semantics explicit:</p>
           <ol>
@@ -202,9 +206,9 @@
             <li><strong>Audit the simulator.</strong> If another model supplies user reactions or rewards, check whether the policy is learning the intended task or the simulator's quirks.</li>
             <li><strong>Evaluate whole trajectories.</strong> Report task success, cost, length, safety, and recovery behavior, not only average response-level reward.</li>
           </ol>
-        </section>
+        </div>
 
-        <section id="takeaways">
+        <div class="content-section" id="takeaways">
           <h3>Takeaways</h3>
           <ul>
             <li><strong>Multi-turn post-training changes the unit of optimization.</strong> The object of interest is a trajectory, even when the implementation updates token probabilities.</li>
@@ -216,9 +220,9 @@
           <p>
             The broader lesson is that training an agent is not just training a better response generator. It is learning a policy whose local decisions remain useful after the environment, the user, and the agent itself have had time to react.
           </p>
-        </section>
+        </div>
 
-        <section class="post-sources" aria-labelledby="sources-title">
+        <div class="content-section" class="post-sources" aria-labelledby="sources-title">
           <h3 id="sources-title">Sources</h3>
           <ol>
             <li>Daniel R. Jiang et al. <a href="https://arxiv.org/abs/2511.21638"><em>Aligning LLMs Toward Multi-Turn Conversational Outcomes Using Iterative PPO</em></a>. 2025.</li>
@@ -227,7 +231,7 @@
             <li><a href="https://app.notion.com/p/342b02b8256380d7b31ff86fb05ddfa6">My notes on multi-turn iterative preference learning</a>.</li>
           </ol>
           <p class="figure-credit">The paper title and algorithm name are preserved from the primary source: the proposed method is Iterative PPO. GRPO is discussed as a possible policy-improvement optimizer, not as the paper's reported implementation.</p>
-        </section>
+        </div>
 
         <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
 
@@ -235,8 +239,8 @@
           <a href="../index.html">Back to all posts</a>
         </nav>
       </article>
-    <footer><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></footer>
-    </main>
+    <div class="site-footnote"><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></div>
+    </section>
   </div>
 
 

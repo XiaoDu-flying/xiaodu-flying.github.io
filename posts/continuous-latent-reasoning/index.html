@@ -16,7 +16,11 @@
   <title>Training LLMs to Reason in a Continuous Latent Space | Zhuoyun Du</title>
   <link rel="canonical" href="https://xiaodu-flying.github.io/posts/continuous-latent-reasoning/">
   <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../assets/minimal-light/style.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/publications.css">
   <link rel="stylesheet" href="../../minimal-light.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/icons/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <script>
     window.MathJax = {
       tex: {
@@ -34,24 +38,24 @@
 
   <div class="wrapper">
     <header class="profile">
-  <img class="avatar" src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150">
+  <a class="image avatar"><img src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150"></a>
   <h1>Zhuoyun Du</h1>
   <p class="chinese-name" lang="zh-CN">杜卓耘</p>
-  <p class="position">Incoming Ph.D. Student</p>
-  <p><a class="affiliation" href="https://hkust.edu.hk/">HKUST</a></p>
-  <p class="email"><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></p>
-  <nav class="social-links" aria-label="Profile links">
-    <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en">Scholar</a>
-    <a href="../../assets/cv_dzy.pdf">CV</a>
-    <a href="https://github.com/XiaoDu-flying">GitHub</a>
-    <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
-  </nav>
+  <position style="font-size:1.10rem;">Incoming Ph.D. Student</position><br>
+  <a class="affiliation" href="https://hkust.edu.hk/"><autocolor>HKUST</autocolor></a><br>
+  <email><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></email><br><br>
+  <div class="social-icons">
+<a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" style="font-size:1.2rem" aria-hidden="true"></i></a>
+<a href="../../assets/cv_dzy.pdf" aria-label="CV" title="CV"><i class="ai ai-cv" style="font-size:1.3rem" aria-hidden="true"></i></a>
+<a href="https://github.com/XiaoDu-flying" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+</div><br>
   <nav class="page-links" aria-label="Primary navigation">
     <a href="../../index.html#about">About</a><a href="../../index.html#publications">Publications</a><a href="../../research.html#experience">Experience</a><a href="../../posts/index.html">Posts</a><a href="../../research.html">Full research details</a>
   </nav>
 </header>
 
-    <main id="main">
+    <section id="main" class="main-content">
       <article class="post-article">
         <header class="post-header">
           <p class="post-kicker">Paper Reading Notes</p>
@@ -85,7 +89,7 @@
           </ol>
         </aside>
 
-        <section id="motivation">
+        <div class="content-section" id="motivation">
           <h3>Motivation: reasoning does not have to be verbalized</h3>
           <p>Autoregressive language models normally reason in the same space in which they communicate: a sequence of discrete word tokens. Every intermediate step must pass through the language-model head, become a token, and then return through the embedding layer before the model can continue.</p>
           <p>Coconut removes this round trip during selected reasoning steps. The model's last hidden state already summarizes the current computation. Instead of turning it into a token, Coconut uses the vector itself as the next input. The reasoning trace can therefore evolve in a continuous space without being forced through a fixed vocabulary at every step.</p>
@@ -96,9 +100,9 @@
           </figure>
 
           <p>The important claim is not merely that latent vectors are compact. A single vector may encode support for several possible continuations at the same time. A decoded token must commit to one branch; a continuous state can, in principle, carry information about multiple branches into later computation.</p>
-        </section>
+        </div>
 
-        <section id="transformer-primer">
+        <div class="content-section" id="transformer-primer">
           <h3>Transformer and cross-entropy primer</h3>
           <p>Before looking at Coconut, it helps to separate three objects that are easy to conflate:</p>
           <ul>
@@ -166,9 +170,9 @@
             <img src="images/figure-07.png" alt="Stepwise internalization objective that progressively removes explicit chain-of-thought tokens" loading="lazy">
             <figcaption>Figure 7. Stepwise internalization gradually removes explicit intermediate tokens according to a schedule.</figcaption>
           </figure>
-        </section>
+        </div>
 
-        <section id="coconut">
+        <div class="content-section" id="coconut">
           <h3>How Coconut works</h3>
           <p>For a token sequence \(x=(x_1,\ldots,x_T)\), let \(e(\cdot)\) be the embedding function and define</p>
           <div class="equation">
@@ -215,9 +219,9 @@
           </figure>
 
           <p>Special tokens mark the boundaries: <code>&lt;bot&gt;</code> begins latent reasoning and <code>&lt;eot&gt;</code> ends it. The paper discusses either predicting when to stop or using a fixed number of latent thoughts; its experiments generally use the fixed-length option for simplicity.</p>
-        </section>
+        </div>
 
-        <section id="training">
+        <div class="content-section" id="training">
           <h3>Staged training: replacing language steps with continuous thoughts</h3>
           <p>The central training problem is distribution shift. A pretrained model expects token embeddings, not its own final hidden states, as inputs. Coconut therefore uses a curriculum rather than replacing the full reasoning chain at once.</p>
 
@@ -238,9 +242,9 @@
             <img src="images/figure-12-en.png" alt="English mathematical example of training with two continuous thoughts followed by a textual calculation and answer" loading="lazy">
             <figcaption>Figure 12. A minimal example: latent states carry the early computation, while cross-entropy supervises the remaining text and answer.</figcaption>
           </figure>
-        </section>
+        </div>
 
-        <section id="latent-search">
+        <div class="content-section" id="latent-search">
           <h3>Why continuous states can resemble latent tree search</h3>
           <p>A language chain must select a concrete next token. If that token commits the model to a poor branch, subsequent text may continue along the dead end or invent a connection. A continuous representation can postpone that commitment by preserving evidence for several possible next nodes.</p>
           <p>The paper illustrates this behavior on ProsQA, a logical-reasoning task represented by a directed acyclic graph. In the example below, textual CoT follows a dead end and hallucinates an edge. One continuous thought still reaches the wrong target, while two continuous thoughts preserve enough search state to recover the correct path.</p>
@@ -251,9 +255,9 @@
           </figure>
 
           <p>This is best read as an empirical interpretation, not as evidence that Coconut literally executes a symbolic BFS algorithm. The authors probe candidate probabilities after successive latent thoughts and observe a transition from broad support over several candidates toward a more concentrated choice. That pattern is analogous to breadth-first exploration followed by pruning.</p>
-        </section>
+        </div>
 
-        <section id="implicit-cot">
+        <div class="content-section" id="implicit-cot">
           <h3>Related method: implicit chain of thought through knowledge distillation</h3>
           <p>A related paper, <a href="https://arxiv.org/abs/2311.01460">“Implicit Chain of Thought Reasoning via Knowledge Distillation”</a>, also moves reasoning away from explicit tokens, but its mechanism is different. Coconut recurrently feeds a model's own hidden state back as an input. The distillation approach transfers hidden reasoning states from an explicit-CoT teacher into a separate student/emulator system.</p>
 
@@ -302,9 +306,9 @@
             \]
           </div>
           <p>The broader lesson is shared with Coconut: forcing a rich internal computation into a single discrete or averaged representation can discard alternatives too early. Continuous and multimodal states offer ways to delay that collapse.</p>
-        </section>
+        </div>
 
-        <section id="takeaways">
+        <div class="content-section" id="takeaways">
           <h3>Takeaways</h3>
           <ul>
             <li><strong>Coconut changes the recurrent interface:</strong> hidden states become inputs during latent mode instead of being decoded and re-embedded.</li>
@@ -313,9 +317,9 @@
             <li><strong>Continuous reasoning is not automatically better:</strong> results depend on the task, the number of latent thoughts, and the training setup. On GSM8K, the paper reports an efficiency–accuracy trade-off rather than universal superiority over explicit CoT.</li>
             <li><strong>Different latent-CoT methods should not be conflated:</strong> recurrent hidden-state feedback, stepwise internalization, and teacher-state distillation move computation into latent space through distinct mechanisms.</li>
           </ul>
-        </section>
+        </div>
 
-        <section class="post-sources" aria-labelledby="sources-title">
+        <div class="content-section" class="post-sources" aria-labelledby="sources-title">
           <h3 id="sources-title">Sources and figure credits</h3>
           <ol>
             <li>Shibo Hao et al. <a href="https://arxiv.org/abs/2412.06769">Training Large Language Models to Reason in a Continuous Latent Space</a>.</li>
@@ -323,14 +327,14 @@
             <li>Yuntian Deng et al. <a href="https://arxiv.org/abs/2311.01460">Implicit Chain of Thought Reasoning via Knowledge Distillation</a>.</li>
           </ol>
           <p class="figure-credit">Figures were preserved from my original reading notes. Figures 1, 8–11, and 13 originate from or reproduce material in the Coconut paper; Figure 7 comes from the stepwise-internalization paper; Figure 14 comes from the implicit-CoT distillation paper. The Transformer walkthrough figures were retained as explanatory context. Chinese annotations in the original notes were translated into English for this post.</p>
-        </section>
+        </div>
 
         <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
 
         <p class="post-back"><a href="../index.html">← Back to Posts</a></p>
       </article>
-    <footer><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></footer>
-    </main>
+    <div class="site-footnote"><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></div>
+    </section>
   </div>
 
 

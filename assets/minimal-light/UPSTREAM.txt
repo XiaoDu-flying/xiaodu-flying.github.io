@@ -1,0 +1,8 @@
+Official Minimal Light HTML theme
+Source: https://github.com/yaoyao-liu/minimal-light
+Revision: 1ea07f39518ac44644406380c83da6f89037c4fc
+style.css and publications.css copied unchanged from html_source_file/assets/css.
+font.css copied unchanged from assets/css.
+Page shell follows _layouts/homepage.html; publication markup follows _includes/publications.md.
+Site-specific navigation and long-article compatibility are in ../../minimal-light.css.
+No upstream analytics or example author content is included.

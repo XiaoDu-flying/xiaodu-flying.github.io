@@ -1,106 +1,41 @@
-/* Minimal Light-inspired layout; isolated from the existing research and posts styles. */
-@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-SemiBold.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
-@font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-Italic.woff2") format("woff2"); font-style: italic; font-display: swap; }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: #fff; color: #595959; font: 16px/1.5 "Source Serif 4", Georgia, serif; }
-a { color: #1772a5; text-decoration: none; }
-a:hover { color: #043361; text-decoration: underline; }
-a:focus-visible, summary:focus-visible { outline: 2px solid #1772a5; outline-offset: 4px; }
-strong { color: #333; font-weight: 600; }
-p { margin: 0 0 16px; }
-h1, h2, h3 { color: #043361; font-weight: 600; }
-h1 { font-size: 28px; line-height: 1.2; margin: 19px 0 5px; }
-h2 { font-size: 23px; line-height: 1.3; margin: 0 0 16px; scroll-margin-top: 24px; }
-h3 { font-size: 16px; line-height: 1.45; margin: 0 0 5px; }
-ul { padding-left: 22px; margin: 0 0 18px; }
-li { margin-bottom: 5px; }
-.wrapper { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 232px minmax(0, 650px); gap: 78px; padding: 64px 0 40px; }
-.profile { position: sticky; top: 64px; align-self: start; text-align: center; }
-.avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; }
-.profile p { margin-bottom: 4px; }
-.chinese-name { color: #595959; font-size: 17px; margin-bottom: 18px !important; }
-.position { font-size: 18px; }
-.affiliation { color: #595959; }
-.email { font-family: Consolas, monospace; font-size: 13px; margin-top: 8px; }
-.email a { color: #595959; }
-.social-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 13px; margin-top: 22px; font-size: 14px; }
-.social-links a { color: #043361; }
-.page-links { display: flex; flex-direction: column; gap: 7px; margin-top: 26px; font-size: 14px; }
-main { min-width: 0; }
-main > section { margin-bottom: 30px; }
-.opportunities { padding-left: 13px; border-left: 2px solid #dce6ec; }
-summary { cursor: pointer; color: #1772a5; font-size: 14px; }
-details[open] > summary { margin-bottom: 14px; }
-.publication { display: grid; grid-template-columns: 145px minmax(0, 1fr); gap: 22px; align-items: center; margin: 0 0 25px; }
-.publication-image { position: relative; border: 1px solid #e7e7e7; border-radius: 7px; background: #fff; }
-.publication-image img { display: block; width: 100%; height: 112px; object-fit: contain; padding: 6px; border-radius: 7px; }
-.publication-image span { position: absolute; left: -1px; top: -1px; background: #043361; color: white; font: 11px/1.5 Arial, sans-serif; padding: 3px 9px; border-radius: 7px 0 5px 0; }
-.publication p { margin: 0 0 5px; font-size: 14px; }
-.publication .venue { font-style: italic; }
-.publication .award { color: #a32929; font-size: 13px; }
-.paper-links { font-size: 13px; }
-.publication .paper-links a { display: inline-block; border: 1px solid #b4c2ce; border-radius: 3px; padding: 0 6px; font-size: 12px; color: #043361; }
-.note, .date { font-size: 13px; }
-.paper-list > .paper { margin-bottom: 25px; }
-.paper-list > .paper p { font-size: 14px; margin-bottom: 5px; }
-.paper .venue { font-style: italic; }
-.paper .award { color: #a32929; font-size: 13px; }
+/* Site extensions only. Theme typography, columns and bibliography styles are upstream. */
+.profile .chinese-name { margin: -12px 0 18px; }
+.profile .image.avatar img { height: auto; }
+.profile .email, email a { color: inherit; }
+.profile .social-icons a { margin-right: 5px; }
+.page-links { display: flex; flex-direction: column; gap: 7px; font-size: 14px; }
+.content-section { margin-bottom: 30px; }
+.site-footnote { margin-top: 30px; font-size: 12px; color: #888; }
+.site-footnote p { margin-bottom: 5px; }
+.opportunities { border-left: 2px solid #dce6ec; padding-left: 13px; }
+summary { cursor: pointer; color: #39c; }
+details[open] > summary { margin-bottom: 18px; }
+.publications { margin-top: 0; margin-bottom: 24px; }
 .post-preview { margin-bottom: 26px; }
-.post-preview h3 { font-size: 18px; margin-bottom: 7px; }
+.post-preview h3 { font-size: 18px; line-height: 1.4; margin-bottom: 7px; }
 .post-preview p { margin-bottom: 7px; }
 .post-preview-meta, .post-meta, .post-kicker { font-size: 13px; color: #888; }
-.post-title { font-size: 28px; }
-.post-deck { color: #777; font-size: 17px; }
-.post-header { margin-bottom: 24px; }
-.post-article > section { margin: 30px 0; scroll-margin-top: 24px; }
-.post-article h3 { font-size: 21px; margin-bottom: 14px; }
-.post-article h4 { color: #043361; font-size: 17px; margin: 15px 0 9px; }
+.post-header { width: auto; position: static; float: none; padding: 0; text-align: left; margin-bottom: 24px; }
+.post-title { font-size: 28px; line-height: 1.2; }
+.post-deck { font-size: 17px; }
+.post-article .content-section { margin: 30px 0; }
+.post-article h3 { font-size: 21px; line-height: 1.35; margin-bottom: 14px; }
 .post-figure { margin: 24px 0; }
-.post-figure img { max-width: 100%; height: auto; display: block; margin: auto; }
+.post-figure img { display: block; width: auto; max-width: 100%; height: auto; margin: auto; }
 figcaption, .figure-credit { color: #888; font-size: 13px; margin-top: 9px; }
-.post-note, .post-toc { border-left: 2px solid #dce6ec; padding: 12px 18px; margin: 22px 0; background: #fafbfc; }
+.post-note, .post-toc { border-left: 2px solid #dce6ec; padding: 12px 18px; margin: 22px 0; }
 .post-note p:last-child, .post-toc ol { margin-bottom: 0; }
 .table-scroll, .equation { max-width: 100%; overflow-x: auto; margin: 20px 0; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th, td { text-align: left; vertical-align: top; border-bottom: 1px solid #e5e5e5; padding: 8px; }
-th { color: #043361; font-weight: 600; }
-blockquote { margin: 20px 0; padding-left: 18px; border-left: 2px solid #dce6ec; }
-pre { padding: 14px; background: #fafbfc; overflow-x: auto; font-size: 13px; }
-code { font-family: Consolas, monospace; overflow-wrap: anywhere; }
-.post-article p, .post-article li { overflow-wrap: anywhere; }
-.other-publications .paper, .bio-reading .paper { margin: 18px 0; }
-.other-publications .paper p { font-size: 14px; margin-bottom: 5px; }
-.experience { margin-bottom: 22px; scroll-margin-top: 24px; }
+.post-article p, .post-article li, code { overflow-wrap: anywhere; }
+.experience { margin-bottom: 22px; }
 .experience-title { margin-bottom: 7px; }
-.date { white-space: nowrap; }
-.experience ul { font-size: 14px; }
-footer { padding-top: 16px; font-size: 12px; color: #888; }
-footer p { margin-bottom: 5px; }
+.date, .note { font-size: 13px; }
 .skip-link { position: absolute; top: -100px; left: 15px; background: white; padding: 8px; }
-.skip-link:focus { top: 10px; }
-@media (max-width: 1000px) {
-  .wrapper { margin: 0 30px; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+.skip-link:focus { top: 10px; z-index: 10; }
+a:focus-visible, summary:focus-visible { outline: 2px solid #39c; outline-offset: 3px; }
+@media (max-width: 960px) {
+  .page-links { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 10px 18px; margin: 0 0 20px; }
+  .post-header { padding-right: 0; }
 }
-@media (max-width: 760px) {
-  .wrapper { display: block; margin: 0 auto; padding: 30px 22px; max-width: 650px; }
-  .profile { position: static; margin-bottom: 32px; }
-  .avatar { width: 120px; height: 120px; }
-  .page-links { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin-top: 18px; }
-  main { border-top: 1px solid #e5e5e5; padding-top: 28px; }
-}
-@media (max-width: 440px) {
-  .publication { grid-template-columns: 105px minmax(0, 1fr); gap: 14px; align-items: start; }
-  .publication-image { margin-top: 5px; }
-  .publication-image img { height: 95px; }
-  .publication p { font-size: 13px; }
-  h3 { font-size: 15px; }
-}
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-@media print {
-  .wrapper { display: block; padding: 0; margin: 0; }
-  .profile { position: static; margin-bottom: 25px; }
-  .page-links, .skip-link { display: none; }
-  .publication { break-inside: avoid; }
-}
+@media (prefers-color-scheme: dark) { summary { color: #3eb7f0; } }
+@media print { .page-links, .skip-link { display: none; } }

@@ -16,7 +16,11 @@
   <title>Engineering Self-Improving Agents | Zhuoyun Du</title>
   <link rel="canonical" href="https://xiaodu-flying.github.io/posts/engineering-self-improving-agents/">
   <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../assets/minimal-light/style.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/publications.css">
   <link rel="stylesheet" href="../../minimal-light.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/icons/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <script>
     window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
   </script>
@@ -28,24 +32,24 @@
 
   <div class="wrapper">
     <header class="profile">
-  <img class="avatar" src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150">
+  <a class="image avatar"><img src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150"></a>
   <h1>Zhuoyun Du</h1>
   <p class="chinese-name" lang="zh-CN">杜卓耘</p>
-  <p class="position">Incoming Ph.D. Student</p>
-  <p><a class="affiliation" href="https://hkust.edu.hk/">HKUST</a></p>
-  <p class="email"><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></p>
-  <nav class="social-links" aria-label="Profile links">
-    <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en">Scholar</a>
-    <a href="../../assets/cv_dzy.pdf">CV</a>
-    <a href="https://github.com/XiaoDu-flying">GitHub</a>
-    <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
-  </nav>
+  <position style="font-size:1.10rem;">Incoming Ph.D. Student</position><br>
+  <a class="affiliation" href="https://hkust.edu.hk/"><autocolor>HKUST</autocolor></a><br>
+  <email><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></email><br><br>
+  <div class="social-icons">
+<a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" style="font-size:1.2rem" aria-hidden="true"></i></a>
+<a href="../../assets/cv_dzy.pdf" aria-label="CV" title="CV"><i class="ai ai-cv" style="font-size:1.3rem" aria-hidden="true"></i></a>
+<a href="https://github.com/XiaoDu-flying" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+</div><br>
   <nav class="page-links" aria-label="Primary navigation">
     <a href="../../index.html#about">About</a><a href="../../index.html#publications">Publications</a><a href="../../research.html#experience">Experience</a><a href="../../posts/index.html">Posts</a><a href="../../research.html">Full research details</a>
   </nav>
 </header>
 
-    <main id="main">
+    <section id="main" class="main-content">
       <article class="post-article">
         <header class="post-header">
           <p class="post-kicker">Reading Synthesis</p>
@@ -77,7 +81,7 @@
           </ol>
         </aside>
 
-        <section id="agent-system">
+        <div class="content-section" id="agent-system">
           <h3>The agent is a system, not a model call</h3>
           <p>A language model produces the next tokens from the context it receives. An agent must do more: maintain state across steps, decide when to call tools, interpret their results, recover from errors, and determine when the task is complete. The useful unit of analysis is therefore not the base model alone but the complete system in which it operates.</p>
 
@@ -105,9 +109,9 @@
             <h4>Capability versus reliability</h4>
             <p>The model determines what kinds of reasoning are possible. The harness determines how consistently that reasoning is connected to tools, evidence, and feedback. A harness cannot manufacture intelligence from a weak model, but it can waste—or recover—a large fraction of the capability already present.</p>
           </div>
-        </section>
+        </div>
 
-        <section id="context">
+        <div class="content-section" id="context">
           <h3>Context is managed working memory</h3>
           <p>Long-running agents continuously generate model outputs, tool results, logs, retrieved documents, and intermediate files. Appending everything to the next prompt feels safe because no information is deliberately discarded. In practice, it replaces one failure mode—missing evidence—with another: important evidence is buried under stale or repetitive material.</p>
 
@@ -162,9 +166,9 @@
           \]</div>
 
           <p>Each step moves from changing the answer toward changing the machinery that produces future answers.</p>
-        </section>
+        </div>
 
-        <section id="workflow">
+        <div class="content-section" id="workflow">
           <h3>Workflows turn capability into repeatable behavior</h3>
           <p>Context engineering decides what the model can see. Workflow design decides what sequence of actions it is encouraged—or required—to take. Anthropic's distinction is useful here: a <em>workflow</em> follows predefined code paths, while an <em>agent</em> dynamically chooses its own process and tool use.</p>
 
@@ -212,9 +216,9 @@
           <p>The most reliable systems often combine both: deterministic code protects invariants and checkpoints, while the model chooses how to work inside those boundaries. The important question is not “How autonomous can this system be?” but “Which decisions benefit from model judgment, and which decisions should remain explicit and testable?”</p>
 
           <p>This perspective also changes how tools should be designed. A tool definition is part of the model's context and action space. Clear parameter names, bounded outputs, explicit error states, and interfaces that make invalid actions difficult can improve agent behavior more reliably than another paragraph of instructions.</p>
-        </section>
+        </div>
 
-        <section id="self-improvement">
+        <div class="content-section" id="self-improvement">
           <h3>From hand-built harnesses to harness evolution</h3>
           <p>Once the harness is represented as code and the task produces measurable feedback, harness design becomes a search problem. The system can inspect failures, choose an editable component, propose a change, run evaluations, and keep the change only if the evidence supports it.</p>
 
@@ -239,9 +243,9 @@
             <h4>Recursive structure is not recursive intelligence</h4>
             <p>A loop that edits its own code does not guarantee improvement. The model must be capable of diagnosing failures, proposing useful changes, and interpreting noisy evaluations. A weak improver can recursively produce worse improvers just as easily as better ones.</p>
           </div>
-        </section>
+        </div>
 
-        <section id="reward-hacking">
+        <div class="content-section" id="reward-hacking">
           <h3>Reward hacking: when the proxy becomes the target</h3>
           <p>Every learning or self-improvement loop needs a signal that separates better candidates from worse ones. Reward hacking begins when the system becomes better at maximizing that signal without becoming better at the intended task. The measured objective rises, while the outcome the designer actually cares about stays flat or becomes worse.</p>
 
@@ -311,9 +315,9 @@
           </ul>
 
           <p>Evaluation quality sets the ceiling for self-improvement. Coding agents at least have executable tests, although those can be incomplete. Research agents face less reducible questions: whether an idea is novel, whether an experiment isolates the right cause, or whether a negative result reflects a bad hypothesis rather than weak execution. The less objective the evaluator, the more cautious the improvement loop must be.</p>
-        </section>
+        </div>
 
-        <section id="scaling">
+        <div class="content-section" id="scaling">
           <h3>Scaling laws: what actually scales?</h3>
           <p>Harness engineering explains how a system uses a model, but it does not explain where the model's underlying capability comes from. Scaling laws study a different layer: how loss changes as model size, training data, and compute grow. Their central purpose is resource allocation, not the slogan that larger models are always better.</p>
 
@@ -455,9 +459,9 @@
           </div>
 
           <p>A mature harness can generate cleaner trajectories, more informative failures, and higher-quality training data. A more capable model can in turn make better diagnoses and propose more general harness changes. The long-term direction is likely joint optimization, but separating the two sources of progress remains essential for scientific attribution and safety.</p>
-        </section>
+        </div>
 
-        <section id="principles">
+        <div class="content-section" id="principles">
           <h3>A practical design framework</h3>
           <p>When evaluating or building a self-improving agent system, I would ask seven questions in order:</p>
           <ol>
@@ -484,9 +488,9 @@
           </ol>
 
           <p>This is a slower picture of self-improvement than unrestricted self-rewriting. It is also a more useful one, because every step can be observed, challenged, and rolled back.</p>
-        </section>
+        </div>
 
-        <section id="takeaways">
+        <div class="content-section" id="takeaways">
           <h3>Takeaways</h3>
           <ul>
             <li><strong>An agent is a coupled system.</strong> Model capability, context, tools, workflow, evaluation, and permissions jointly determine behavior.</li>
@@ -498,9 +502,9 @@
           </ul>
 
           <p>The deepest shift is from optimizing outputs to optimizing the process that repeatedly produces outputs. Prompts become contexts, contexts become managed state, workflows become editable programs, and programs become candidates in an improvement loop. The closer the loop moves toward modifying itself, the more important observability, independent evaluation, and protected boundaries become.</p>
-        </section>
+        </div>
 
-        <section class="post-sources" aria-labelledby="sources-title">
+        <div class="content-section" class="post-sources" aria-labelledby="sources-title">
           <h3 id="sources-title">Primary readings and references</h3>
           <ol>
             <li>Weng, Lilian. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/"><em>Harness Engineering for Self-Improvement</em></a>. Lil'Log, July 2026.</li>
@@ -518,7 +522,7 @@
             <li>Hoffmann et al. <a href="https://arxiv.org/abs/2203.15556"><em>Training Compute-Optimal Large Language Models</em></a>. NeurIPS 2022.</li>
           </ol>
           <p class="figure-credit">The first three entries follow the citation information provided in Lilian Weng's posts. Direct links to the originals also appear in the source note at the top of this article.</p>
-        </section>
+        </div>
 
         <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
 
@@ -526,8 +530,8 @@
           <a href="../index.html">Back to all posts</a>
         </nav>
       </article>
-    <footer><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></footer>
-    </main>
+    <div class="site-footnote"><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></div>
+    </section>
   </div>
 
 

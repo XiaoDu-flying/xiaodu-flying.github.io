@@ -16,7 +16,11 @@
   <title>Agents from Google: A Systems View | Zhuoyun Du</title>
   <link rel="canonical" href="https://xiaodu-flying.github.io/posts/agents-from-google/">
   <link rel="icon" href="../../images/favicon.ico">
+  <link rel="stylesheet" href="../../assets/minimal-light/style.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/publications.css">
   <link rel="stylesheet" href="../../minimal-light.css">
+  <link rel="stylesheet" href="../../assets/minimal-light/icons/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
@@ -24,24 +28,24 @@
 
   <div class="wrapper">
     <header class="profile">
-  <img class="avatar" src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150">
+  <a class="image avatar"><img src="../../images/profile-2.webp" alt="Portrait of Zhuoyun Du" width="150" height="150"></a>
   <h1>Zhuoyun Du</h1>
   <p class="chinese-name" lang="zh-CN">杜卓耘</p>
-  <p class="position">Incoming Ph.D. Student</p>
-  <p><a class="affiliation" href="https://hkust.edu.hk/">HKUST</a></p>
-  <p class="email"><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></p>
-  <nav class="social-links" aria-label="Profile links">
-    <a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en">Scholar</a>
-    <a href="../../assets/cv_dzy.pdf">CV</a>
-    <a href="https://github.com/XiaoDu-flying">GitHub</a>
-    <a href="https://www.linkedin.com/in/zhuoyun-du-62a372313">LinkedIn</a>
-  </nav>
+  <position style="font-size:1.10rem;">Incoming Ph.D. Student</position><br>
+  <a class="affiliation" href="https://hkust.edu.hk/"><autocolor>HKUST</autocolor></a><br>
+  <email><a href="mailto:duzy@zju.edu.cn">duzy (at) zju.edu.cn</a></email><br><br>
+  <div class="social-icons">
+<a href="https://scholar.google.com/citations?user=pY1vwigAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" style="font-size:1.2rem" aria-hidden="true"></i></a>
+<a href="../../assets/cv_dzy.pdf" aria-label="CV" title="CV"><i class="ai ai-cv" style="font-size:1.3rem" aria-hidden="true"></i></a>
+<a href="https://github.com/XiaoDu-flying" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+<a href="https://www.linkedin.com/in/zhuoyun-du-62a372313" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+</div><br>
   <nav class="page-links" aria-label="Primary navigation">
     <a href="../../index.html#about">About</a><a href="../../index.html#publications">Publications</a><a href="../../research.html#experience">Experience</a><a href="../../posts/index.html">Posts</a><a href="../../research.html">Full research details</a>
   </nav>
 </header>
 
-    <main id="main">
+    <section id="main" class="main-content">
       <article class="post-article">
         <header class="post-header">
           <p class="post-kicker">Reading Notes</p>
@@ -66,7 +70,7 @@
           </ol>
         </aside>
 
-        <section id="what-is-an-agent">
+        <div class="content-section" id="what-is-an-agent">
           <h3>What is an agent?</h3>
           <p>
             An agent is an application that pursues a goal by observing its environment and acting through the tools available to it. The important word is <em>pursues</em>. Rather than waiting for a human to prescribe every step, the system can choose a next action, inspect the result, and revise its plan.
@@ -74,9 +78,9 @@
           <p>
             Agency is therefore a property of the entire runtime, not of the language model alone. The model may generate the reasoning behind the next action, but the surrounding application supplies memory, permissions, tool definitions, execution, and the feedback that closes the loop.
           </p>
-        </section>
+        </div>
 
-        <section id="three-components">
+        <div class="content-section" id="three-components">
           <h3>The three core components</h3>
           <p>The white paper divides a basic agent into three cooperating parts:</p>
 
@@ -102,9 +106,9 @@
           <p>
             Orchestration is the recurring control process: receive information, reason over the current state, choose an action, execute it, observe the result, and decide what to do next. It also manages the agent's profile, instructions, short- and long-term memory, stopping conditions, and error handling. In practice, this layer determines whether isolated model calls form a coherent multi-step system.
           </p>
-        </section>
+        </div>
 
-        <section id="agents-vs-models">
+        <div class="content-section" id="agents-vs-models">
           <h3>Agents vs. models</h3>
           <p>
             The difference is architectural. A standalone model maps an input to an output. An agent embeds that model within state, tools, and a policy for continuing the interaction. Four practical distinctions follow:
@@ -125,9 +129,9 @@
           <p>
             This framing also explains why agent quality cannot be judged from model benchmarks alone. Tool selection, argument generation, state management, recovery, and the execution environment all contribute to end-to-end reliability.
           </p>
-        </section>
+        </div>
 
-        <section id="tools">
+        <div class="content-section" id="tools">
           <h3>Tools as the interface to the world</h3>
           <p>
             The white paper groups Google's agent tools into three categories: Extensions, Functions, and Data Stores. All three expand what the model can access, but each places execution and control at a different point in the system.
@@ -212,9 +216,9 @@
           <p>
             These categories are complementary. A production agent might retrieve a policy from a Data Store, use a Function to obtain approval, and then invoke an Extension to complete the external action.
           </p>
-        </section>
+        </div>
 
-        <section id="targeted-learning">
+        <div class="content-section" id="targeted-learning">
           <h3>Enhancing performance with targeted learning</h3>
           <p>
             Giving a model access to a tool does not guarantee that it will select the right tool, supply valid arguments, or know when to stop. The white paper describes three ways to teach this task-specific behavior:
@@ -227,9 +231,9 @@
           <p>
             These approaches trade deployment effort for specialization. Prompted examples are quick to iterate, retrieval scales the available repertoire, and fine-tuning can make repeated behavior more consistent. They can also be combined: retrieval may supply task-specific context to a model already fine-tuned for structured tool use.
           </p>
-        </section>
+        </div>
 
-        <section id="takeaways">
+        <div class="content-section" id="takeaways">
           <h3>Takeaways</h3>
           <p>
             The strongest lesson I take from the white paper is that designing an agent means designing interfaces and feedback loops. The model matters, but the working system is defined by what it can observe, which actions it may propose, where those actions execute, and how their results inform the next decision.
@@ -243,16 +247,16 @@
           <p>
             As tools and reasoning improve, specialized agents may be composed into a broader "mixture of agent experts." The white paper closes with appropriately practical advice: complex agent architectures require experimentation and refinement because the right balance of model, tools, and orchestration depends on the task and its operational constraints.
           </p>
-        </section>
+        </div>
 
-        <section class="post-sources" aria-labelledby="sources-title">
+        <div class="content-section" class="post-sources" aria-labelledby="sources-title">
           <h3 id="sources-title">Sources</h3>
           <ol>
             <li>Julia Wiesinger, Patrick Marlow, and Vladimir Vuskovic. <a href="https://www.kaggle.com/whitepaper-agents"><em>Agents</em></a>. Google, September 2024.</li>
             <li><a href="https://app.notion.com/p/1a0b02b8256381969386d9b1803a7858">My original reading notes in Notion</a>.</li>
           </ol>
           <p class="figure-credit">Figures are cropped from the Google white paper for commentary and study. The explanatory text is my own synthesis of the paper and the original reading notes.</p>
-        </section>
+        </div>
 
         <p class="post-view-count">Read <span data-post-views aria-live="polite">...</span> times</p>
 
@@ -260,8 +264,8 @@
           <a href="../index.html">Back to all posts</a>
         </nav>
       </article>
-    <footer><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></footer>
-    </main>
+    <div class="site-footnote"><p>Layout inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.</p></div>
+    </section>
   </div>
 
 
