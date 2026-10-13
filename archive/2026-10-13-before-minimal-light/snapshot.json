@@ -1,0 +1,655 @@
+{
+  "date": "2026-10-13",
+  "commit": "074ca570bb15c0f0825afa73d376bb0c04664be5",
+  "includes_uncommitted_changes": true,
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "632448f86b78787d5e9f80124ffb5bf5c35f289aee8658395bbb95d7c615d012"
+    },
+    {
+      "path": "CNAME",
+      "sha256": "0a0050c79736e3f876faf545bd0ef48044423f0e9ea5901ab8660c7ef9ec748c"
+    },
+    {
+      "path": "_config.yml",
+      "sha256": "cd80c4f07ed3f23153ac58989129e30df9fb0dd036008d1bc62cb54bed1a5a5c"
+    },
+    {
+      "path": "assets/cv.pdf",
+      "sha256": "b14d2859d5db2242258f780156f009191384734a82460a65ec230a52662120c2"
+    },
+    {
+      "path": "assets/cv_cn.pdf",
+      "sha256": "6dcbe2c5e928d5d6c0e6b06ae9814908f3075b41933f13ff76d128517e4c6ee0"
+    },
+    {
+      "path": "assets/cv_dzy.pdf",
+      "sha256": "b48fbc9a9769ba259c4b4234ed47d91ed28b015d4a225646db3bdb4675bc283b"
+    },
+    {
+      "path": "assets/salon_eot.pdf",
+      "sha256": "ebd2e01ebae8d639e09fa14e32f9b4dd6773714e705574fab436cf2a8868b904"
+    },
+    {
+      "path": "assets/talk_exp.pdf",
+      "sha256": "78a62474dbc0257f63b906c9fbcea1a275755a0de8479bfadbb5bde187bc674a"
+    },
+    {
+      "path": "d83fb5b4d49f058fc07d5c8c650a6cec.png",
+      "sha256": "a6857c66bcf2879772cbb3a7f22bc7dde08222ee8321d823d6d2502774f1ad02"
+    },
+    {
+      "path": "fonts/JetBrainsMono-Bold.woff2",
+      "sha256": "d0d4e818808f2a0ba39b2b09d1989366f63494e295f003c7ef436697378507e8"
+    },
+    {
+      "path": "fonts/JetBrainsMono-OFL.txt",
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "path": "fonts/JetBrainsMono-Regular.woff2",
+      "sha256": "14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb"
+    },
+    {
+      "path": "fonts/LibreBaskerville-Bold.woff2",
+      "sha256": "658cbf469e751ade6d30b701fc7ca00b3403329481955d30acb721ca38b45d99"
+    },
+    {
+      "path": "fonts/LibreBaskerville-OFL.txt",
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "path": "fonts/LibreBaskerville-Regular.woff2",
+      "sha256": "6c6c9c3fad669c3d32227f5cc3467735c8211ddcf4f8c184c2e62e7f3ef7af44"
+    },
+    {
+      "path": "fonts/NotoSerifSC-OFL.txt",
+      "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+    },
+    {
+      "path": "fonts/NotoSerifSC-SemiBold.woff2",
+      "sha256": "2617e44f93e113b1ef9ef165f62620bded8f91aeb45cea64ef21d86b9c329ba2"
+    },
+    {
+      "path": "fonts/OFL.txt",
+      "sha256": "fbbbcfef55318de350562559b671360de6d597112ecc5c73881b05092db89602"
+    },
+    {
+      "path": "fonts/OpenSans-Bold.woff2",
+      "sha256": "46b518780343f2262e168bea5146d1ff30a6253191cc61b486657c76a58fb2bb"
+    },
+    {
+      "path": "fonts/OpenSans-Italic.woff2",
+      "sha256": "54fef01d833f38c14a69a3cb14792e03ad94812ef180ee5e10a83bcf2d62cde3"
+    },
+    {
+      "path": "fonts/OpenSans-Light.woff2",
+      "sha256": "c42014995e3763f5fd8d42a07ddc4f2d12486017484f2324f3e6afb46029df82"
+    },
+    {
+      "path": "fonts/OpenSans-Regular.woff2",
+      "sha256": "408fe165dff48eb2f8cb3a2fcbc1dd92b94d56b4ab11813be55c776871c691cf"
+    },
+    {
+      "path": "fonts/OpenSans-SemiBold.woff2",
+      "sha256": "7a32484e166e1337fbb0cf4f4262bb385ed9081f1ac20f9efe39e8e50490367a"
+    },
+    {
+      "path": "fonts/SourceSans3-Bold.woff2",
+      "sha256": "1fc65bcc7790d534cf67a5e046f3f324aad8cc6dc364ec5ad296a18d42868464"
+    },
+    {
+      "path": "fonts/SourceSans3-Italic.woff2",
+      "sha256": "35899f37ae70c8b82920f589a75d74e35e3e2f8d456952bbcecfdc0e060384ef"
+    },
+    {
+      "path": "fonts/SourceSans3-OFL.txt",
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "path": "fonts/SourceSans3-Regular.woff2",
+      "sha256": "6edbd48bf7fa0e34a5ad9f8da9e73a70d3ae7f51791deb8362c868fed9a7f68c"
+    },
+    {
+      "path": "fonts/SourceSans3-SemiBold.woff2",
+      "sha256": "580c6561987cd9c704bc20c808c2aa7543cbdd4eaca8ec334ae4985e61971333"
+    },
+    {
+      "path": "fonts/SourceSerif4-Bold.woff2",
+      "sha256": "3792b789b910f2580d9316b9616cf022b4849ae25f7ba4c0ae724a9065569ed9"
+    },
+    {
+      "path": "fonts/SourceSerif4-Italic.woff2",
+      "sha256": "b9ca45ecab30d27712ffbd86c256adc615943e05a6dd7cb52f5f4241cab45299"
+    },
+    {
+      "path": "fonts/SourceSerif4-OFL.txt",
+      "sha256": "1efbdc9cb2d98aaa844574b5123f8d5233532c214ba259e1536e1d5702d058a1"
+    },
+    {
+      "path": "fonts/SourceSerif4-Regular.woff2",
+      "sha256": "5e7fda9cec061fcef363f78ccd099988e89683633a3ed46bf0bfb460e7246a2c"
+    },
+    {
+      "path": "fonts/SourceSerif4-SemiBold.woff2",
+      "sha256": "2847f4d3b333168cf9254cbdecb8b7735c8663469e701deab452b34c16e9092e"
+    },
+    {
+      "path": "homepage_packaged_preview.html",
+      "sha256": "39b2153e4c363a67f0a415221a621598b12ebe43fadd058f985c5d0caab01fc6"
+    },
+    {
+      "path": "images/3953273590_704e3899d5_m.jpg",
+      "sha256": "5c7bf21875d58fd659e9d776b67de8ed3a9987790d9796eaec19e398cf31761e"
+    },
+    {
+      "path": "images/500x300.png",
+      "sha256": "979e1be830672c5888c1a8144c5b40b7244136f70028e457584ae3068f4596ae"
+    },
+    {
+      "path": "images/alibaba_logo.png",
+      "sha256": "613bd41f63bb0f20f130b0a3dc359ce0452c00b949b2ee55d3f971dfcb544299"
+    },
+    {
+      "path": "images/bio-photo-2.jpg",
+      "sha256": "a6a33b1384aab43201fb97f301af47ce417e9af4d16582857f50320e47f42487"
+    },
+    {
+      "path": "images/bio-photo.jpg",
+      "sha256": "619517dbf49b760aa3c433f0bb6de424d1919074777a1153d549284b7945c11a"
+    },
+    {
+      "path": "images/browserconfig.xml",
+      "sha256": "bd0a6c2128b3d26431d52982c6037ee7ac2fc682a28de6b587227f966866f978"
+    },
+    {
+      "path": "images/bytedance_logo.svg",
+      "sha256": "515a8818986a1207eaa314d01230a58cf882a4dbf66de020e6c6c3fca6ed6494"
+    },
+    {
+      "path": "images/editing-talk.png",
+      "sha256": "3177d9b8696c73781bf6fe320aa92ae5aa500f29942d104583442b1a712d74f8"
+    },
+    {
+      "path": "images/favicon.ico",
+      "sha256": "93a89f2e5c06d95e3a64bb75f0308d8077e4d717a1aaa921aa2752ef044283f7"
+    },
+    {
+      "path": "images/foo-bar-identity-th.jpg",
+      "sha256": "78964e9d6c7399b4a3ff97ffe0a5e554c3215f207c35fabc70bc561e0bb60b82"
+    },
+    {
+      "path": "images/foo-bar-identity.jpg",
+      "sha256": "8b315d6ae1e2adefc6683d070f9a29d05bd68cd41e3c291c054f21ca4d81030e"
+    },
+    {
+      "path": "images/home-watercolor-background.jpg",
+      "sha256": "93eb807c16da36765cc8886c52e246732125bbd1b7cc458684dd26db8f596604"
+    },
+    {
+      "path": "images/image-alignment-1200x4002.jpg",
+      "sha256": "5998988c2105c2d48274c512fc9edfc988770cc1546573957f40b97fa01c2eb9"
+    },
+    {
+      "path": "images/image-alignment-150x150.jpg",
+      "sha256": "7325611dd32c839e7255eab043603846e6934893f6cd8db0be4e1087246a78e6"
+    },
+    {
+      "path": "images/image-alignment-300x200.jpg",
+      "sha256": "645b8d1100d4a10f527b64dd05f2aaf4731a8f28149bb1cda61d6138bf0cc6f0"
+    },
+    {
+      "path": "images/image-alignment-580x300.jpg",
+      "sha256": "b60ab421c545a35f6c1a672a55481867dfbd19ff5b4017c1b0dc4497b29a22d0"
+    },
+    {
+      "path": "images/manifest.json",
+      "sha256": "2f71f278830352af32dd70fb51155233e7c144f294540a3c79a39754b0269216"
+    },
+    {
+      "path": "images/mstile-144x144.png",
+      "sha256": "6d7b2e6b7ef6535977fbfbe05eaa5e801b00103d920c3e2c7ddc7c29ee904698"
+    },
+    {
+      "path": "images/mstile-150x150.png",
+      "sha256": "a311dd950ab1c6359e86745a592f734f8a668142f5d5b9a818e56818755697c0"
+    },
+    {
+      "path": "images/mstile-310x150.png",
+      "sha256": "8c99a8d250718b847b840b2922420e5b74a0df28ef1856dc96045883e323ad23"
+    },
+    {
+      "path": "images/mstile-310x310.png",
+      "sha256": "84f8b2b20024cc501e49873d93b43b7750da127d008172466eb2673ca5b02944"
+    },
+    {
+      "path": "images/mstile-70x70.png",
+      "sha256": "3c5ef6a88e4cc8486af6ec878357ea4979b6febbb9c2bfb05a475c8be5578279"
+    },
+    {
+      "path": "images/og.png",
+      "sha256": "cb3bf559b9240bc6fa10326dad6477cba44bd3732225b45a749c5392f9c36b65"
+    },
+    {
+      "path": "images/paper/aggregate_ctc.png",
+      "sha256": "2ac9278dc35ef7b94fcfa23fc778c66dfffd7fad5f9ab6ab73c3fc3aa7dcf23a"
+    },
+    {
+      "path": "images/paper/asymmetry.svg",
+      "sha256": "a737be1273864ef2043c90b4e106f425478791f96b0b9cbb3de7987de96366e1"
+    },
+    {
+      "path": "images/paper/ceo.png",
+      "sha256": "80fe1504d455b8cd63b7667cf751dbb5e893af9755896aa386d6b70ddf93091b"
+    },
+    {
+      "path": "images/paper/colearning.png",
+      "sha256": "963e2ecb1c65f1ec9bf608836283d4af392821472017b49fe1cb208f4e1ff925"
+    },
+    {
+      "path": "images/paper/company.png",
+      "sha256": "2547206a8d7bb37a986b8d73fbf0a6f97b2c2dc5a98cd7590ea65349cda4964f"
+    },
+    {
+      "path": "images/paper/cpo.png",
+      "sha256": "1238c1a4217df9b7cb3a1f308e77c3334ece7baec322267e5ba28b1b59cc4445"
+    },
+    {
+      "path": "images/paper/cto.png",
+      "sha256": "d92265178caef2593fcbdfc6b890fc9351c73e13c76fc753369cfd501011ebf1"
+    },
+    {
+      "path": "images/paper/designer.png",
+      "sha256": "95ba0b5bb7e08248e3bc46951d01abf6045a03291b49c47c5c85d853ea515c5d"
+    },
+    {
+      "path": "images/paper/evopatient_overview.png",
+      "sha256": "67dc52e397f41fb79f307e3795fc05b8ae0560ca34a5e218e8b7a11ec1b8581f"
+    },
+    {
+      "path": "images/paper/interlat.png",
+      "sha256": "cb52b89d55eceddabafcaf8b4ace518cc3bb7a48250c2925479322dc5e3a185c"
+    },
+    {
+      "path": "images/paper/intro.png",
+      "sha256": "480425f18eeecd4bf0d7f19b19fcc1d7b745aefa3ec28d0c36e41a8c4f177922"
+    },
+    {
+      "path": "images/paper/logo.png",
+      "sha256": "88c9f273d11bdc904d1222dc653654b59ad53066333256a8574ca8ac433ae6d4"
+    },
+    {
+      "path": "images/paper/logo1.png",
+      "sha256": "88c9f273d11bdc904d1222dc653654b59ad53066333256a8574ca8ac433ae6d4"
+    },
+    {
+      "path": "images/paper/macnet.png",
+      "sha256": "1178166df38a16f5d11ef116388d4b28a4eaa5fcd2134705fdf712abfcf00001"
+    },
+    {
+      "path": "images/paper/opvlm.png",
+      "sha256": "6148c057545e72bf234419ab6be65e5a5ce37b6e57d09eb2c039deb4451020c7"
+    },
+    {
+      "path": "images/paper/programmer.png",
+      "sha256": "c8ffd53fef5be13b612104427878c890d5dcae979846518fe88e4a5f94619af9"
+    },
+    {
+      "path": "images/paper/reviewer.png",
+      "sha256": "c9102c20aa2cbf8f5694b7610477f6cff379d851e7378b2cf31ddef6b17ea66c"
+    },
+    {
+      "path": "images/paper/sspo.png",
+      "sha256": "fded804caef46ee91d0e022f824a499c7c6af4f36e1a1d72b8425a461bf31fdf"
+    },
+    {
+      "path": "images/paper/tester.png",
+      "sha256": "ebae2c73161c4d566ea47a1905b06f9504dcc63d3f1bad04a886760026c53ada"
+    },
+    {
+      "path": "images/paper/user.png",
+      "sha256": "8d21a546a12c3dcbc56ad541f5a167810cfdd8e4a0ae4f10311b940dfc03e9ec"
+    },
+    {
+      "path": "images/paragraph-indent.png",
+      "sha256": "ff9d2d5a46514a8893e090e9d40a79b2a0f45e12711a5a74f8c58832bc0adf5c"
+    },
+    {
+      "path": "images/paragraph-no-indent.png",
+      "sha256": "7228cb80a792d1b2817ee7c2f430bdc7c9166d2f06931a5a70661f8b6d282cc9"
+    },
+    {
+      "path": "images/poster/talk_modelbest.jpg",
+      "sha256": "50f39cd31e22b2c8f3925a8142c7d4cac3ca2eeaf69c70603b598e343876e07b"
+    },
+    {
+      "path": "images/posts-watercolor-background.jpg",
+      "sha256": "1b69d93cf82b13e0d4bdccb97c41825654b8ddab925da067cfe86447da5f8740"
+    },
+    {
+      "path": "images/profile-2.png",
+      "sha256": "a6efdb9a39a3f898d20a67d9720f942616de5a6df222085e9c765826926ad709"
+    },
+    {
+      "path": "images/profile-2.webp",
+      "sha256": "2ecc3eab2b90ca84b24974fdebedbaedc2230dfab7673d5c4b9f967798969162"
+    },
+    {
+      "path": "images/profile-formal-2026.jpg",
+      "sha256": "b186ca4f1d930aefcd01ae7eed5b9c405449d68b9b58260bb3f9b601d3ba6c8b"
+    },
+    {
+      "path": "images/profile.png",
+      "sha256": "26626d75a2ad4f5ab3e98097cf800ec7c5f18d25080e1194d1626fd46cfc419f"
+    },
+    {
+      "path": "images/research-watercolor-background.jpg",
+      "sha256": "44342599a4d4f58f979a129fc4e99d6b02981b835df80721235c7e3735519804"
+    },
+    {
+      "path": "images/safari-pinned-tab.svg",
+      "sha256": "ef614809564f8f37b2a635bdc2fd86fd3ae8b1e16bb9c040310786c85d8f953d"
+    },
+    {
+      "path": "images/site-logo.png",
+      "sha256": "2860aad66ffb7e54099624b71a1cc28f556a4c0a93c4332fc87cd070172c6d3d"
+    },
+    {
+      "path": "images/thunlp_logo.png",
+      "sha256": "c47e7addd63918efc142d26db5cd4c2e654497976f9984fec44fe5f48fe84cc8"
+    },
+    {
+      "path": "images/web/web_thunlp.jpg",
+      "sha256": "9e886aabf851de341a2230f64db1beda6002e0c9e9fba4ccd05b024f723a09ab"
+    },
+    {
+      "path": "images/web_thunlp.jpg",
+      "sha256": "9e886aabf851de341a2230f64db1beda6002e0c9e9fba4ccd05b024f723a09ab"
+    },
+    {
+      "path": "images/zhuoyun_du.jpg",
+      "sha256": "fd527f1d574df122d748ac6b070a1a86996f23f19839939389b12865f566590e"
+    },
+    {
+      "path": "index.html",
+      "sha256": "12b06c4d60eca5733d009d39bbced1e524e842f023b9c2391fd0184c5a0990f0"
+    },
+    {
+      "path": "index_2.html",
+      "sha256": "16b0dffd4ee156e6ac22f687a7c839fc361b60f22691ff8878609da7fe4247c8"
+    },
+    {
+      "path": "index_old.html",
+      "sha256": "a9bfebe7f5e60da74f042811f4652b41829189f21de5f738741be5da1bdf5d1e"
+    },
+    {
+      "path": "js/analytics.js",
+      "sha256": "d0c62436f6a7f39b8f6c59fb639da2b1b9746c64d616ce4b7c80d6c180fe389f"
+    },
+    {
+      "path": "js/hidebib.js",
+      "sha256": "a05635099ae67175a1ee8dc6af02c76426915b3a3406c6df1b1cab43d449660b"
+    },
+    {
+      "path": "js/post-views.js",
+      "sha256": "fc3eb5adbef05595759c9e34b111fe2cddd52986a4fae1891925e4dab011cf5a"
+    },
+    {
+      "path": "js/scramble.js",
+      "sha256": "d128aeceb5d513246f49523943aaa00ef84423d5d32719719d38c83391211090"
+    },
+    {
+      "path": "posts/agents-from-google/images/agent-architecture.png",
+      "sha256": "fccca8c6dd024ee07a0f897a3a28267f15c52cf6356dcc902edcfd685f7217b9"
+    },
+    {
+      "path": "posts/agents-from-google/images/agents-vs-models.png",
+      "sha256": "0de424b0f04d887de57614a9837d1bd4b142633961b01f050955f3abcf671a15"
+    },
+    {
+      "path": "posts/agents-from-google/images/data-store.png",
+      "sha256": "558e3085d33642f7dbfab57011b5cb7b03f4a73f8f973af4a542c8c57ee63911"
+    },
+    {
+      "path": "posts/agents-from-google/images/extension-bridge.png",
+      "sha256": "d36625b598464b6a685ba6ce0b6f529adf675f3d49dafeb69685000160fc862f"
+    },
+    {
+      "path": "posts/agents-from-google/images/extension-vs-function.png",
+      "sha256": "48184ab2f3319ef07a6a5f2eddd1f790e4dd01735e963462b6da3f792262976b"
+    },
+    {
+      "path": "posts/agents-from-google/images/rag-lifecycle.png",
+      "sha256": "a7460123270ddd345a23d6662b088eaa1b968d021823c8c0c473b90ca3f95b7b"
+    },
+    {
+      "path": "posts/agents-from-google/index.html",
+      "sha256": "1b02a45b6602ae967c1e47c87935688c407cf2d3948ac72e84290de479016ba3"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-01.png",
+      "sha256": "c440099de861d8b979ec3d7032b07b0e6c32b34b8b81b20a0bcaf723bc1fbddb"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-02.png",
+      "sha256": "8d0e178dbfe6b19dbbfbda84c5a579583fb65ca1f01754c31589cc066b78e3f5"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-03.png",
+      "sha256": "d7d70e943104b611ca083b9e2f21c169ac1ec88d31105d95eda1fd49ea92a7f9"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-04.png",
+      "sha256": "909f3dca6772c7355bfa03d9c15baa2781e23f7deb8e3f04ac76d28858a0f2f0"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-05-en.png",
+      "sha256": "8bc1d54e44fc88da1814dbc5383aae770deb4b0164e55dbe6a71c6a650706678"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-05.png",
+      "sha256": "e508af603ce727dab26d81e2d507d192721cc2292aed25a9e375df5355c98fb8"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-06.png",
+      "sha256": "765fc2cdd1805765c27175bd1ca5c84b88250a116e48aea7f0b9e5ec3c1de3af"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-07.png",
+      "sha256": "6c4c4d0448b29d0ef8c4aa678a747e604ef1c345c66fa5889dbc0b8465c82a47"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-08.png",
+      "sha256": "e442517e661ef51b10db8b846183a0fe984984de5294904014c4d46b889959f4"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-09.png",
+      "sha256": "3fff2f50a969ee8983d9d2bd69d088152d783efa7ee0f73e895d9aaba1d47b3b"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-10.png",
+      "sha256": "fe0ee0e875355276aa4b55d74605132f610f55de85645aa6943252202fda5d2b"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-11.png",
+      "sha256": "f61ced5b2f4be4942e13657ecdefccb63acd7640a244c89bb82a0c3c1b8563a1"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-12-en.png",
+      "sha256": "ca78eb9fb20d003770ea6bb3a5074935d774cf8920d290610887d4aa63476900"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-12.png",
+      "sha256": "c87726f08bf82899351e8a275d01113e1b0032222b0425622a29f6b43dbc69d8"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-13.png",
+      "sha256": "9ec0be50f598d146a6b81f56e3b3f62b0d3d3ba8640870d60195f6b3af8afd48"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/images/figure-14.png",
+      "sha256": "7a7a5a5d37e8ded044dc6d76fdf3a892e82efe1f43f74a9b39712f6405b60a86"
+    },
+    {
+      "path": "posts/continuous-latent-reasoning/index.html",
+      "sha256": "d211d7e8a41c5aca434186b37025aefc6085f161fc53f1d209e4bcee68750ac5"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-animation.gif",
+      "sha256": "52863f6895553dd7f901be13686589bac33dbdeeb3fee5a6b86dd51a34be03ec"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-archive-tree.png",
+      "sha256": "f568cd74ecbd89b434dac9e0859e3b514d6f7fecbd992db35e146a51d4839966"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-conceptual.png",
+      "sha256": "bbb74629546f3da14d2b287a38dceed1d0a2a7153e88638f3b004460baff4465"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-main.png",
+      "sha256": "8aaef75e6e91153598e88667f738ead8dc3497d1b21e1d009a3f8d8bcbc2e729"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-progress.png",
+      "sha256": "fcc5ef6aad5822778ce15afa25d22f13619b39ccd720b7c7237be453d8034145"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-self-improve.png",
+      "sha256": "2ceed1e6b795457b3e044a0aa131db51c98a6bf312f329bfc772a9497586b9b8"
+    },
+    {
+      "path": "posts/darwin-godel-machine/images/dgm-transfer.png",
+      "sha256": "4fb9a20beee102d6491a813205886891dc14dda31a075f9d066bf331b4b5feb1"
+    },
+    {
+      "path": "posts/darwin-godel-machine/index.html",
+      "sha256": "ce6e347d0d5e79c12aa859e6968720dcf050fff2f18a026cedca50d1f246ee5e"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/chinchilla-comparison.png",
+      "sha256": "bfb391626d4e2c6c195f08a729f87057effe35c094048e99f8e7de0bea1f398a"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/chinchilla-isoflop.png",
+      "sha256": "b1ab64b17134377a62257d19b0b84d437486728ab8981651534fcf831f9bc3c7"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/context-engineering.png",
+      "sha256": "1415af40f9162a9055c91c9935421328aef3295639381c8c4796b2fa47836d60"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/data-overfitting.png",
+      "sha256": "5016c0f722b6d7fdbe2fbab4e2ed2312e4ec672df28b0c72aeb266e1961adf1f"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/evaluator-optimizer.png",
+      "sha256": "2e9178788adec450f0b9689fea6099cc6e588b60e401cc1dc6fcb55e012e2e6e"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/harness-loop.png",
+      "sha256": "f4efb3c97ce86af55c25a875ee87192fdb349939473d4ec1a300afc4827a31e0"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/kaplan-scaling.png",
+      "sha256": "a586c8cb08c93728cc984d27935ec6a232081febe15ed8ea1d72a325fba98e73"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/repeated-data.png",
+      "sha256": "a80a729c6c0f49f1a04b72c51716e0f74adc5795cbdfa98e39da22441e1217ed"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/images/scaling-phases.png",
+      "sha256": "8469f851e41e9161392e18eaedb45e76e87b715ed802230721b85af1a3f9aeb6"
+    },
+    {
+      "path": "posts/engineering-self-improving-agents/index.html",
+      "sha256": "4d133afe704a275773fc171b2fa01876c6c652a551c2e41dba8375b985058ec2"
+    },
+    {
+      "path": "posts/faithful-llm-user-simulation/index.html",
+      "sha256": "91d056d0fe0fca06860626bff73f65a5f3159118f4d0155a1182796350373bb3"
+    },
+    {
+      "path": "posts/index.html",
+      "sha256": "fe943caf60aa9da81cf4f0fd1f00793815e66d822837f4c9bd0b5c818169f0f2"
+    },
+    {
+      "path": "posts/interlat/images/compression-design.png",
+      "sha256": "09e56f892b976729233f9dba5169c4286500decaac9de4e702fe9d660921fd38"
+    },
+    {
+      "path": "posts/interlat/images/compression-results.png",
+      "sha256": "871da2bde6f5ec66e84beb49e2a22850e348a99de61c142f2d933839b6fa0e0f"
+    },
+    {
+      "path": "posts/interlat/images/latent-semantics.png",
+      "sha256": "7204958e53e8f2cca18d970a1ca3f1c4d7036e28ef4f10db7f3429baa57309a0"
+    },
+    {
+      "path": "posts/interlat/images/scale-results.png",
+      "sha256": "58050659c2ddef013333785be4cbb7cb670572c1ec65e9cd97d822811827fa1f"
+    },
+    {
+      "path": "posts/interlat/images/training-transition.png",
+      "sha256": "45f7a17c452b3c2744ed0d726c1fad4ce1265207fa6419ebe6ed6bbb3d386229"
+    },
+    {
+      "path": "posts/interlat/index.html",
+      "sha256": "c75a3832045f3694e2ae79096a3f4ac80c6fa2f01042648a9c334e39381d9daa"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/images/figure-01.png",
+      "sha256": "8d0e178dbfe6b19dbbfbda84c5a579583fb65ca1f01754c31589cc066b78e3f5"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/images/figure-06.png",
+      "sha256": "c440099de861d8b979ec3d7032b07b0e6c32b34b8b81b20a0bcaf723bc1fbddb"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/images/figure-11.png",
+      "sha256": "f61ced5b2f4be4942e13657ecdefccb63acd7640a244c89bb82a0c3c1b8563a1"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/images/figure-13.png",
+      "sha256": "6c4c4d0448b29d0ef8c4aa678a747e604ef1c345c66fa5889dbc0b8465c82a47"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/images/figure-14.png",
+      "sha256": "7a7a5a5d37e8ded044dc6d76fdf3a892e82efe1f43f74a9b39712f6405b60a86"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/images/figure-15.png",
+      "sha256": "3d0fe9de57be56095682f860c0a0de618f9e176964c4d05959eb4ff3987f8e56"
+    },
+    {
+      "path": "posts/latent-space-literature-notes/index.html",
+      "sha256": "976dc06767abb1782757adc93075928b077b53bef1bc8d59ce4ecd95f1030e4e"
+    },
+    {
+      "path": "posts/long-horizon-agents-durable-state/index.html",
+      "sha256": "b1fe6650bc5a6dd35d539b9b6119758c6047cdce3b68057ab6c7de3be07d3708"
+    },
+    {
+      "path": "posts/multi-turn-llm-post-training/index.html",
+      "sha256": "ec8373d9d05645600440eeab6d10020195b6406fa3231c2a59be34bab7acf39e"
+    },
+    {
+      "path": "research.html",
+      "sha256": "2acfe9938b51937c72e9646746c56cfe080ce139d115d29502b5bc130a8a247a"
+    },
+    {
+      "path": "style.css",
+      "sha256": "16828b00922a23e7903f3b7feca5f807f17c7773c6235d3b062a4fb12b7833be"
+    },
+    {
+      "path": "stylesheet.css",
+      "sha256": "491f67719c36d50bcd69b4f403c8a0672bd5312e8575433d84d83068e4531241"
+    },
+    {
+      "path": "zhuoyundu_cv_.pdf",
+      "sha256": "9289153b7b54b4c27418cf5b0fd3e2e202654b0bd6efa547f4ad3476871eb038"
+    }
+  ]
+}

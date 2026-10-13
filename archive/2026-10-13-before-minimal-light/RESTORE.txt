@@ -1,0 +1,4 @@
+Snapshot of the working homepage before the Minimal Light redesign.
+Includes index.html with uncommitted changes, research.html, styles, posts, images, fonts and PDFs.
+To restore, copy the snapshot files back to the repository root, preserving relative paths.
+Do not copy snapshot.json or RESTORE.txt. No Git history was changed.

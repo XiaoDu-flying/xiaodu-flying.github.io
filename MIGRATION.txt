@@ -1,0 +1,16 @@
+Minimal Light-inspired homepage — local draft, 2026-10-13
+
+Current homepage: index.html
+Isolated styles: minimal-light.css
+Original site snapshot: archive/2026-10-13-before-minimal-light/
+Snapshot hashes and original Git commit: snapshot.json inside that directory.
+
+The site keeps its existing static HTML and GitHub Pages setup. No remote theme, Ruby installation, or deployment change is required.
+Research, the posts index and all nine articles share minimal-light.css and the same profile sidebar; their existing URLs and article content are retained. All nine publications were retained; the first three are featured with existing local images. Dates, authors and publication status were copied from research.html without independent factual revision.
+The original Source Serif 4 fonts are retained locally. Layout and colors are inspired by https://minimal-light-theme.yliu.me/ and https://github.com/yaoyao-liu/minimal-light (CC0).
+
+To preview: serve the repository root with a local static server and open index.html.
+To restore: copy the original files listed in archive/2026-10-13-before-minimal-light/snapshot.json back to the root, preserving paths. The redesign stylesheet can be left unused.
+No commit or push was performed.
+
+Follow-up edits: identity updated to Incoming Ph.D. Student at HKUST as requested; seeking research internships; interests split into collaboration, evolution and evaluation; longer bio and Selected writing removed.
