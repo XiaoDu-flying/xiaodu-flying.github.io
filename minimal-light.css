@@ -1,5 +1,8 @@
 /* Site extensions only. Theme typography, columns and bibliography styles are upstream. */
 html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+@media (prefers-color-scheme: light) {
+  body { color: #444; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
