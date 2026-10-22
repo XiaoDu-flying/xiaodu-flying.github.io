@@ -1,5 +1,10 @@
 /* Site extensions only. Theme typography, columns and bibliography styles are upstream. */
 html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+@media screen {
+  html, body { font-size: 17px; }
+  .profile h1 { font-size: 30px; }
+  .profile email, .profile .page-links { font-size: 15px; }
+}
 @media (prefers-color-scheme: light) {
   body { color: #444; }
 }
