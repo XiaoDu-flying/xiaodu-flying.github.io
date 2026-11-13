@@ -77,23 +77,3 @@ a:focus-visible, summary:focus-visible { outline: 2px solid #39c; outline-offset
   .internship-highlight { color: #f08b82; }
 }
 @media print { .page-links, .skip-link { display: none; } }
-/* Keep the animation escape hatch outside the animated page content. */
-.swarm-skip {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 2147483001;
-  border: 1px solid #c6d3df;
-  border-radius: 999px;
-  padding: 9px 15px;
-  background: #fff;
-  color: #285f98;
-  font: 500 13px/1.4 system-ui, sans-serif;
-  cursor: pointer;
-  box-shadow: 0 2px 12px #18334d12;
-}
-.swarm-skip:hover, .swarm-skip:focus-visible {
-  background: #edf4fa;
-  outline: 2px solid #285f98;
-  outline-offset: 3px;
-}
