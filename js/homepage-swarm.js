@@ -5,6 +5,12 @@
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   if (motion.matches || !window.CursorSwarm || location.hash) return;
 
+  // Small inline images are otherwise skipped inside animated text blocks.
+  document.querySelectorAll('.institution-icon').forEach(icon => {
+    icon.dataset.cs = 'media';
+    icon.dataset.csRelocate = 'false';
+  });
+
   const button = document.createElement('button');
   button.className = 'swarm-skip';
   button.type = 'button';
@@ -13,9 +19,7 @@
   document.body.appendChild(button);
 
   let swarm;
-  let timeout;
   const finish = () => {
-    clearTimeout(timeout);
     swarm?.stop();
     button.remove();
     document.removeEventListener('keydown', onKey);
@@ -35,25 +39,25 @@
   try {
     swarm = new CursorSwarm({
       root: '.wrapper',
-      cursors: 3,
-      names: ['RESEARCH', 'BUILDER', 'EDITOR'],
-      colors: ['#285f98', '#378577', '#9865aa'],
+      cursors: 8,
+      names: ['RESEARCH', 'BUILDER', 'EDITOR', 'LAYOUT', 'MEDIA', 'WRITER', 'DESIGN', 'REVIEW'],
+      colors: ['#285f98', '#378577', '#9865aa', '#c27a32', '#368caa', '#b85d7c', '#6d7d38', '#6565b5'],
       ignore: '.site-footnote, .skip-link',
       deconstruct: false,
-      startPosition: 'corners',
+      startPosition: 'outside',
       exitAfterBuild: true,
       idle: 'hide',
-      speed: 2,
-      typeDuration: 0.65,
+      speed: 1.35,
+      typeDuration: 1.1,
       hud: false,
-      guides: false,
-      sparks: false,
+      guides: true,
+      sparks: true,
+      copyPaste: 0.35,
+      relocation: 0.15,
       respectReducedMotion: true,
       onDone: () => setTimeout(finish, 300)
     });
     swarm.init();
-    // A long academic page must never leave content waiting indefinitely.
-    timeout = setTimeout(finish, 20000);
   } catch (error) {
     finish();
     console.warn('CursorSwarm could not start:', error);
