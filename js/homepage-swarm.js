@@ -39,9 +39,9 @@
   try {
     swarm = new CursorSwarm({
       root: '.wrapper',
-      cursors: 8,
-      names: ['RESEARCH', 'BUILDER', 'EDITOR', 'LAYOUT', 'MEDIA', 'WRITER', 'DESIGN', 'REVIEW'],
-      colors: ['#285f98', '#378577', '#9865aa', '#c27a32', '#368caa', '#b85d7c', '#6d7d38', '#6565b5'],
+      cursors: 4,
+      names: ['RESEARCH', 'BUILDER', 'EDITOR', 'LAYOUT'],
+      colors: ['#285f98', '#378577', '#9865aa', '#c27a32'],
       ignore: '.site-footnote, .skip-link',
       deconstruct: false,
       startPosition: 'outside',
