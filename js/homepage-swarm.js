@@ -3,8 +3,7 @@
   'use strict';
 
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
-  const desktop = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 900px)');
-  if (motion.matches || !desktop.matches || !window.CursorSwarm || location.hash) return;
+  if (motion.matches || !window.CursorSwarm || location.hash) return;
 
   const button = document.createElement('button');
   button.className = 'swarm-skip';
@@ -22,7 +21,6 @@
     document.removeEventListener('keydown', onKey);
     document.removeEventListener('focusin', finish);
     motion.removeEventListener('change', finish);
-    desktop.removeEventListener('change', finish);
   };
   const onKey = event => {
     if (event.key === 'Escape') finish();
@@ -33,7 +31,6 @@
   // Reveal content immediately when a visitor navigates by keyboard.
   document.addEventListener('focusin', finish);
   motion.addEventListener('change', finish);
-  desktop.addEventListener('change', finish);
 
   try {
     swarm = new CursorSwarm({
