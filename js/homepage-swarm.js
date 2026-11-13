@@ -50,10 +50,11 @@
       speed: 1.35,
       typeDuration: 1.1,
       hud: false,
-      guides: true,
-      sparks: true,
-      copyPaste: 0.35,
-      relocation: 0.15,
+      guides: false,
+      sparks: false,
+      // Reveal content in place; never drag copies or offset/rotate real elements.
+      copyPaste: false,
+      relocation: false,
       respectReducedMotion: true,
       onDone: () => setTimeout(finish, 300)
     });
